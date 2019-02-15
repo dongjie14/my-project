@@ -1,0 +1,24 @@
+server:
+  context-path: /
+  port: 8084
+
+
+spring:
+  profiles:
+    active: druid
+  boot:
+    admin:
+      url: http://localhost:${server.port}
+    application:
+      name: qianyide_api
+  datasource :
+    url: jdbc:mysql://localhost:3306/qianyide_dev?characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
+    username: qianyide
+    password: 123456
+
+####################
+### logback 配置 ###
+####################
+logging:
+  level: debug
+  config: classpath:config/logback.xml
