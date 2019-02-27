@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+    <style>
+        .typeDiv{
+            width:100%;
+            margin:10px auto;
+            padding:5px;
+            border:1px solid black;
+            border-radius: 5px;
+            float: left;
+            margin-left:1%;
+        }
+        .titleDiv{
+
+        }
+        .title-p{
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .rightDiv{
+            margin-left:50px;
+            height: 50px;
+            padding:10px;
+            border-radius: 5px;
+        }
+        .rightDiv:hover{
+            background-color: rgba(141,143,134,0.43);
+            cursor: pointer;
+        }
+        .right-left-div{
+            float: left;
+            vertical-align: middle;
+            font-size:14px;
+            width:30%;
+        }
+        .right-middle{
+            width:35%;
+            float: left;
+        }
+        .right-right-div{
+            float: right;
+            vertical-align: middle;
+        }
+        .typeDiv:hover{
+            background-color: #E6E1DC;
+            cursor: pointer;
+        }
+        .panel-body{
+            width: 80%;
+            margin:0 auto;
+        }
+        #formpro{
+            width: 80%;
+            margin:0 auto;
+        }
+        .add_btn_div{
+            margin:0 auto;
+            width:100.91px;
+        }
+        .sort-span{
+            display: inline-block;
+            float: right;
+            font-size: 20px;
+            color: #1DC116;
+            margin-right: 10px;
+        }
+        .add_btn_type{
+            margin-left:5%;
+            margin-top:2%;
+        }
+    </style>
+</head>
+<body>
+<div class="form-group col-md-12 add_btn_type" style="text-align:left;">
+    <button onclick="addType()" class="btn btn-info">新增类型</button>
+    <button onclick="sortType()" class="btn btn-info">类型排序</button>
+</div>
+<form role="form" id="formpro" class="form-horizontal">
+    <p style="font-size: 22px;text-align: center">规则类型</p>
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">规则类型名称:</label>
+                <div class="col-md-8">
+                    <input type="text" id="typeName" name="typeName" th:value="${typeName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">规则类型Code:</label>
+                <div class="col-md-8">
+                    <input type="text" id="typeCode" name="typeCode" th:value="${typeCode}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12 btn-form" style="text-align:right;">
+                <button type="submit" class="btn btn-info">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="panel-body">
+    <div class="bodyDiv">
+        <div class="typeDiv" th:each="page,iterStat:${typeInfo}">
+            <div class="titleDiv">
+                <p>
+                    <span class="title-p" th:text="${typeMap[page.key]+'：'}"></span>
+                    <span class="sort-span" th:text="${'排序:'+(iterStat.index+1)}"></span>
+                </p>
+            </div>
+            <div class="rightDiv" th:each="right,rightStat:${page.value}">
+                <div class="right-left-div" th:onclick="${'updateRight('+right.rightId+')'}" th:text="${right.rightName}"></div>
+                <div class="right-middle" th:onclick="${'updateRight('+right.rightId+')'}" >
+                    <p th:if="${right.rightStatus == 0}" style="text-align: center;color: red">未使用状态</p>
+                    <p th:if="${right.rightStatus == 1}" style="text-align: center;color: #1DC116">正在使用</p>
+                </div>
+                <div class="right-right-div">
+                    <button class="btn btn-gray" type="button" th:onclick="${'lookDetail('+right.rightId+')'}">查看</button>
+                </div>
+            </div>
+            <div class="addDiv">
+                <div class="add_btn_div">
+                    <button class="btn btn-info" th:id="${page.key}" onclick="addRight(id)">+新增规则包</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="message-box animated fadeIn" data-sound="alert" id="addDivModel">
+        <div class="nav col-md-8 nav-ul" style="left: 18%; top: 16%;">
+            <form action="" id="addRightForm">
+
+                <input type="hidden" name="typeId" id="typeId" />
+                <table class="openBox model-box" style="width: 60%;margin:0 auto">
+                    <tr>
+                        <td class="td-left">规则包名<font color="red">*</font></td>
+                        <td class="td-right" colspan="3">
+                            <input name="rightName" id="rightName"/>
+                            <input type="hidden" id="rightIdByModel"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">规则值<font color="red">*</font></td>
+                        <td class="td-right" colspan="3">
+                            <input name="value" placeholder="谨慎填写" id="rightValue"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left"><font color="red">*</font>状态	</td>
+                        <td class="td-right">
+                            <select id="rightStatus" name="status">
+                                <option selected="selected" value="1">使用中</option>
+                                <option value="0">未使用</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">备注</td>
+                        <td class="td-right" colspan="3">
+                            <input id="remark" name="remark"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td colspan="4">
+                            <button type="button" class="btn btn-success"
+                                    onclick="rightAddSubmit()">保存</button>
+                            <button type="button" onclick="$('#addDivModel').removeClass('show');" class="btn btn-default renewalActive">放弃</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p style="padding:0 20px;text-align: left"><font color="red">*</font>注：规则包的值是对应不同规则而言的，如男性规则值为1  女性规则值为0。地址规则 对应的是指定地区的编码，渠道规则对应的是渠道ID</p>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+    <div class="message-box animated fadeIn" data-sound="alert" id="addTypeModel">
+        <div class="nav col-md-8 nav-ul" style="left: 18%; top: 16%;">
+            <form action="" id="addTypeForm">
+
+                <table class="openBox model-box" style="width: 60%;margin:0 auto">
+                    <tr>
+                        <td class="td-left">类型名称<font color="red">*</font></td>
+                        <td class="td-right" colspan="3">
+                            <input name="typeNewName" id="typeNewName"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">类型Code<font color="red">*</font></td>
+                        <td class="td-right" colspan="3">
+                            <input name="typeNewCode" id="typeNewCode"/>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td colspan="4">
+                            <button type="button" class="btn btn-success"
+                                    onclick="typeAddSubmit()">保存</button>
+                            <button type="button" onclick="$('#addTypeModel').removeClass('show');" class="btn btn-default renewalActive">放弃</button>
+                        </td>
+
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <table style="margin-top:50px;" width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td height="33">
+                <table width="100%" border="0" align="center" cellpadding="0"
+                       cellspacing="0" class="right-font08">
+                    <tr>
+                        <td align="left" class="td2" th:if="${not #lists.isEmpty(pageInfo)}"
+                            th:text="   ${'共'+pageInfo.total+ '条'}">
+                        </td>
+                        <td align="right" class="td2" id="pageFooter">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+
+    function updateRight(rightId){
+        $('#addDivModel').addClass("show");
+        var url=[[@{/riskRight/queryById}]];
+        var data={
+            rightId:rightId
+        }
+        $.ajax({
+            type   : "post",
+            data   : data,
+            url    : url,
+            success: function (resp) {
+                $("#rightIdByModel").val(resp.id);
+                $("#rightName").val(resp.rigthName);
+                $("#rightValue").val(resp.value);
+                $("#rightStatus").children("option").each(function(){
+                    if($(this).val() == resp.status){
+                        $(this).prop("selected",true);
+                    }
+                })
+                $("#remark").val(resp.remark);
+            }
+        });
+    }
+
+    function sortType(){
+        location.href='/riskType/to-sort';
+    }
+
+    function addRight(id){
+        $("#addDivModel").addClass("show");
+        $("#typeId").val(id);
+    }
+    function addType(){
+        $("#addTypeModel").addClass("show");
+    }
+    $(function () {
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+    });
+
+    function lookDetail(rightId){
+        location.href='/ruleRoute/routeList?rightId='+rightId;
+    }
+    function rightAddSubmit(){
+        if($("#rightName").val().trim() == ''){
+            alertPopup("规则包名不能为空!");
+            return;
+        }
+        if($("#rightName").val().trim().length>50){
+            alertPopup("规则包名字符不能超过50个!");
+            return;
+        }
+        if($("#rightValue").val().trim() == ''){
+            alertPopup("规则包值不能为空!");
+            return;
+        }
+        if($("#remark").val().trim().length>100){
+            alertPopup("规则包名备注字符不能超过50个!");
+            return;
+        }
+        var data = {
+            typeId:$("#typeId").val(),
+            id:$("#rightIdByModel").val(),
+            rigthName:$("#rightName").val(),
+            value:$("#rightValue").val(),
+            status:$("#rightStatus").val(),
+            remark:$("#remark").val()
+        }
+        var url=[[@{/riskRight/save}]];
+        $.ajax({
+            type   : "post",
+            data   : data,
+            url    : url,
+            success: function (resp) {
+                if(resp.code !=200){
+                    alertPopup(resp.msg);
+                }else{
+                    alertPopup(resp.msg,function(){
+                        location.href='/riskType/typeList';
+                    });
+                }
+            }
+        });
+    }
+
+    function typeAddSubmit(){
+        if($("#typeNewName").val().trim() == ''){
+            alertPopup("类型名不能为空!");
+            return;
+        }
+        if($("#typeNewName").val().trim().length>50){
+            alertPopup("类型名长度不能超过50!");
+            return;
+        }
+        if($("#typeNewCode").val().trim() == ''){
+            alertPopup("类型Code不能为空!");
+            return;
+        }
+        if($("#typeNewCode").val().trim().length>20){
+            alertPopup("类型Code长度不能超过20!");
+            return;
+        }
+        var data = {
+            typeName:$("#typeNewName").val(),
+            typeCode:$("#typeNewCode").val()
+        }
+        var url=[[@{/riskType/save}]];
+        $.ajax({
+            type   : "post",
+            data   : data,
+            url    : url,
+            success: function (resp) {
+                if(resp.code !=200){
+                    alertPopup(resp.msg);
+                }else{
+                    alertPopup(resp.msg,function(){
+                        location.href='/riskType/typeList';
+                    });
+                }
+            }
+        });
+    }
+</script>
+</html>

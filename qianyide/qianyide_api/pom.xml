@@ -29,10 +29,10 @@
         </profile>
         <profile>
             <!-- 生产环境 -->
-            <id>prd</id>
+            <id>pro</id>
             <properties>
-                <environment>prd</environment>
-                <finalName>prd_api</finalName>
+                <environment>pro</environment>
+                <finalName>pro_api</finalName>
             </properties>
         </profile>
         <profile>
@@ -72,6 +72,7 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>environment/dev/**</exclude>
+                    <exclude>environment/pro/**</exclude>
                     <exclude>environment/uat/**</exclude>
                 </excludes>
             </resource>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TPayBorrowOrdMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TPayBorrowOrd">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="borrow_ord_no" jdbcType="VARCHAR" property="borrowOrdNo" />
+    <result column="user_no" jdbcType="VARCHAR" property="userNo" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_id_no" jdbcType="VARCHAR" property="userIdNo" />
+    <result column="is_old_loan" jdbcType="INTEGER" property="isOldLoan" />
+    <result column="bank_card_no" jdbcType="VARCHAR" property="bankCardNo" />
+    <result column="bank_code" jdbcType="VARCHAR" property="bankCode" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="borrow_amt" jdbcType="DECIMAL" property="borrowAmt" />
+    <result column="auth_fee" jdbcType="DECIMAL" property="authFee" />
+    <result column="serve_fee" jdbcType="DECIMAL" property="serveFee" />
+    <result column="interest_fee" jdbcType="DECIMAL" property="interestFee" />
+    <result column="repayment_period" jdbcType="INTEGER" property="repaymentPeriod" />
+    <result column="repayment_cycle" jdbcType="INTEGER" property="repaymentCycle" />
+    <result column="installment_rate" jdbcType="DECIMAL" property="installmentRate" />
+    <result column="installment_fee" jdbcType="DECIMAL" property="installmentFee" />
+    <result column="overdue_rate" jdbcType="DECIMAL" property="overdueRate" />
+    <result column="overdue_fee" jdbcType="DECIMAL" property="overdueFee" />
+    <result column="order_sts" jdbcType="INTEGER" property="orderSts" />
+    <result column="machine_audit_time" jdbcType="TIMESTAMP" property="machineAuditTime" />
+    <result column="manual_audit_time" jdbcType="TIMESTAMP" property="manualAuditTime" />
+    <result column="audit_manage_name" jdbcType="VARCHAR" property="auditManageName" />
+    <result column="loan_channel" jdbcType="VARCHAR" property="loanChannel" />
+    <result column="loan_time" jdbcType="TIMESTAMP" property="loanTime" />
+    <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+    <result column="device_id_code" jdbcType="VARCHAR" property="deviceIdCode" />
+    <result column="device_model" jdbcType="VARCHAR" property="deviceModel" />
+    <result column="reserve_field1" jdbcType="VARCHAR" property="reserveField1" />
+    <result column="reserve_field2" jdbcType="VARCHAR" property="reserveField2" />
+    <result column="reserve_field3" jdbcType="VARCHAR" property="reserveField3" />
+    <result column="update_manage_name" jdbcType="VARCHAR" property="updateManageName" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

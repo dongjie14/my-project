@@ -1,0 +1,1344 @@
+@charset "utf-8";
+/**
+* global style component
+* 绿翼商城全局样式组件 
+* 创建时间：2013-04-16 by YangHuanmin
+*/
+/* reset declare */
+body, div, a, img, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, table, th, td, caption, fieldset, legend, input, select, textarea, button, blockquote, iframe {
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+body {
+    font: 12px/1.5 '宋体';
+    color: #333;
+}
+
+html {
+    _background: url(about:blank);
+}
+
+h1, h2, h3, h4, h5, h6, h7, em, i, q, strong, th, caption, input, textarea, select, cite, fieldset, legend {
+    font-style: normal;
+    font-family: inherit;
+    font-size: 100%;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #f60;
+}
+
+ul, ol, li {
+    list-style: none;
+}
+
+textarea {
+    resize: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th, caption {
+    text-align: left;
+}
+
+img, fieldset {
+    border: 0;
+}
+
+input[type="reset"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="file"]::-moz-focus-inner,
+button::-moz-focus-inner {
+    border: none;
+    padding: 0;
+}
+
+/* tools declare */
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.fb {
+    font-weight: bold;
+}
+
+.tc {
+    text-align: center;
+}
+
+.tl {
+    text-align: left;
+}
+
+.tr {
+    text-align: right;
+}
+
+.cl {
+    clear: both;
+}
+
+.cl-fn {
+    zoom: 1;
+}
+
+.cl-fn:after {
+    content: '.';
+    height: 0;
+    display: block;
+    overflow: hidden;
+    font-size: 0;
+    clear: both;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.layout {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.layout-950 {
+    width: 950px;
+}
+
+/* sprite declare */
+.g-header .topbar,
+.g-header .n-cont {
+    background-image: url(../images/g-repeatx.png);
+    background-repeat: repeat-x;
+}
+
+.g-header .f-social a,
+.g-header .my-info i,
+.g-header .my-car,
+.g-header .my-car span,
+.g-header .select-cont,
+.g-header .btn-seek,
+.g-header .nav .n-l,
+.g-header .nav .n-r,
+.g-header .n-bar .active span,
+.g-header .n-bar .active a,
+.g-header .n-bar i,
+.g-header .n-bar a:hover,
+.g-header .n-bar a:hover span,
+.g-header .m-hand,
+.g-footer .p-contact i,
+.g-slogan i,
+.g-paging .last,
+.g-paging .next,
+.g-share a,
+.sim-select .el-select,
+.ui-btn-gray,
+.ui-dialog .d-close,
+.car-dialog .car-viewer i,
+.car-dialog .car-handle a,
+.car-dialog .rec-pager li,
+.login-dialog .btn-regist,
+.gotop {
+    background-image: url(../images/g-sprite.png);
+    background-repeat: no-repeat;
+}
+
+/*----------global header----------*/
+.g-header {
+    margin-bottom: 10px;
+}
+
+.g-header .topbar {
+    height: 29px;
+    line-height: 29px;
+    border-bottom: 1px solid #ccc;
+    min-width: 1200px;
+}
+
+.g-header .topbar-950 {
+    min-width: 950px;
+}
+
+.g-header .topbar a {
+    color: #999;
+}
+
+.g-header .topbar a:hover {
+    color: #f60;
+}
+
+.g-header .f-support {
+    float: left;
+    border-right: 1px solid #e1e1e1;
+    border-left: 1px solid #e1e1e1;
+    padding: 0 4px;
+    margin-right: -1px;
+}
+
+.g-header .f-support a {
+    padding: 0 8px;
+    float: left;
+}
+
+.g-header .f-social {
+    float: left;
+    border-right: 1px solid #e1e1e1;
+    border-left: 1px solid #e1e1e1;
+    padding: 7px 10px;
+}
+
+.g-header .f-social a {
+    background-position: -188px -135px;
+    width: 15px;
+    height: 15px;
+    float: left;
+}
+
+.g-header .f-social a:hover {
+    background-position: -213px -135px;
+}
+
+.g-header .f-user {
+    float: right;
+    border-right: 1px solid #e1e1e1;
+    padding: 0 10px;
+    color: #ccc;
+}
+
+.g-header .f-user a {
+    color: #390;
+}
+
+.g-header .f-user span {
+    color: #999;
+}
+
+.g-header .f-tool {
+    float: right;
+    padding: 0 10px;
+    color: #ccc;
+}
+
+.g-header .f-tool a {
+    color: #666;
+}
+
+.g-header .f-logo {
+    float: left;
+    margin-top: 20px;
+}
+
+.g-header .f-logo img {
+    vertical-align: top;
+}
+
+.g-header .f-panel {
+    float: right;
+    padding: 18px 0;
+}
+
+.g-header .my-info {
+    display: inline-block;
+    vertical-align: baseline;
+    position: relative;
+    zoom: 1;
+    padding-right: 15px;
+    height: 29px;
+}
+
+.g-header .my-info i {
+    background-position: -340px -162px;
+    width: 10px;
+    height: 10px;
+    overflow: hidden;
+    position: absolute;
+    right: 2px;
+    top: 8px;
+    font-size: 0;
+    -webkit-transform: rotate(0);
+    -webkit-transition: all .5s;
+    transform: rotate(0);
+    transition: all .2s;
+}
+
+.g-header .my-info-active i {
+    right: 0px;
+    top: 10px;
+    -webkit-transform: rotate(180deg);
+    -webkit-transition: all .2s;
+    transform: rotate(180deg);
+    transition: all .5s;
+    background-position: -340px -132px \9;
+    right: 2px \9;
+    top: 8px \9;
+}
+
+.g-header .my-info ul {
+    position: absolute;
+    left: -10px;
+    width: 100px;
+    border: 1px solid #ddd;
+    top: 23px;
+    background: #fff;
+    padding: 0 10px;
+    overflow: hidden;
+    display: none;
+}
+
+.g-header .my-info ul a {
+    display: block;
+    zoom: 1;
+}
+
+.g-header .my-info li {
+    border-top: 1px dashed #e2e2e2;
+    margin-top: -1px;
+}
+
+.g-header .my-car {
+    background-position: 0 -163px;
+    float: right;
+    width: 130px;
+    height: 47px;
+    line-height: 47px;
+    color: #666;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.g-header .my-car span {
+    background-position: right -187px;
+    vertical-align: middle;
+    line-height: 18px;
+    padding-right: 10px;
+}
+
+.g-header .my-car em {
+    color: #f90;
+    font-weight: bold;
+}
+
+.g-header .my-car:hover {
+    color: #666;
+}
+
+/* search */
+.g-header .search-area {
+    float: right;
+    width: 426px;
+    padding-right: 20px;
+    color: #999;
+}
+
+.g-header .search-area a {
+    color: #999;
+    margin-right: 5px;
+}
+
+.g-header .search-area a:hover {
+    color: #f90;
+}
+
+.g-header .search-area p {
+    padding-top: 5px;
+}
+
+.g-header .select-cont {
+    background-position: 0 -125px;
+    line-height: 28px;
+    overflow: hidden;
+    height: 28px;
+    float: left;
+    padding: 0 5px;
+}
+
+.g-header .sim-select {
+    float: left;
+    margin-top: 4px;
+}
+
+.g-header .sim-select .el-select {
+    background-position: right -95px;
+}
+
+.g-header .inp-cont {
+    float: left;
+    height: 26px;
+    line-height: 26px;
+    border: 1px solid #6c3;
+    border-left: 1px solid #e4e4e4;
+    border-right: 0;
+    position: relative;
+    zoom: 1;
+    font-size: 14px;
+}
+
+.g-header .inp-cont span {
+    position: absolute;
+    z-index: 1;
+    color: #999;
+    left: 5px;
+    top: 0;
+}
+
+.g-header .inp-cont input {
+    border: 0;
+    height: 26px;
+    float: left;
+    position: relative;
+    z-index: 2;
+    line-height: 26px;
+    padding-left: 5px;
+    background: none;
+    width: 220px;
+}
+
+.g-header .btn-seek {
+    background-position: 0 -60px;
+    float: left;
+    width: 80px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border: 0;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* nav */
+.g-header .nav {
+    position: relative;
+    zoom: 1;
+    z-index: 20;
+}
+
+.g-header .n-l, .g-header .n-r {
+    width: 20px;
+    height: 40px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+}
+
+.g-header .n-l {
+    background-position: 0 0;
+    left: 0;
+}
+
+.g-header .n-r {
+    background-position: -20px 0;
+    right: 0;
+}
+
+.g-header .n-cont {
+    height: 40px;
+    line-height: 40px;
+    background-position: 0 -49px;
+    padding: 0 20px;
+}
+
+.g-header .n-bar {
+    padding-left: 195px;
+}
+
+.g-header .n-bar li {
+    float: left;
+    display: inline;
+    white-space: nowrap;
+}
+
+.g-header .n-bar span {
+    float: left;
+    padding-right: 40px;
+}
+
+.g-header .n-bar a {
+    color: #fff;
+    padding-left: 40px;
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.g-header .n-bar i {
+    background-position: -168px -135px;
+    float: left;
+    width: 12px;
+    height: 10px;
+    margin: 15px 5px 0 0;
+    overflow: hidden;
+}
+
+.g-header .n-bar .active a, .g-header .n-bar a:hover {
+    background-position: -59px 0;
+}
+
+.g-header .n-bar .active span, .g-header .n-bar a:hover span {
+    background-position: right 0;
+}
+
+/* menu */
+.g-header .n-menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 215px;
+    z-index: 20;
+}
+
+.g-header .m-title {
+    line-height: 40px;
+    color: #fff;
+    font-size: 14px;
+    padding: 0 20px;
+    font-weight: bold;
+}
+
+.g-header .m-inner {
+    position: absolute;
+    top: 40px;
+    width: 213px;
+    border: 1px solid #e4e4e4;
+    border-top: 0;
+    display: none;
+    background-color: #fff;
+}
+
+.g-header .m-inner dl {
+    padding: 12px 18px 14px;
+    line-height: 2;
+}
+
+.g-header .m-inner dt {
+    font-weight: bold;
+    font-size: 14px;
+    height: 28px;
+}
+
+.g-header .m-inner dd {
+    overflow: hidden;
+    zoom: 1;
+    height: 45px;
+}
+
+.g-header .m-inner dd a {
+    float: left;
+    margin-right: 10px;
+    color: #666;
+}
+
+.g-header .m-inner dd a:hover {
+    color: #f60;
+}
+
+.g-header .m-gray {
+    background-color: #f6f6f6;
+}
+
+.g-header .m-hand {
+    background-position: 0 -89px;
+    width: 17px;
+    height: 17px;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    margin: 11px 10px 0 0;
+}
+
+.g-header .active .m-hand {
+    background-position: -17px -89px;
+}
+
+.g-header .g-slogan {
+    float: right;
+}
+
+.g-header .header-bd {
+    border-bottom: 2px solid #37a500;
+    padding-bottom: 15px;
+}
+
+/*----------global footer----------*/
+.g-footer {
+    margin-top: 10px;
+}
+
+.g-footer .panel {
+    border: 1px solid #e4e4e4;
+    padding: 1px;
+    background: #fff;
+}
+
+.g-footer .panel .inner {
+    background: #f8f8f8;
+    padding: 28px 60px;
+}
+
+.g-footer .panel a {
+    color: #666;
+}
+
+.g-footer .panel a:hover {
+    color: #f60;
+}
+
+.g-footer .p-category {
+    float: left;
+    width: 850px;
+    border-right: 1px solid #e4e4e4;
+}
+
+.g-footer .p-category dl {
+    float: left;
+    overflow: hidden;
+    zoom: 1;
+    width: 170px;
+}
+
+.g-footer .p-category dt {
+    line-height: 1.2;
+    font-size: 12px;
+    font-weight: bold;
+    border-left: 4px solid #6c3;
+    padding-left: 5px;
+}
+
+.g-footer .p-category dd {
+    padding: 10px 0 0 9px;
+    line-height: 1.8;
+}
+
+.g-footer .p-contact {
+    float: right;
+    width: 150px;
+    color: #666;
+}
+
+.g-footer .p-contact em {
+    font-size: 20px;
+    color: #390;
+    font-family: Arial;
+}
+
+.g-footer .p-contact i {
+    background-position: -238px -135px;
+    width: 18px;
+    height: 18px;
+    float: left;
+    overflow: hidden;
+    font-size: 0;
+    margin-right: 5px;
+    _margin-right: 2px;
+    cursor: pointer;
+}
+
+.g-footer .p-contact .social {
+    padding: 10px 0 5px;
+}
+
+.g-footer .declare {
+    padding: 20px 0;
+    text-align: center;
+    color: #666;
+    line-height: 2;
+}
+
+.g-footer .d-link {
+    color: #999;
+}
+
+.g-footer .d-link a {
+    margin: 0 20px;
+}
+
+.g-footer .layout-950 .panel .inner {
+    padding: 28px 35px;
+}
+
+.g-footer .layout-950 .p-category {
+    width: 700px;
+}
+
+.g-footer .layout-950 .p-category dl {
+    width: 140px;
+}
+
+.g-footer .g-slogan {
+    text-align: center;
+    clear: both;
+}
+
+/*---------- global slogan ----------*/
+.g-slogan {
+    padding-top: 30px;
+    zoom: 1;
+    color: #666;
+}
+
+.g-slogan li {
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+    margin: 0 20px;
+    vertical-align: top;
+}
+
+.g-slogan i {
+    float: left;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    _margin-right: 5px;
+}
+
+.g-slogan strong {
+    color: #390;
+}
+
+.g-slogan .i-1 {
+    background-position: -168px -101px;
+}
+
+.g-slogan .i-2 {
+    background-position: -192px -101px;
+}
+
+.g-slogan .i-3 {
+    background-position: -216px -101px;
+}
+
+/*----------form element----------*/
+.J_Simulate {
+    display: none;
+}
+
+.sim-select {
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    border: 0;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    cursor: pointer;
+}
+
+.sim-select ol {
+    position: absolute;
+    border: 1px solid #7f9db9;
+    overflow-x: hidden;
+    overflow-y: auto;
+    zoom: 1;
+    vertical-align: baseline;
+    background: #fff;
+    z-index: 50;
+}
+
+.sim-select .el-select {
+    background-position: right -95px;
+    height: 21px;
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+    vertical-align: baseline;
+    *margin-left: -7px;
+    *margin-right: -7px;
+    padding: 0 10px 0 5px;
+    color: #333;
+}
+
+.sim-select .el-option {
+    padding-left: 6px;
+    cursor: pointer;
+    color: #333;
+}
+
+.sim-select .el-option-hover {
+    background: #316ac5;
+    color: #fff;
+}
+
+.ui-btn-orange {
+    background: #ff4b0b;
+    color: #fff !important;
+    font-weight: bold;
+    font-size: 14px;
+    height: 26px;
+    line-height: 26px;
+    border: 0;
+    text-align: center;
+    padding: 0 15px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.ui-btn-orange:hover {
+    color: #fff;
+}
+
+.ui-btn-gray {
+    background-position: -168px -163px;
+    font-size: 14px;
+    height: 27px;
+    line-height: 27px;
+    color: #390 !important;
+    text-decoration: none !important;
+    font-weight: bold;
+    width: 95px;
+    text-align: center;
+    display: inline-block;
+}
+
+/*----------global module----------*/
+.gotop {
+    background-position: -168px -302px;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    display: none;
+    z-index: 500;
+}
+
+.common-tips {
+    overflow: hidden;
+    zoom: 1;
+    padding: 5px 0;
+}
+
+.common-tips span {
+    float: left;
+    border: 1px solid #fc6;
+    color: #f60;
+    line-height: 20px;
+    padding: 0 5px;
+    vertical-align: top;
+}
+
+/* crumbs */
+.crumbs {
+    height: 36px;
+    line-height: 36px;
+    margin-top: -10px;
+    padding-left: 12px;
+    zoom: 1;
+}
+
+.crumbs a {
+    color: #390;
+}
+
+.crumbs a:hover {
+    text-decoration: underline;
+    color: #f90;
+}
+
+/* product */
+.product-list {
+    width: 1190px;
+    margin: 0 auto;
+    height: 299px;
+    overflow: hidden;
+}
+
+.product-list li {
+    float: left;
+    padding: 0 8px;
+    display: inline;
+    height: 299px;
+    overflow: hidden;
+}
+
+.product-list a {
+    width: 200px;
+    border: 2px solid #fff;
+    display: block;
+    overflow: hidden;
+    padding: 9px;
+    cursor: pointer;
+    height: 275px;
+}
+
+.product-list a:hover {
+    border-color: #cfc;
+}
+
+.product-list img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+.product-list .name {
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+    width: 200px;
+    overflow: hidden; /*height:36px;*/
+}
+
+.product-list .price {
+    color: #999;
+    display: block;
+    line-height: 18px;
+}
+
+.product-list b {
+    font-size: 14px;
+    font-weight: bold;
+    color: #f60;
+    vertical-align: top;
+}
+
+.product-list i {
+    color: #f60;
+}
+
+.product-lists li {
+    position: relative;
+    margin-top: 10px;
+}
+
+.product-lists img {
+    display: block;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.product-lists div {
+    position: absolute;
+    left: 230px;
+    top: 0;
+}
+
+.product-lists h2 {
+    font-size: 14px;
+}
+
+/* global paging */
+.g-paging {
+    padding: 20px 0;
+    height: 26px;
+    line-height: 26px;
+    border-top: 1px solid #ddd;
+    color: #666;
+}
+
+.g-paging span,
+.g-paging a {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    margin: 0 1px;
+    padding: 0 9px;
+    border: 1px solid #ccc;
+    color: #666;
+    background-color: #fff;
+}
+
+.g-paging span {
+    border-color: #fff;
+}
+
+.g-paging a:hover {
+    background-color: #ffc;
+    color: #f90;
+    border-color: #f90;
+}
+
+.g-paging .cur {
+    font-weight: bold;
+    color: #390;
+    background-color: #cfc;
+    border-color: #390;
+}
+
+.g-paging .last {
+    background-position: -336px -294px;
+    padding-left: 15px;
+}
+
+.g-paging .next {
+    background-position: right -323px;
+    padding-right: 15px;
+}
+
+/* global share */
+.g-share {
+    line-height: 16px;
+    color: #696;
+}
+
+.g-share a {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 6px;
+    float: left;
+}
+
+.g-share .i-weibo {
+    background-position: 0 -220px;
+}
+
+.g-share .i-txweibo {
+    background-position: -16px -220px;
+}
+
+.g-share .i-qqzone {
+    background-position: -32px -220px;
+}
+
+.g-share .more {
+    background-position: 0 -246px;
+    width: 13px;
+    height: 13px;
+    margin-top: 1px;
+}
+
+/*----- ui dialog -----*/
+.ui-dialog {
+    border: 2px solid #99cb67;
+    position: absolute;
+    background: #fff;
+    width: 400px;
+    z-index: 10000;
+    display: none;
+}
+
+.ui-dialog .d-title {
+    background: #f5f5f5;
+    line-height: 36px;
+    height: 36px;
+    white-space: nowrap;
+    color: #444;
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 12px;
+}
+
+.ui-dialog .d-close {
+    background-position: -338px -237px;
+    height: 14px;
+    line-height: 14px;
+    position: absolute;
+    padding-left: 15px;
+    color: #666;
+    right: 10px;
+    top: 11px;
+}
+
+.ui-dialog .d-close:hover {
+    background-position: -338px -268px;
+    color: #f60;
+}
+
+.ui-dialog .d-inner {
+    padding: 12px;
+    overflow: hidden;
+    zoom: 1;
+}
+
+/* car dialog */
+.car-dialog {
+    width: 390px;
+}
+
+.car-dialog .car-cont {
+    padding: 5px 0 15px;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.car-dialog .car-viewer {
+    float: left;
+    line-height: 1.8;
+    white-space: nowrap;
+}
+
+.car-dialog .car-viewer i {
+    background-position: -168px -260px;
+    float: left;
+    width: 34px;
+    height: 32px;
+    margin: 5px 10px 0 0;
+}
+
+.car-dialog .car-viewer b {
+    color: #f60;
+    margin: 0 5px;
+}
+
+.car-dialog .car-handle {
+    float: right;
+    padding-top: 8px;
+}
+
+.car-dialog .car-handle a {
+    float: left;
+}
+
+.car-dialog .car-handle .btn-continue {
+    background-position: -168px -200px;
+    width: 90px;
+    height: 27px;
+    line-height: 27px;
+    color: #666;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.car-dialog .car-handle .btn-gopay {
+    background-image: none;
+    font-size: 12px;
+}
+
+.car-dialog .car-recommend {
+    margin-top: 10px;
+    position: relative;
+    zoom: 1;
+}
+
+.car-dialog .rec-title {
+    margin-bottom: 10px;
+}
+
+.car-dialog .rec-pager {
+    position: absolute;
+    right: 0;
+    top: 5px;
+}
+
+.car-dialog .rec-pager li {
+    background-position: -168px -237px;
+    width: 10px;
+    height: 10px;
+    float: left;
+    display: inline;
+    margin-left: 5px;
+}
+
+.car-dialog .rec-pager .active {
+    background-position: -178px -237px;
+}
+
+.car-dialog .rec-slider,
+.car-dialog .rec-slider ul {
+    width: 366px;
+    height: 186px;
+    overflow: hidden;
+}
+
+.car-dialog .rec-slider li {
+    float: left;
+    width: 122px;
+}
+
+.car-dialog .rec-slider a {
+    display: block;
+    border: 2px solid #fff;
+    padding: 4px 8px 8px;
+}
+
+.car-dialog .rec-slider a:hover {
+    border-color: #cfffcf;
+}
+
+.car-dialog .rec-slider img {
+    display: block;
+    width: 102px;
+    height: 102px;
+}
+
+.car-dialog .rec-slider .n {
+    height: 36px;
+    overflow: hidden;
+}
+
+.car-dialog .rec-slider .p {
+    color: #999;
+    text-align: right;
+}
+
+.car-dialog .rec-slider span {
+    display: block;
+    padding-top: 3px;
+}
+
+.car-dialog .rec-slider b {
+    font-size: 14px;
+    color: #f60;
+    float: left;
+}
+
+/* login dialog */
+.login-dialog {
+    width: 650px;
+}
+
+.login-dialog .d-inner {
+    padding: 30px 10px;
+}
+
+.login-dialog .d-inner a {
+    color: #99cb67;
+    text-decoration: underline;
+}
+
+.login-dialog .d-inner a:hover {
+    color: #f60;
+}
+
+.login-dialog .side-l {
+    float: left;
+    width: 395px;
+    border-right: 1px dashed #e4e4e4;
+    color: #666;
+}
+
+.login-dialog .side-r {
+    float: right;
+    width: 204px;
+    text-align: center;
+    padding: 50px 15px 0;
+    line-height: 27px;
+}
+
+.login-dialog .side-l dl {
+    overflow: hidden;
+    zoom: 1;
+    position: relative;
+}
+
+.login-dialog .side-l dt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: right;
+    font-size: 14px;
+    width: 80px;
+    line-height: 28px;
+}
+
+.login-dialog .side-l dd {
+    padding-left: 80px;
+    padding-bottom: 5px;
+}
+
+.login-dialog .btn-login {
+    width: 80px;
+    margin-right: 32px;
+    vertical-align: middle;
+}
+
+.login-dialog .btn-regist {
+    background-position: -168px -163px;
+    font-size: 14px;
+    height: 27px;
+    line-height: 27px;
+    color: #390 !important;
+    text-decoration: none !important;
+    font-weight: bold;
+    width: 95px;
+    text-align: center;
+    display: inline-block;
+}
+
+.login-dialog .inp-cont {
+    position: relative;
+    overflow: hidden;
+    zoom: 1;
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: middle;
+    width: 274px;
+    height: 28px;
+}
+
+.login-dialog .inp-cont input {
+    border: 0;
+    width: 265px;
+    padding: 1px 1px 1px 6px;
+    line-height: 24px;
+    height: 24px;
+    border: 1px solid #ccc;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+}
+
+.login-dialog .inp-cont span {
+    position: absolute;
+    top: 0;
+    left: 6px;
+    line-height: 28px;
+    color: #999;
+    z-index: 2;
+}
+
+.login-dialog .inp-cont .active {
+    border: 2px solid #6c3;
+    padding: 0 0 0 5px;
+}
+
+.login-dialog .save-cont {
+    line-height: 18px;
+    padding: 10px 0;
+    font-family: Tahoma;
+}
+
+.login-dialog .save-cont input {
+    vertical-align: middle;
+    margin-right: 3px;
+    *margin-right: 0px;
+}
+
+.login-dialog .save-cont label {
+    margin-right: 50px;
+    *margin-right: 42px;
+}
+
+/* msg dialog */
+.msg-dialog .btn-group {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.msg-dialog .d-inner {
+    padding: 30px 12px;
+    text-align: center;
+}
+
+/*content*/
+.aside {
+    width: 215px;
+    float: left
+}
+
+.mainside {
+    width: 725px;
+    float: right
+}

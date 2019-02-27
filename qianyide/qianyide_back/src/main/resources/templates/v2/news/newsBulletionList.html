@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/v2/css/jqueryDatatable.css}"/>
+    <link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<form role="form" id="formpro" class="form-horizontal">
+
+    <div class="block" style="margin-bottom:0;">
+        <div class="form-group col-md-12 btn-form" style="text-align:left;">
+            <a href="#" onclick="createNews()" class="btn btn-info">新建</a>
+        </div>
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">是否启用:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="newsEnabled" name="newsEnabled">
+                        <option th:value="-1" th:text="全部" th:selected="${rspParams.enabled} == -1"
+                                selected="selected"/>
+                        <option th:value="0" th:text="弃用" th:selected="${rspParams.enabled} == 0"
+                                selected="selected"/>
+                        <option th:value="1" th:text="启用" th:selected="${rspParams.enabled} == 1"
+                                selected="selected"/>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">是否新公告:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="newsIsNew" name="newsIsNew">
+                        <option th:value="-1" th:text="全部" th:selected="${rspParams.isNew} == -1"
+                                selected="selected"/>
+                        <option th:value="0" th:text="否" th:selected="${rspParams.isNew} == 0"
+                                selected="selected"/>
+                        <option th:value="1" th:text="是" th:selected="${rspParams.isNew} == 1"
+                                selected="selected"/>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">创建时间</label>
+                <div class="col-md-8">
+                    <input name="startDate" id="startDate"
+                           th:value="${rspParams.startDate}" type="text" class="required" style="width:43%; float:left; padding: 6px 6px; text-align:center;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'})"
+                           title="" size="30"/>
+                    <span class="line">-</span>
+                    <input name="endDate" id="endDate" th:value="${rspParams.endDate}"
+                           type="text" class="required" style="width:43%; float:left; padding: 6px 6px; text-align:center;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')||\'%y-%M-%d\'}'})"
+                           title="" size="30"/>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12 btn-form" style="text-align:right;">
+                <button type="submit" class="btn btn-info">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="panel-body">
+    <table class="table" id="bigDataList">
+        <thead>
+        <tr>
+            <th>新闻标题</th>
+            <th>内容描述</th>
+            <th>新闻链接URL</th>
+            <th>是否启用</th>
+            <th>是否新公告</th>
+            <th>创建时间</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="page,iterStat:${pageInfo.list}">
+            <td th:text="${page.newsTitle}"></td>
+            <td th:text="${page.newsDesc}"></td>
+            <td th:text="${page.newsUrl}"></td>
+            <td th:text="${page.enabled==1?'启用':'弃用'}"></td>
+            <td th:text="${page.isNew==1?'是':'否'}"></td>
+            <td th:text="${page.createTime==null?'':#dates.format(page.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${page.updateTime==null?'':#dates.format(page.updateTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td>
+                <a href="#" th:onclick='${
+                "updateNews("+page.id+",&#39;"+page.newsTitle+"&#39;,&#39;"+page.newsDesc+"&#39;,&#39;"+page.newsUrl+"&#39;,"+page.enabled+","+page.isNew+")"
+                }'>编辑</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table width="95%" border="0" align="center" cellpadding="0"
+           cellspacing="0">
+        <tr>
+            <td height="33">
+                <table width="100%" border="0" align="center" cellpadding="0"
+                       cellspacing="0" class="right-font08">
+                    <tr>
+                        <td align="left" class="td2"
+                            th:if="${not #lists.isEmpty(pageInfo)}"
+                            th:text="   ${'共'+pageInfo.total+ '条'}"></td>
+                        <td align="right" class="td2" id="pageFooter"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <div class="message-box animated fadeIn" data-sound="alert" id="news">
+        <div class="nav col-md-8 nav-ul" style="left: 18%; top: 16%;">
+            <form action="" id="newsBulletinConfig">
+                <table class="openBox model-box" style="width: 60%">
+                    <tr hidden="hidden">
+                        <td class="td-left">ID<font color="red">*</font></td>
+                        <td class="td-right">
+                            <input type="text" id="id" name="id" hidden="hidden" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">新闻标题<font color="red">*</font></td>
+                        <td class="td-right">
+                            <input type="text" class="form-control" id="newsTitle" name="newsTitle"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">内容描述<font color="red">*</font></td>
+                        <td class="td-right">
+                            <input type="text" class="form-control" id="newsDesc" name="newsDesc"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">新闻链接URL<font color="red">*</font></td>
+                        <td class="td-right">
+                            <input type="text" class="form-control" id="newsUrl" name="newsUrl"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">是否启用<font color="red">*</font></td>
+                        <td class="td-right">
+                            <select class="form-control" id="enabled" name="enabled">
+                                <option th:value="1" selected="selected" th:text="启用" />
+                                <option th:value="0" th:text="弃用" />
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">是否新公告<font color="red">*</font></td>
+                        <td class="td-right">
+                            <select class="form-control" id="isNew" name="isNew">
+                                <option th:value="1" selected="selected" th:text="是" />
+                                <option th:value="0" th:text="否" />
+                            </select>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td colspan="4">
+                            <button type="button" class="btn btn-success"
+                                    onclick="doSubmit()">保存</button>
+                            <button type="button" class="btn btn-default newsActive">放弃</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    $(function(){
+
+        $(".newsActive").click(function () {
+            $("#id").val("");
+            $("#newsTitle").val("");
+            $("#newsDesc").val("");
+            $("#newsUrl").val("");
+            $("#enabled").val("");
+            $("#isNew").val("");
+            $('#news').removeClass('show');
+        });
+
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+    })
+    function createNews() {
+        $("#news").addClass("show");
+    }
+    function updateNews(id,newsTitle,newsDesc,newsUrl,enabled,isNew) {
+        $("#id").val(id);
+        $("#newsTitle").val(newsTitle);
+        $("#newsDesc").val(newsDesc);
+        $("#newsUrl").val(newsUrl);
+        $("#enabled").val(enabled);
+        $("#isNew").val(isNew);
+        $("#news").addClass("show");
+    }
+    function doSubmit() {
+        var url = [[@{/news/editorNews}]];
+            $.ajax({
+                type: "post",
+                data: $("#newsBulletinConfig").serialize(),
+                url: url,
+                success: function (resp) {
+                    if (resp.code != 200) {
+                        alertPopup(resp.message);
+                    } else {
+                        alertPopup(resp.message, function () {
+                            location.href = '/news/selectAllNews?newsEnabled='+$("#newsEnabled").val()+'&newsIsNew='+$("#newsIsNew").val()+'&startDate='+$("#startDate").val()+'&endDate='+$("#endDate").val();
+                        });
+                    }
+                }
+            });
+    }
+    
+    
+    /*]]>*/
+</script>
+</html>

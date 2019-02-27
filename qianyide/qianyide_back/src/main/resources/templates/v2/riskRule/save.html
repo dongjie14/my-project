@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme"
+          th:href="@{/v2/css/theme-default.css}" />
+    <link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+          type="text/css" />
+</head>
+<body>
+<form role="form" id="spreadForm" class="form-horizontal col-md-6">
+    <div class="block">
+        <div class="page-title">
+            <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+            <button type="button" onclick="doSubmit()" class="btn btn-info">保存</button>
+        </div>
+
+    </div>
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="block" style="margin-bottom:0;">
+            <input type="hidden" id="id" name="id" th:value="${userRiskRule.id}"/>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>规则名称:</label>
+                <div class="col-md-8">
+                    <input type="text" id="rlueName" name="rlueName" th:value="${userRiskRule.rlueName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>规则Code:</label>
+                <div class="col-md-8">
+                    <input type="text" id="rlueCode" name="rlueCode" th:value="${userRiskRule.rlueCode}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+        th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function doSubmit() {
+        //$('#bannerForm').data('bootstrapValidator').validate();
+
+        if($("#rlueName").val().trim() == ''){
+            alertPopup("规则名称不能为空！");
+            return;
+        }
+        if($("#rlueName").val().trim().length>50){
+            alertPopup("规则名称长度不能超过50！");
+            return;
+        }
+        if($("#rlueCode").val().trim() == ''){
+            alertPopup("规则Code不能为空！");
+            return;
+        }
+        if($("#rlueCode").val().trim().length>20){
+            alertPopup("规则Code长度不能超过20！");
+            return;
+        }
+        $.ajax({
+            type   : "post",
+            data   : $('#spreadForm').serialize(),
+            url    : [[@{/riskRule/save}]],
+        success: function(resp) {
+            hidden();
+            alertPopup(resp.msg,function(){
+                location.href='/riskRule/ruleList';
+            });
+        }
+    });
+
+    }
+
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href="/riskRule/ruleList";
+    })
+
+    $(function () {
+
+
+        /*$(".loadExcel").click(function () {
+            var id = $("#id").val();
+            var userName = $("#userName").val();
+            var userPhone = $("#userPhone").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            var startLoanDate = $("#startLoanDate").val();
+            var endLoanDate = $("#endLoanDate").val();
+            var status = $("#status").val();
+            var channelId = $("#channelId").val();
+            var href = "/assetBorrowOrder/orderExport?id=" + id + "&userName=" + userName + "&userPhone=" + userPhone
+                + "&startDate=" + startDate + "&endDate=" + endDate + "&startLoanDate=" + startLoanDate + "&endLoanDate=" + endLoanDate
+                + "&status=" + status + "&channelId=" + channelId;
+
+
+            location.href = href;
+        });*/
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+
+    });
+    /*]]>*/
+</script>
+</html>

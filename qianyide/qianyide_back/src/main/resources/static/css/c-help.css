@@ -1,0 +1,66 @@
+@charset "utf-8";
+/**
+* help style
+* 帮助中心 
+* 创建时间：2013-04-16 by YangHuanmin
+*/
+.side-menu dt,
+.side-menu dd {
+    background-image: url(../images/g-sprite.png);
+    background-repeat: no-repeat;
+}
+
+.col-side {
+    width: 215px;
+    float: left;
+}
+
+.col-main {
+    width: 715px;
+    float: right;
+}
+
+.side-menu {
+    border: 1px solid #e4e4e4;
+}
+
+.side-menu dl {
+    padding-bottom: 5px;
+}
+
+.side-menu dt {
+    background-position: 200px -278px;
+    background-color: #e1ffc3;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 15px;
+    margin-bottom: 5px;
+}
+
+.side-menu dd {
+    background-position: -342px -204px;
+    padding-left: 12px;
+    height: 26px;
+    line-height: 26px;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-left: 12px;
+}
+
+.main-cont {
+    border: 1px solid #e4e4e4;
+    padding: 10px 15px;
+}
+
+.main-cont h1 {
+    font-size: 16px;
+    border-bottom: 1px solid #e4e4e4;
+    line-height: 2;
+}
+
+.main-cont .cont {
+    padding: 10px 0;
+    line-height: 2;
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="UTF-8"/>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+	</head>
+	<body>
+	<form role="form" id="formpro" class="form-horizontal" >
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-12 btn-form" style="text-align:left;">
+                <a href="/supermarket/to-save" class="btn btn-info">新建</a>
+            </div>
+        </div>
+	</form>
+      <div class="panel-body">
+                        <table class="table" id="bigDataList">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+									<th>平台名称</th>
+                                    <th>logo</th>
+									<th>贷款额度</th>
+									<th>广告语</th>
+									<th>点击数</th>
+									<th>排序</th>
+									<th>状态</th>
+									<th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="page,iterStat:${pageInfo}">
+                                    <td th:text="${iterStat.index+1	}" ></td>
+                                    <td th:text="${page.name}"></td>
+                                    <td><img th:src="${page.imgPath}" height="80" width="80" /></td>
+                                    <td th:text="${page.beginMoney+'-'+page.endMoney}"></td>
+                                    <td th:text="${page.describes}"></td>
+                                    <td th:text="${page.clickNum}"></td>
+                                    <td th:text="${page.sort}"></td>
+                                    <td th:text="${page.status==0?'未上架':'已上架'} "></td>
+                                    <td><a th:href="${'/supermarket/detail/'+page.id}" title="详情">详情</a> <a onclick="window.confirm('确认删除?')" th:href="${'/supermarket/del/'+page.id}" title="">删除</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>    
+	</body>
+         <script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+        <script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+        <script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>        
+		<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+        <script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+        <script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+        <script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+        <script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>        
+        <script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+        <script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script> 
+        <script type="text/javascript" th:src="@{/v2/js/common.js}"></script>    
+        <script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+	    <script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+	    <script th:src="@{/js/My97DatePicker/WdatePicker.js}"	type="text/javascript"></script>
+	    <script th:inline="javascript">
+	    /*<![CDATA[*/
+			/*]]>*/
+	    </script>
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TPayLoanJnlMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TPayLoanJnl">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="borrow_ord_no" jdbcType="VARCHAR" property="borrowOrdNo" />
+    <result column="loan_jnl_no" jdbcType="VARCHAR" property="loanJnlNo" />
+    <result column="user_no" jdbcType="VARCHAR" property="userNo" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_id_no" jdbcType="VARCHAR" property="userIdNo" />
+    <result column="bank_card_no" jdbcType="VARCHAR" property="bankCardNo" />
+    <result column="bank_code" jdbcType="VARCHAR" property="bankCode" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="out_merc_id" jdbcType="VARCHAR" property="outMercId" />
+    <result column="out_term_id" jdbcType="VARCHAR" property="outTermId" />
+    <result column="merc_order_no" jdbcType="VARCHAR" property="mercOrderNo" />
+    <result column="req_time" jdbcType="TIMESTAMP" property="reqTime" />
+    <result column="loan_amt" jdbcType="DECIMAL" property="loanAmt" />
+    <result column="loan_sts" jdbcType="INTEGER" property="loanSts" />
+    <result column="loan_channel" jdbcType="VARCHAR" property="loanChannel" />
+    <result column="rsp_sts" jdbcType="VARCHAR" property="rspSts" />
+    <result column="rsp_code" jdbcType="VARCHAR" property="rspCode" />
+    <result column="rsp_smg" jdbcType="VARCHAR" property="rspSmg" />
+    <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo" />
+    <result column="acc_sts" jdbcType="INTEGER" property="accSts" />
+    <result column="loan_time" jdbcType="TIMESTAMP" property="loanTime" />
+    <result column="reserve_field1" jdbcType="VARCHAR" property="reserveField1" />
+    <result column="reserve_field2" jdbcType="VARCHAR" property="reserveField2" />
+    <result column="reserve_field3" jdbcType="VARCHAR" property="reserveField3" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+</head>
+<body>
+	<form action="" id="systemModuleForm">
+		<input type="hidden" id="id" name="id" th:value="${sysModule.id}" />
+		<input type="hidden" id="enabled" name="enabled"/>
+		<div class="block">
+			<div class="page-title">                    
+                    <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+                    <button type="button" onclick="dosubmit()" class="btn btn-info">保存</button>
+					<button type="button" class="btn btn-default giveUp">放弃</button> 
+					<!-- <a th:if="${sysModule.id!=null}" href="/sysModuleManagement/to-save" class="btn btn-info">新建</a> -->
+                </div>
+				
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<table>
+					<tr>
+						<td class="td-left">编号</td>
+						<td class="td-right">
+							<span class="col-md-6" th:text="${sysModule.moduleNo}"></span>
+						</td>
+						<td class="td-left">有效</td>
+						<td class="td-right">
+							<input type="checkbox" id="enabledCheck" name="enabledCheck" th:checked="${sysModule.enabled}==1?true:false" />
+						</td>
+					</tr>
+					<tr>
+						<td class="td-left"><font color="red">*</font>名称</td>
+						<td class="td-right">
+							<input type="text" class="form-control" id="name" name="name" th:value="${sysModule.name}"/>
+						</td>
+						<td class="td-left">上级模块</td>
+						<td class="td-right">
+							<input type="text" id="depName" name="depName" class="form-control" value=""  readonly="readonly" />
+							<input type="hidden" id="parentId" name="parentId" th:value="${sysModule.parentId}"/>
+							<div id="treebox" style="display:none; padding:0;">
+								<input type="text" class="form-control" id="input-search" placeholder="" value=""/>
+								<div class="form-control" id="matching">没有找到匹配项</div>
+								<div id="treeview" class="col-md-6"></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="td-left">类型</td>
+						<td class="td-right">
+							<input type="radio" name="menus" value="1" th:checked="${sysModule.menus}==1?true:false" />菜单
+							<input type="radio" name="menus" value="0" th:checked="${sysModule.menus}==0?true:false" />按钮
+						</td>
+						<td class="td-left"><font color="red">*</font>序号</td>
+						<td class="td-right">
+							<input type="number" class="form-control" id="rank" name="rank" th:value="${sysModule.rank}"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="td-left">URL地址</td>
+						<td class="td-right">
+							<input type="text" class="form-control"  id="url" name="url" th:value="${sysModule.url}"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="td-left">图标css样式</td>
+						<td class="td-right">
+							<input type="text" class="form-control" id="iconClass" name="iconClass" th:value="${sysModule.iconClass}"/>
+						</td>
+						<td class="td-left"></td>
+						<td class="td-right">
+						</td>
+					</tr>
+					<tr>
+						<td class="td-left">备注</td>
+						<td class="td-right">
+							<textarea id="remark" name="remark" maxlength="200"
+											th:text="${sysModule.remark}" rows="5" cols="" class="form-control tdTextarea"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="td-left">创建人</td>
+						<td class="td-right">
+							<span class="col-md-6" th:text="${sysModule.createAccount}"></span>
+						</td>
+						<td class="td-left">更新人</td>
+						<td class="td-right">
+							<span class="col-md-6" th:text="${sysModule.updateAccount}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="td-left">创建于</td>
+						<td class="td-right">
+							<span class="col-md-6" th:text="${sysModule.createTime==null?'':#dates.format(sysModule.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+						</td>
+						<td class="td-left">更新于</td>
+						<td class="td-right">
+							<span class="col-md-6" th:text="${sysModule.updateTime==null?'':#dates.format(sysModule.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+        /*<![CDATA[*/
+        	var id=[[${sysModule.id}]];
+        	$(function() {
+        		$('#systemModuleForm').bootstrapValidator();
+        		if(id==null){
+					$("#enabledCheck").attr("checked","checked");
+				}
+		        var options = {
+		          bootstrap2: false, 
+		          showTags: true,
+				  checkedIcon:"glyphicon glyphicon-check",
+		          data: transData([[${sysModuleList}]], 'id', 'pid', 'nodes',[[${sysModule.parentId}]]),
+			  	  onNodeSelected:function(event, data){
+							$("#depName").val(data.text);
+							$("#parentId").val(data.id);
+							$("#treebox").removeClass("show");
+				  }
+		        };
+		        var search = function(e) {
+		            var pattern = $('#input-search').val();
+		            var results = $('#treeview').treeview('search', [ pattern, options ]);
+		            var searchVal = $("#input-search").val();
+		            if($(".search-result")){
+		            	$(".search-result").siblings().addClass("searchsiblings");
+		            	$(".search-result").removeClass("searchsiblings");
+		            	$(".searchsiblings").hide();
+		            }
+		            if(results.length==0){
+		            	$("#matching").show();
+		            	$("#treeview").hide();
+		            }else{
+		            	$("#matching").hide();
+		            	$("#treeview").show();
+		            }
+		            if(searchVal==""){
+		            	$("#matching").hide();
+		            	$("#treeview").show();
+		            }
+		            
+				};
+				$('#input-search').on('keyup', search);
+				$('#treeview').treeview(options);
+				
+		  		});
+		  		document.querySelector('#depName').addEventListener('click', function(e){
+				 e.stopPropagation();
+				    document.querySelector('#treebox').classList.add('show');
+				}, false);
+				document.querySelector('#treebox').addEventListener('click', function(e){
+				    e.stopPropagation();
+				}, false);
+				document.addEventListener('click', function(){
+				    document.querySelector('#treebox').classList.remove('show');
+				}, false);
+        	function transData(a, idStr, pidStr, chindrenStr,onselect){    
+        	    var r = [], hash = {}, id = idStr, pid = pidStr, children = chindrenStr, i = 0, j = 0, len = a.length;    
+        	    for(; i < len; i++){  
+        	    	if(a[i].id==onselect){
+        	    		a[i].state={checked: true};
+        	    		$("#depName").val(a[i].text);
+        	    	}
+        	        hash[a[i][id]] = a[i];    
+        	    }    
+        	    for(; j < len; j++){    
+        	        var aVal = a[j], hashVP = hash[aVal[pid]];    
+        	        if(hashVP){    
+        	            !hashVP[children] && (hashVP[children] = []);    
+        	            hashVP[children].push(aVal);    
+        	        }else{    
+        	            r.push(aVal);    
+        	        }    
+        	    }    
+        	    return r;    
+        	}    
+				$(".fa-arrow-circle-o-left").click(function(){
+					location.href="/sysModuleManagement/moduleList";
+				})
+				$(".giveUp").click(function(){
+					  var val = $(this).html();
+						popup(val);
+		    			$("#commonPopup").addClass("open");
+		    		});
+				$("body").delegate("#sureid","click",function(){
+		    			$("#commonPopup").removeClass("open");
+		    			if([[${sysModule.id}]]==null){
+		    				window.history.go(-1);
+		    			}else{
+		    				location.href='/sysModuleManagement/to-Preview?id='+[[${sysModule.id}]];
+		    			}
+		    	});
+				function dosubmit() {
+	        		$('#systemModuleForm').data('bootstrapValidator').validate();
+	        		if($("#name").val()== ''){
+	        			alertPopup("名称不能为空!");
+	        			return;
+	        		}
+	        		if($("#rank").val()== ''){
+	        			alertPopup("序号不能为空!");
+	        			return;
+	        		}
+	        		$('#enabled').val($('#enabledCheck').is(':checked')?1:0);
+					if($("#systemModuleForm").data("bootstrapValidator").isValid()){
+						loading();
+		        		 $.ajax({
+		                    type   : "post",
+		                    data   : $('#systemModuleForm').serialize(),
+		                    url    : [[@{/sysModuleManagement/save}]],
+		                    success: function (resp) {
+		                    	hidden();
+		                        alertPopup(resp.msg,function(){
+		                        	location.href='/sysModuleManagement/to-Preview?id='+resp.id;
+		                        });
+		                    }
+		                }); 
+					}
+	        	}
+	        	
+        	 /*]]>*/
+        </script>
+</html>

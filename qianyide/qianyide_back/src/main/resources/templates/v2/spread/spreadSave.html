@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme"
+          th:href="@{/v2/css/theme-default.css}" />
+    <link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+          type="text/css" />
+</head>
+<body>
+<form role="form" id="spreadForm" class="form-horizontal col-md-6">
+    <div class="block">
+        <div class="page-title">
+            <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+            <button type="button" onclick="doSubmit()" class="btn btn-info">保存</button>
+        </div>
+
+    </div>
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="block" style="margin-bottom:0;">
+            <input type="hidden" id="spreadId" name="spreadId" th:value="${spread.spreadId}"/>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>APP名称:</label>
+                <div class="col-md-8">
+                    <input type="text" id="appName" name="appName" th:value="${spread.appName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>图标地址:</label>
+                <div class="col-md-8">
+                    <img th:src="${spread.appIcon}" id="portraitImg_preview"
+                         style="width: 80px; height: 80px; margin-left:15px;" />
+                    <div id="portraitImgDiv"></div>
+                    <input class="required text" id="appIcon"
+                           name='appIcon' type="hidden"
+                           th:value="${spread.appIcon}" />
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>APP下载页地址:</label>
+                <div class="col-md-8">
+                    <input type="text" id="appUrl" name="appUrl" th:value="${spread.appUrl}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>APP介绍:</label>
+                <div class="col-md-8">
+                    <input type="text" id="appIntroduce" name="appIntroduce" th:value="${spread.appIntroduce}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>借款期限:</label>
+                <div class="col-md-8">
+                    <input type="text" placeholder="最低期限" id="appTermStart" name="loanTermStart" onblur="afterInputBlur('appTermEnd')" th:value="${spread.loanTermStart}" />&nbsp;-&nbsp;
+                    <input type="text" placeholder="最高期限" id="appTermEnd" name="loanTermEnd" onfocus="afterInputClick('appTermEnd')" onblur="afterInputBlur('appTermEnd')"  th:value="${spread.loanTermEnd}" />
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>额度:</label>
+                <div class="col-md-8">
+                    <input type="text" placeholder="最低额度" id="quotaStart" name="quotaStart" onblur="afterInputBlur('quotaEnd')"  th:value="${spread.quotaStart}" />&nbsp;-&nbsp;
+                    <input type="text" placeholder="最高额度" id="quotaEnd" name="quotaEnd"  onfocus="afterInputClick('quotaEnd')" onblur="afterInputBlur('quotaEnd')"  th:value="${spread.quotaEnd}" />
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>公司名称:</label>
+                <div class="col-md-8">
+                    <input type="text" id="companyName" name="companyName" th:value="${spread.companyName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>公司电话:</label>
+                <div class="col-md-8">
+                    <input type="text" id="companyPhone" name="companyPhone" th:value="${spread.companyPhone}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <input type="hidden" name="hasParamStatus" value="1"/>
+                <label class="col-md-4 control-label">状态:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="spreadStatus" name="spreadStatus">
+                        <option value="0" th:selected="${spread.spreadStatus == 0}">有效</option>
+                        <option value="1" th:selected="${spread.spreadStatus == 1}">无效</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+        th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $("#portraitImgDiv").Huploadify({
+        auto:true,
+        fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.bmp',
+        multi:false,
+        fileSizeLimit:99999999,
+        showUploadedPercent:true,//是否实时显示上传的百分比，如20%
+        showUploadedSize:true,
+        removeTimeout:2000,
+        uploader: '/backUpload/uploadFiles',
+        method:'post',
+        fileObjName:'Filedata',
+        onUploadSuccess:function(file,response){
+            var respJson = JSON.parse(response);
+            $("#appIcon").val(respJson.data);
+            $("#portraitImg_preview").attr("src", respJson.data);
+        }
+    });
+
+    function afterInputClick(id){
+        if(id == 'appTermEnd'){
+            var appTermStart = $("#appTermStart").val();
+            if(appTermStart == ''){
+                $("#appTermStart").focus();
+            }
+        }
+        if(id=='quotaEnd'){
+            var quotaStart = $("#quotaStart").val();
+            if(quotaStart == ''){
+                $("#quotaStart").focus();
+            }
+        }
+    }
+
+    function afterInputBlur(id){
+        if(id == 'appTermEnd'){
+            var appTermStart = $("#appTermStart").val();
+            var appTermEnd = $("#appTermEnd").val();
+            if(appTermStart!='' && appTermEnd!=''){
+                if(parseInt(appTermStart.trim())>parseInt(appTermEnd.trim())){
+                    $("#appTermStart").val(appTermEnd);
+                    $("#appTermEnd").val(appTermStart);
+                }
+                //$("#loanTerm").val($("#appTermStart").val()+"-"+$("#appTermEnd").val());
+            }
+        }
+        if(id=='quotaEnd'){
+            var quotaStart = $("#quotaStart").val();
+            var quotaEnd = $("#quotaEnd").val();
+            if(quotaStart!='' && quotaEnd!=''){
+                if(parseInt(quotaStart.trim())>parseInt(quotaEnd.trim())){
+                    $("#quotaStart").val(quotaEnd);
+                    $("#quotaEnd").val(quotaStart);
+                }
+                //$("#quota").val($("#quotaStart").val()+"-"+$("#quotaEnd").val());
+            }
+        }
+    }
+
+    function doSubmit() {
+        //$('#bannerForm').data('bootstrapValidator').validate();
+
+        if($("#appName").val()== ''){
+            alertPopup("APP名称不能为空!");
+            return;
+        }
+        if($("#appName").val().length>20){
+            alertPopup("APP名称长度不能超过20位!");
+            return;
+        }
+
+        if($("#appIcon").val()== ''){
+            alertPopup("APP图标不能为空!");
+            return;
+        }
+        if($("#appIcon").val().length>255){
+            alertPopup("APP图标地址不能超过255位!");
+            return;
+        }
+        if($("#appUrl").val()== ''){
+            alertPopup("APP下载页地址不能为空!");
+            return;
+        }
+        if($("#appUrl").val().length>255){
+            alertPopup("APP下载页地址不能超过255位!");
+            return;
+        }
+        if($("#appIntroduce").val() == ''){
+            alertPopup("APP介绍不能为空！");
+            return;
+        }
+        if($("#appIntroduce").val().length >255){
+            alertPopup("APP介绍不能超过255位！");
+            return;
+        }
+        if($("#appTermStart").val() == '' || $("#appTermEnd").val() == ''){
+            alertPopup("借款期限不能为空！");
+            return;
+        }else{
+            try{
+                parseInt($("#appTermStart").val());
+                parseInt($("#appTermEnd").val());
+            }catch (e) {
+                alertPopup("借款期限格式有误，只能为数字！");
+                return;
+            }
+        }
+        if($("#quotaStart").val() == '' || $("#quotaEnd").val() == ''){
+            alertPopup("借款额度不能为空！");
+            return;
+        }else{
+            try{
+                parseInt($("#quotaStart").val());
+                parseInt($("#quotaEnd").val());
+            }catch (e) {
+                alertPopup("借款额度格式有误，只能为数字！");
+                return;
+            }
+        }
+        if($("#companyName").val() == ''){
+            alertPopup("公司名称不能为空！");
+            return;
+        }
+        if($("#companyName").val().length>30 ){
+            alertPopup("公司名称不能超过30位！");
+            return;
+        }
+        if($("#companyPhone").val() == ''){
+            alertPopup("公司电话不能为空！");
+            return;
+        }
+        if($("#companyPhone").val().length>11){
+            alertPopup("公司电话不能超过11位！");
+            return;
+        }
+
+        $.ajax({
+            type   : "post",
+            data   : $('#spreadForm').serialize(),
+            url    : [[@{/spread/save}]],
+        success: function(resp) {
+            hidden();
+            alertPopup(resp.msg,function(){
+                location.href='/spread/pageList';
+            });
+        }
+    });
+
+    }
+
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href="/spread/pageList";
+    })
+
+    $(function () {
+
+
+        /*$(".loadExcel").click(function () {
+            var id = $("#id").val();
+            var userName = $("#userName").val();
+            var userPhone = $("#userPhone").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            var startLoanDate = $("#startLoanDate").val();
+            var endLoanDate = $("#endLoanDate").val();
+            var status = $("#status").val();
+            var channelId = $("#channelId").val();
+            var href = "/assetBorrowOrder/orderExport?id=" + id + "&userName=" + userName + "&userPhone=" + userPhone
+                + "&startDate=" + startDate + "&endDate=" + endDate + "&startLoanDate=" + startLoanDate + "&endLoanDate=" + endLoanDate
+                + "&status=" + status + "&channelId=" + channelId;
+
+
+            location.href = href;
+        });*/
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+
+    });
+    /*]]>*/
+</script>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" id="theme"
+          th:href="@{/v2/css/theme-default.css}" />
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/v2/css/jqueryDatatable.css}" />
+</head>
+<body>
+<form role="form" id="formpro" class="form-horizontal">
+    <div class="form-group col-md-12 btn-form" style="text-align:left;">
+        <a href="/coupon/to-save" class="btn btn-info insertSpread">新增优惠券</a>
+    </div>
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">优惠券名称:</label>
+                <div class="col-md-8">
+                    <input type="text" id="couponName" name="couponName" th:value="${couponName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">优惠券类型:</label>
+                <div class="col-md-8">
+                    <select id="couponType" name="typeId">
+                        <option value="" selected="selected">全部</option>
+                        <option th:each="type,typeStat:${couponTypes}" th:value="${type.id}" th:text="${type.typeName}" th:selected="${type.id} == ${typeId}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">纬度:</label>
+                <div class="col-md-8">
+                    <select id="latInfo" name="latId">
+                        <option value="" selected="selected">全部</option>
+                        <option th:each="lat,latStat:${couponLats}" th:value="${lat.id}" th:text="${lat.latName}" th:selected="${lat.id} == ${latId}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-4 min-w330">
+                <label class="col-md-4 control-label">有效时间:</label>
+                <div class="col-md-8">
+                    <input name="termOfValidityStart" id="startDate" th:value="${termOfValidityStart}"
+                           type="text" class="required"
+                           style="width: 45%; float: left; padding: 6px 9px;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'})"
+                           title="请输入开始日期" size="30"/><span class="line">-</span><input
+                        name="termOfValidityEnd" style="width: 45%; float: left; padding: 6px 9px;"
+                        id="endDate" th:value="${termOfValidityEnd}" type="text" class="required"
+                        onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')||\'%y-%M-%d\'}'})"
+                        title="请输入截止日期" size="30"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">有效状态:</label>
+                <div class="col-md-8">
+                    <select id="status" name="status">
+                        <option value="" selected="selected">全部</option>
+                        <option value="1" th:selected="${status == 1 || status == '1'}">有效</option>
+                        <option value="0" th:selected="${status == 0 || status == '0'}">无效</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-12 btn-form" style="text-align:right;">
+                <button type="submit" class="btn btn-info">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="panel-body">
+    <table class="table" id="bigDataList">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>优惠券名称</th>
+            <th>优惠券类型</th>
+            <th>纬度</th>
+            <th>有效期时间起</th>
+            <th>有效时间止</th>
+            <th>优惠券值</th>
+            <th>说明</th>
+            <th>创建人</th>
+            <th>创建时间</th>
+            <th>更新人</th>
+            <th>更新时间</th>
+            <th>有效状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="page,iterStat:${pageInfo.list}">
+            <td th:text="${iterStat.index+1	}"></td>
+            <td th:text="${page.couponName}"></td>
+            <td th:text="${page.typeName}"></td>
+            <td th:text="${page.latNames}"></td>
+            <td th:text="${page.termOfValidityStart==null?'':#dates.format(page.termOfValidityStart,'yyyy-MM-dd')}"></td>
+            <td th:text="${page.termOfValidityEnd==null?'':#dates.format(page.termOfValidityEnd,'yyyy-MM-dd')}"></td>
+            <td th:text="${page.value}"></td>
+            <td th:text="${page.describe}"></td>
+            <td th:text="${page.createUser}"></td>
+            <td th:text="${page.createTime==null?'':#dates.format(page.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${page.updateUser}"></td>
+            <td th:text="${page.updateTime==null?'':#dates.format(page.updateTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:if="${page.status == 0}" style="color: red">无效</td>
+            <td th:if="${page.status == 1}" style="color: #1DC116">有效</td>
+            <td>
+                <!--<button th:if="${page.status == 0}" class="btn btn-gray" th:onclick="${'useCouponClick('+page.id+',1)'}">启用</button>
+                <button th:if="${page.status == 1}" class="btn btn-gray" th:onclick="${'useCouponClick('+page.id+',0)'}">禁用</button>-->
+                <button class="btn btn-gray" th:onclick="${'couponDetail('+page.id+')'}">详情</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td height="33">
+                <table width="100%" border="0" align="center" cellpadding="0"
+                       cellspacing="0" class="right-font08">
+                    <tr>
+                        <td align="left" class="td2" th:if="${not #lists.isEmpty(pageInfo)}"
+                            th:text="   ${'共'+pageInfo.total+ '条'}">
+                        </td>
+                        <td align="right" class="td2" id="pageFooter">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/vue.js}"></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    $(function(){
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+    });
+
+    function useCouponClick(id,status){
+        var url = [[@{/coupon/updateStatus}]];
+        var data = {
+            id:id,
+            status:status
+        }
+        $.ajax({
+            url:url,
+            type:"POST",
+            data:data,
+            success:function (resp) {
+                alertPopup(resp.msg,function(){
+                    location.href='/coupon/couponList';
+                });
+            }
+        })
+    }
+    function couponDetail(id){
+        location.href='/coupon/couponDetail?id='+id;
+    }
+    /*new Vue({
+        el: '.wrap',
+        data() {
+            return {
+                os: null,
+                url: 'https://back.spdoncard.com/'
+            }
+        },
+        methods: {
+            target(url) {
+                let target = this.$refs.target;
+                target.setAttribute('href', url);
+                target.click()
+            },
+            androidEvent() {
+                var self=this
+                $.ajax({
+                    url: this.url + 'version/renewVersion',
+                    type: 'post',
+                    data: {
+                        os: 0
+                    },
+                    success: function (res) {
+                        self.target(res.result.downloadUrl)
+                    }
+                });
+            },
+            iosEvent() {
+                var self=this
+                $.ajax({
+                    url: this.url + 'version/renewVersion',
+                    type: 'post',
+                    data: {
+                        os: 1
+                    },
+                    success: function (res) {
+                        self.target(res.result.downloadUrl)
+                    }
+                });
+            }
+        }
+    })*/
+
+</script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+@charset "utf-8";
+/**
+* index style
+* 首页 
+* 创建时间：2013-04-16 by YangHuanmin
+*/
+/* sprite declare */
+.focal-area .slogan dt,
+.focal-area .list li {
+    background-image: url(../images/g-sprite.png);
+    background-repeat: no-repeat;
+}
+
+.classify-area .tab-item a {
+    background-image: url(../images/g-repeatx.png);
+    background-repeat: repeat-x;
+}
+
+/* path */
+.g-header .m-inner {
+    display: block !important;
+}
+
+.g-header .m-hand {
+    display: none;
+}
+
+/*--------focal area---------*/
+.focal-area .col-space {
+    float: left;
+    width: 215px;
+    padding-top: 309px;
+}
+
+.focal-area .col-main {
+    width: 690px;
+    padding-left: 10px;
+    float: left;
+}
+
+.focal-area .col-side {
+    width: 275px;
+    float: right;
+}
+
+/* advert */
+.focal-area .ad-cont {
+    background-color: #fff;
+    width: 215px;
+    height: 85px;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.focal-area .ad-list {
+    padding-top: 10px;
+    width: 690px;
+}
+
+.focal-area .ad-list h1 {
+    font-weight: bold;
+    color: #f60;
+    font-size: 14px;
+    line-height: 28px;
+    height: 28px;
+}
+
+.focal-area .ad-list ul {
+    border: 1px solid #e4e4e4;
+    border-left: 0;
+}
+
+.focal-area .ad-list li {
+    float: left;
+    width: 171px;
+    height: 84px;
+    border-left: 1px solid #e4e4e4;
+    background: #fff;
+    zoom: 1;
+}
+
+.focal-area .ad-list img {
+    display: block;
+}
+
+.focal-area .ad-list li:hover img {
+    position: relative;
+    top: -1px;
+    left: -1px;
+    border: 1px solid #f60;
+    zoom: 1;
+    z-index: 50;
+    transform: scale(1.1);
+    transition: all .2s;
+}
+
+/* slider */
+.focal-area .slider {
+    width: 690px;
+    height: 270px;
+    overflow: hidden;
+    zoom: 1;
+    position: relative;
+}
+
+.focal-area .slider-list {
+    width: 690px;
+    height: 270px;
+}
+
+.focal-area .slider-list li {
+    width: 690px;
+    height: 270px;
+    overflow: hidden;
+}
+
+.focal-area .slider-page {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: -15px;
+    zoom: 1;
+    font-size: 0;
+}
+
+.focal-area .slider-page li {
+    background-color: #cfc;
+    width: 25px;
+    height: 9px;
+    overflow: hidden;
+    margin: 0 3px;
+    zoom: 1;
+    top: -25px;
+    position: relative;
+    display: inline-block;
+    *display: inline;
+    vertical-align: baseline;
+    z-index: 10;
+}
+
+.focal-area .slider-page .active {
+    background: #6c0;
+}
+
+/* slogan */
+.focal-area .slogan {
+    overflow: hidden;
+    zoom: 1;
+    padding: 10px 0;
+    color: #390;
+}
+
+.focal-area .slogan dl {
+    float: left;
+    width: 130px;
+    padding-left: 7px;
+}
+
+.focal-area .slogan dt {
+    width: 40px;
+    height: 40px;
+    float: left;
+}
+
+.focal-area .slogan dd {
+    padding-left: 45px;
+}
+
+.focal-area .slogan .s-y {
+    background-position: -168px -60px;
+}
+
+.focal-area .slogan .s-h {
+    background-position: -208px -60px;
+}
+
+/* block */
+.focal-area .block {
+    margin-top: 10px;
+    border: 1px solid #e4e4e4;
+}
+
+.focal-area .b-title {
+    padding: 0 12px;
+    background: #f7f5f4;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #333;
+}
+
+.focal-area .b-inner {
+    padding: 12px;
+}
+
+.focal-area .list li {
+    background-position: -342px -204px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 25px;
+    padding-left: 12px;
+    width: 237px;
+}
+
+.focal-area .list a:hover {
+    text-decoration: underline;
+}
+
+.focal-area .row {
+    line-height: 20px;
+    padding: 2px 0;
+}
+
+.focal-area .row dt {
+    float: left;
+    width: 60px;
+    text-align: right;
+}
+
+.focal-area .row dd {
+    float: left;
+    width: 180px;
+}
+
+.focal-area .row b {
+    color: #f60;
+}
+
+.focal-area .inp-cont {
+    float: left;
+    position: relative;
+    zoom: 1;
+}
+
+.focal-area .inp-cont span {
+    position: absolute;
+    z-index: 1;
+    color: #999;
+    left: 3px;
+    top: 0;
+}
+
+.focal-area .inp-text {
+    border: 1px solid #ccc;
+    width: 150px;
+    padding-left: 3px;
+    line-height: 18px;
+    height: 18px;
+    float: left;
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+}
+
+.focal-area .sel {
+    height: 19px;
+    line-height: 19px;
+}
+
+.focal-area .btn-recharge {
+    width: 80px;
+    padding: 0;
+}
+
+/*--------classify area---------*/
+.classify-area {
+    border: 1px solid #e4e4e4;
+    border-top: 3px solid #6c3;
+    margin-top: 10px;
+}
+
+.classify-area .tab-item {
+    height: 40px;
+    overflow: hidden;
+}
+
+.classify-area .tab-item ul {
+    margin-left: -2px;
+    zoom: 1;
+}
+
+.classify-area .tab-item li {
+    float: left;
+    width: 299px;
+    height: 39px;
+    border-left: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    text-align: center;
+}
+
+.classify-area .tab-item a {
+    background-position: 0 -109px;
+    display: block;
+    line-height: 38px;
+    margin: 0 1px;
+    height: 38px;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.classify-area .tab-item .active {
+    border-bottom-color: #fff;
+}
+
+.classify-area .tab-item .active a {
+    background: none;
+    color: #390;
+    cursor: default;
+}
+
+.classify-area .tab-cont {
+    width: 1198px;
+    height: 319px;
+    overflow: hidden;
+}
+
+.classify-area .tab-cont ul {
+    padding: 10px 0;
+}
+
+.classify-area .tab-cont .cont {
+    width: 1198px;
+    height: 319px;
+    overflow: hidden;
+}
+
+/*--------special area---------*/
+.special-area {
+    padding-top: 10px;
+}
+
+.special-area .b-title {
+    border-bottom: 3px solid #e5e5e5;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+    zoom: 1;
+}
+
+.special-area .b-title h1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 18px;
+    font-family: '微软雅黑';
+    padding-right: 30px;
+}
+
+.special-area .b-title b {
+    color: #ccc;
+    font-family: Arial;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.special-area .b-title .more {
+    position: absolute;
+    right: 0;
+    color: #666;
+}
+
+.special-area .b-title .more:hover {
+    color: #f60;
+}
+
+.special-area .b-inner {
+    border: 1px solid #e4e4e4;
+    padding: 10px 4px;
+}
+
+.special-area .c-green h1 {
+    color: #8fda69;
+    border-bottom: 3px solid #a4e167;
+}
+
+.special-area .c-blue h1 {
+    color: #7aa7ff;
+    border-bottom: 3px solid #9cf;
+}
+
+.special-area .c-red h1 {
+    color: #ff4141;
+    border-bottom: 3px solid #f66;
+}
+
+.special-area .product-list {
+    width: 952px;
+    float: right;
+}
+
+.special-area .ad-block {
+    float: left;
+    width: 230px;
+    padding-left: 5px;
+}
+
+.special-area .ad-list {
+    margin-left: -10px;
+    zoom: 1;
+}
+
+.special-area .ad-list li {
+    width: 100px;
+    height: 26px;
+    overflow: hidden;
+    float: left;
+    display: inline;
+    margin-left: 20px;
+    line-height: 26px;
+}
+
+.special-area .ad-list img {
+    width: 110px;
+    height: 50px;
+}
+
+.special-area .ad-cont {
+    width: 230px;
+    height: 124px;
+    overflow: hidden;
+}
+
+/*--------special area---------*/
+.special-area {
+    padding-top: 10px;
+}
+
+.special-area .b-title {
+    border-bottom: 3px solid #e5e5e5;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+    zoom: 1;
+}
+
+.special-area .b-title h1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 18px;
+    font-family: '微软雅黑';
+    padding-right: 30px;
+}
+
+.special-area .b-title b {
+    color: #ccc;
+    font-family: Arial;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.special-area .b-title .more {
+    position: absolute;
+    right: 0;
+    color: #666;
+}
+
+.special-area .b-title .more:hover {
+    color: #f60;
+}
+
+.special-area .b-inner {
+    border: 1px solid #e4e4e4;
+    padding: 10px 4px;
+}
+
+.special-area .c-green h1 {
+    color: #8fda69;
+    border-bottom: 3px solid #a4e167;
+}
+
+.special-area .c-blue h1 {
+    color: #7aa7ff;
+    border-bottom: 3px solid #9cf;
+}
+
+.special-area .c-red h1 {
+    color: #ff4141;
+    border-bottom: 3px solid #f66;
+}
+
+.special-area .product-list {
+    width: 952px;
+    float: right;
+}
+
+.special-area .ad-block {
+    float: left;
+    width: 230px;
+    padding-left: 5px;
+}
+
+.special-area .ad-list {
+    margin-left: -10px;
+    zoom: 1;
+}
+
+.special-area .ad-list li {
+    width: 100px;
+    height: 26px;
+    overflow: hidden;
+    float: left;
+    display: inline;
+    margin-left: 20px;
+    line-height: 26px;
+}
+
+.special-area .ad-list img {
+    width: 110px;
+    height: 50px;
+}
+
+.special-area .ad-cont {
+    width: 230px;
+    height: 124px;
+    overflow: hidden;
+}
+
+

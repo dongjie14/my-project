@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TSysRoleModuleMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TSysRoleModule">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="module_id" jdbcType="VARCHAR" property="moduleId" />
+    <result column="role_id" jdbcType="VARCHAR" property="roleId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

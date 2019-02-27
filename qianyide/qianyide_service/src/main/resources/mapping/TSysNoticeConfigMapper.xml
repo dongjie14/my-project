@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TSysNoticeConfigMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TSysNoticeConfig">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="notice_title" jdbcType="VARCHAR" property="noticeTitle" />
+    <result column="notice_desc" jdbcType="VARCHAR" property="noticeDesc" />
+    <result column="notice_url" jdbcType="VARCHAR" property="noticeUrl" />
+    <result column="eff_time" jdbcType="TIMESTAMP" property="effTime" />
+    <result column="exp_time" jdbcType="TIMESTAMP" property="expTime" />
+    <result column="create_account" jdbcType="VARCHAR" property="createAccount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_account" jdbcType="VARCHAR" property="updateAccount" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

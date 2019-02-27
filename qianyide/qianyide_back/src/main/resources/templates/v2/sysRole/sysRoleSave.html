@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+</head>
+<body>
+	<form action="" id="systemRoleForm">
+		<input type="hidden" id="id" name="id" th:value="${sysRole.id}" />
+		<input type="hidden" id="enabled" name="enabled"/>
+		<input type="hidden" id="roleModules" name="roleModules"/>
+		<div class="block">
+			<div class="page-title">                    
+                    <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+                    <button type="button" onclick="dosubmit()" class="btn btn-info">保存</button>
+					<button type="button" class="btn btn-default giveUp">放弃</button> 
+					<!-- <a th:if="${sysRole.id!=null}"  href="/sysRoleManagement/to-save" class="btn btn-info">新建</a> -->
+                </div>
+				
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- START TABS -->
+				<div class="panel panel-default tabs">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="active"><a href="#tab-first" role="tab"
+							data-toggle="tab">系统角色</a></li>
+						<li><a href="#tab-second" role="tab" onclick="treeShow()" data-toggle="tab">菜单权限列表</a></li>
+						<li><a href="#tab-third" role="tab" data-toggle="tab">用户列表</a></li>
+					</ul>
+					<div class="panel-body tab-content tabBox">
+						<div class="tab-pane active" id="tab-first">
+							<table>
+								<tr>
+									<td class="td-left">编号</td>
+									<td class="td-right">
+										<span class="col-md-6" th:text="${sysRole.roleNo}"></span>
+									</td>
+									<td class="td-left">有效</td>
+									<td class="td-right">
+										<input type="checkbox" id="enabledCheck" name="enabledCheck" th:checked="${sysRole.enabled}==1?true:false" />
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>名称</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="name" name="name" th:value="${sysRole.name}"/>
+									</td>
+									<td class="td-left">上级角色</td>
+									<td class="td-right">
+										<input type="text" id="depName" name="depName" class="form-control" value=""  readonly="readonly" />
+										<input type="hidden" id="parentId" name="parentId" th:value="${sysRole.parentId}"/>
+										
+										<div id="treebox" style="display:none; padding:0;">
+											<input type="text" class="form-control" id="input-search" placeholder="" value=""/>
+											<div class="form-control" id="matching">没有找到匹配项</div>
+											<div id="treeview" class="col-md-6"></div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left">备注</td>
+									<td class="td-right">
+										<textarea id="remark" name="remark" maxlength="200"
+														th:text="${sysRole.remark}" rows="5" cols="" class="form-control"></textarea>
+									</td>
+									<td class="td-left"><font color="red">*</font>序号</td>
+									<td class="td-right">
+										<input type="number" class="form-control" id="rank" name="rank" th:value="${sysRole.rank}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left">创建人</td>
+									<td class="td-right">
+										<span class="col-md-6" th:text="${sysRole.createAccount}"></span>
+									</td>
+									<td class="td-left">更新人</td>
+									<td class="td-right">
+										<span class="col-md-6" th:text="${sysRole.updateAccount}"></span>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left">创建于</td>
+									<td class="td-right">
+										<span class="col-md-6" th:text="${sysRole.createTime==null?'':#dates.format(sysRole.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+									</td>
+									<td class="td-left">更新于</td>
+									<td class="td-right">
+										<span class="col-md-6" th:text="${sysRole.updateTime==null?'':#dates.format(sysRole.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="tab-pane" id="tab-second">
+							<div class="tab-box">
+									<div id="searchModuleTree"></div>
+
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-third">
+							<div class="panel-body">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>编号</th>
+											<th>用户类型</th>
+		                                    <th>用户名</th>
+		                                    <th>昵称</th>
+		                                    <th>姓名</th>
+		                                    <th>电话</th>
+		                                    <th>最后登录时间</th>
+										</tr>
+									</thead>
+									<tbody th:if="${backUserList != null }">
+										<tr th:each="page,iterStat:${backUserList}">
+											<td th:text="${page.userNo}"></td>
+		                                    <td>
+		                                    	<span th:if="${page.userType=='01'}">普通用户</span>
+		                                    	<span th:if="${page.userType=='02'}">导流渠道</span>
+		                                    	<span th:if="${page.userType=='03'}">发布渠道</span>
+		                                    </td>
+		                                    <td th:text="${page.account}"></td>
+		                                    <td th:text="${page.nickName}"></td>
+		                                    <td th:text="${page.fullName}"></td>
+		                                    <td th:text="${page.telephone}"></td>
+		                                    <td th:text="${page.userLoginTime==null?'':#dates.format(page.userLoginTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END TABS -->
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+        /*<![CDATA[*/
+        	var id=[[${sysRole.id}]];
+            var oldParentId=[[${sysRole.parentId}]];
+        	$(function() {
+        		$('#systemRoleForm').bootstrapValidator();
+        		loadModule([[${sysRole.parentId}]],true);
+        		if(id==null){
+					$("#enabledCheck").attr("checked","checked");
+				}
+		        var options = {
+		          bootstrap2: false, 
+		          showTags: true,
+				  checkedIcon:"glyphicon glyphicon-check",
+		          data: transData([[${roleList}]], 'id', 'pid', 'nodes',[[${sysRole.parentId}]]),
+			  	  onNodeSelected:function(event, data){
+							$("#depName").val(data.text);
+							$("#parentId").val(data.id);
+							$("#treebox").removeClass("show");
+				  }
+		        };
+		        var search = function(e) {
+		            var pattern = $('#input-search').val();
+		            var results = $('#treeview').treeview('search', [ pattern, options ]);
+		            var searchVal = $("#input-search").val();
+		            if($(".search-result")){
+		            	$(".search-result").siblings().addClass("searchsiblings");
+		            	$(".search-result").removeClass("searchsiblings");
+		            	$(".searchsiblings").hide();
+		            }
+		            if(results.length==0){
+		            	$("#matching").show();
+		            	$("#treeview").hide();
+		            }else{
+		            	$("#matching").hide();
+		            	$("#treeview").show();
+		            }
+		            if(searchVal==""){
+		            	$("#matching").hide();
+		            	$("#treeview").show();
+		            }
+		            
+				};
+				$('#input-search').on('keyup', search);
+				$('#treeview').treeview(options);
+		  		});
+		  		document.querySelector('#depName').addEventListener('click', function(e){
+			 e.stopPropagation();
+			    document.querySelector('#treebox').classList.add('show');
+			}, false);
+			document.querySelector('#treebox').addEventListener('click', function(e){
+			    e.stopPropagation();
+			}, false);
+			document.addEventListener('click', function(){
+			    document.querySelector('#treebox').classList.remove('show');
+			}, false);
+        	function transData(a, idStr, pidStr, chindrenStr,onselect){    
+        	    var r = [], hash = {}, id = idStr, pid = pidStr, children = chindrenStr, i = 0, j = 0, len = a.length;    
+        	    for(; i < len; i++){  
+        	    	if(a[i].id==onselect){
+        	    		a[i].state={checked: true};
+        	    		$("#depName").val(a[i].text);
+        	    	}
+        	        hash[a[i][id]] = a[i];    
+        	    }    
+        	    for(; j < len; j++){    
+        	        var aVal = a[j], hashVP = hash[aVal[pid]];    
+        	        if(hashVP){    
+        	            !hashVP[children] && (hashVP[children] = []);    
+        	            hashVP[children].push(aVal);    
+        	        }else{    
+        	            r.push(aVal);    
+        	        }    
+        	    }    
+        	    return r;    
+        	}    
+			
+			$(".tab-box").delegate('input','change',function(){
+        		if($(this).is(':checked')){
+        			$(".tab-box").find('input[pid='+$(this).val()+']').prop('checked',true).change(); 
+        			
+        		}else{
+        			$(".tab-box").find('input[pid='+$(this).val()+']').prop('checked',false).change();
+        		}
+        	})
+        	$(".tab-box").delegate('input','click',function(){
+	        		if($(this).is(':checked')){
+	        			var pid=$(this).attr("pid");
+	        			if(pid){
+	        				checkedParent(pid);
+	        			}
+	        		}
+	        	})
+	        	function checkedParent(pid){
+		  			$(".tab-box").find('input[value='+pid+']').prop('checked',true);
+		  			if($(".tab-box").find('input[value='+pid+']').attr("pid")){
+		  				checkedParent($(".tab-box").find('input[value='+pid+']').attr("pid"));
+		  			}
+		  		}
+			$(".fa-arrow-circle-o-left").click(function(){
+				location.href="/sysRoleManagement/roleList";
+			})
+			$(".giveUp").click(function(){
+					  var val = $(this).html();
+						popup(val);
+		    			$("#commonPopup").addClass("open");
+		    		});
+				$("body").delegate("#sureid","click",function(){
+		    			$("#commonPopup").removeClass("open");
+		    			if([[${sysRole.id}]]==null){
+		    				window.history.go(-1);
+		    			}else{
+		    				location.href='/sysRoleManagement/to-Preview?id='+[[${sysRole.id}]];
+		    			}
+		    	});
+				function loadModule(roleId,isInit){
+				oldParentId=roleId;
+				loading();
+        		$.ajax({
+                    type: "post",
+                    data: {"roleId": roleId},
+                    dataType: "json",
+                    url: "/sysRoleManagement/getModule",
+                    success: function (ret) {
+                    	$("#searchModuleTree").html('<span><i class="icon-minus-sign"></i><input value="0" type="checkbox"/> 全选</span>' + ret.msg);
+                    	if(isInit){//第一次加载选中数据库里面的值
+                    		var roleModules=[[${sysRole.roleModules}]];
+                    	    if(roleModules!=null){
+                    	    	var roleModule=roleModules.split(",");
+                    	    	$.each(roleModule,function(i,value){
+		  							$(".tab-box").find("input[type=checkbox]")
+		  							$(".chp_"+value).prop('checked',true);
+		  						});
+                    	    }
+                    	}else{
+                    		$(".tab-box").find("input[type=checkbox]").prop("checked", true);
+                    	}
+                        wait();
+  						hidden();
+                    }
+                });
+        	}
+			function dosubmit() {
+        		$('#systemRoleForm').data('bootstrapValidator').validate();
+        		if($("#name").val()== ''){
+        			alertPopup("名称不能为空!");
+        			return;
+        		}
+        		if($("#rank").val()== ''){
+        			alertPopup("序号不能为空!");
+        			return;
+        		}
+        		$('#enabled').val($('#enabledCheck').is(':checked')?1:0);
+        		var arrs=new Array();
+	       		 $(".tab-box").find("input[type=checkbox]").each(function(){ 
+	                    if($(this).is(':checked')){
+	                        arrs.push($(this).val());
+	                    }
+	                });
+	       		$("#roleModules").val(arrs.join(","));
+				if($("#systemRoleForm").data("bootstrapValidator").isValid()){
+					loading();
+	        		 $.ajax({
+	                    type   : "post",
+	                    data   : $('#systemRoleForm').serialize(),
+	                    url    : [[@{/sysRoleManagement/save}]],
+	                    success: function (resp) {
+	                    	hidden();
+	                        alertPopup(resp.msg,function(){
+	                        	location.href='/sysRoleManagement/to-Preview?id='+resp.id;
+	                        });
+	                    }
+	                }); 
+				}
+        	}
+        	
+        	        	
+        	function treeShow() {
+        		if(oldParentId!=$("#parentId").val()){
+        			loadModule($("#parentId").val(),false);
+        		}
+        	}
+        	
+        	
+        	
+        	 /*]]>*/
+        </script>
+</html>

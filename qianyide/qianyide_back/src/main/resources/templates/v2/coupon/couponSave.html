@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" id="theme"
+          th:href="@{/v2/css/theme-default.css}" />
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/v2/css/jqueryDatatable.css}" />
+    <style>
+        .coupon_title{
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .select_title{
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .coupon_lat{
+            overflow: auto;
+            margin-bottom: 20px;
+        }
+        .control-label{
+            text-align: right;
+        }
+        .savBtn{
+            width: 30px;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="block">
+    <div class="page-title">
+        <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+    </div>
+
+</div>
+<div class="block no-col-padding" style="margin-bottom:0;">
+    <p class="coupon_title">优惠券信息</p>
+    <div class="block" style="margin-bottom:0;">
+        <div class="form-group col-md-12">
+            <label class="col-md-5 control-label"><span style="color: red">*</span>优惠券名称:</label>
+            <div class="col-md-6">
+                <input class="col-md-4" type="text" id="couponName"  name="couponName"/>
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="col-md-5 control-label"><span style="color: red">*</span>优惠券类型:</label>
+            <div class="col-md-6">
+                <select class="col-md-4"  id="couponType" name="typeId">
+                    <option th:each="type,typeStat:${couponTypes}" th:value="${type.id}" th:text="${type.typeName}" th:selected="${type.id} == ${typeId}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="col-md-5 control-label"><span style="color: red">*</span>有效期开始:</label>
+            <div class="col-md-6">
+                <input name="termOfValidityStart" id="startDate"
+                       type="text" class="col-md-4 required"
+                       style="float: left; padding: 6px 9px;"
+                       onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'})"
+                       title="请输入开始日期" size="30"/>
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="col-md-5 control-label"><span style="color: red">*</span>有效期结束:</label>
+            <div class="col-md-6">
+                <input
+                        name="termOfValidityEnd" style="float: left; padding: 6px 9px;"
+                        id="endDate" type="text" class="required col-md-4"
+                        onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')||\'%y-%M-%d\'}'})"
+                        title="请输入截止日期" size="30"/>
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="col-md-5 control-label"><span style="color: red">*</span>值:</label>
+            <div class="col-md-6">
+                <input class="col-md-4"  type="text" id="value" name="value"/>
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="col-md-5 control-label">说明:</label>
+            <div class="col-md-6">
+                <input class="col-md-4"  type="text" id="describe" name="describe"/>
+            </div>
+        </div>
+    </div>
+    <p class="coupon_title">纬度信息</p>
+    <div class="block" style="margin-bottom:0;">
+        <div class="coupon_lat"  th:each="lat,latStat:${couponLats}">
+            <div class="form-group col-md-12">
+                <div class="col-md-5">
+                    <div style="border:width:10%;float:right;">
+                        <input class="checkbox" type="checkbox" th:id="${lat.id}"/>
+                        <label  th:text="${lat.latName}"></label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <input th:if="${!#strings.contains(lat.latCode,'TIME')}" class="col-md-4" type="text" name="latValue"/>
+                    <input th:if="${#strings.contains(lat.latCode,'REGISTER_TIME')}" name="latValue"
+                           id="regStartDate"
+                           type="text" class="col-md-2 required"
+                           style="float: left; padding: 6px 9px;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'regEndDate\')||\'%y-%M-%d\'}'})"
+                           title="请输入开始日期" size="30"/>
+                    <input th:if="${#strings.contains(lat.latCode,'REGISTER_TIME')}" name="latValue"
+                           id="regEndDate"
+                           type="text" class="col-md-2 required"
+                           style="float: left; padding: 6px 9px;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'regStartDate\')||\'%y-%M-%d\'}'})"
+                           title="请输入结束日期" size="30"/>
+                    <input th:if="${#strings.contains(lat.latCode,'LOAN_TIME') || #strings.contains(lat.latCode,'REPAYMENT_TIME')}" name="latValue"
+                           type="text" class="col-md-4 required"
+                           style="float: left; padding: 6px 9px;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-#{%d-1}'})"
+                           title="请输入日期" size="30"/>
+                </div>
+            </div>
+        </div>
+        <p class="select_title">复选项</p>
+        <div class="coupon_lat" >
+            <div class="form-group col-md-12">
+                <div class="col-md-5">
+                    <div style="border:width:10%;float:right;">
+                        <input class="checkbox" type="checkbox" id="smsFlag"/>
+                        <label  th:text="是否发送短信"></label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <input placeholder="如勾选，请输入短信文案内容" class="col-md-4" type="text" name="smsContent" id="smsContent"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p style="text-align: center"><span style="color: red">*</span>如果有区间请使用"|"分隔，例:(年龄：22|35)。多值请使用英文状态下的逗号分隔，例:(34,35)。性别请填 0(女)或者1(男)。地区请填编码 身份证前两位。渠道请填渠道ID。</p>
+    <div>
+        <div class="savBtn">
+            <button id="saveBtn" class="btn btn-info" onclick="save()">保存</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/vue.js}"></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href='/coupon/couponList';
+    })
+    function save(){
+        if(couponValid()){
+            //注册时间标记
+            let registryFlag = false;
+            //选中个数
+            let index = 0;
+            //纬度数组
+            let arr = new Array();
+            //短信标识
+            let smsFlag = false;
+            //提交状态
+            let submitFlag = true;
+            $(".block input[type='checkbox']").each(function (){
+                var obj = {};
+                //选中状态
+                var checked = $(this).prop("checked");
+                var id = $(this).prop("id");
+                //判断是否是注册时间被选中
+                if(checked && (id == 1 || id == '1')){
+                    registryFlag = true;
+                }
+                if(registryFlag && index>1){
+                    alertPopup("注册时间只能单独选中！");
+                    submitFlag = false;
+                    return false;
+                }
+                var thisId = $(this).prop("id");
+                if(thisId != 'smsFlag'){
+                    if(checked){
+                        obj.latId = id;
+                        var inputs = $(this).parent().parent().next().children("input");
+                        let latValue = "";
+                        for(let i=0;i<inputs.length;i++){
+                            let val = $(inputs[i]).val().trim();
+                            if(val == ''){
+                                var text = $(this).parent().children("label:last-child").text();
+                                alertPopup(text+"被选中，但未输入值！");
+                                submitFlag = false;
+                                return false;
+                            }
+                            if(i+1 <inputs.length){
+                                latValue+=val+"|";
+                            }else{
+                                latValue+=val;
+                            }
+                        }
+                        if(latValue.indexOf("，")!=-1){
+                            alertPopup("格式有误，请使用英文状态下的逗号！");
+                            submitFlag = false;
+                            return false;
+                        }
+                        if(latValue.endsWith(",")){
+                            alertPopup("格式有误,请去掉最后的逗号！");
+                            submitFlag = false;
+                            return false;
+                        }
+                        obj.latValue = latValue;
+                        index++;
+                        arr.push(obj);
+                    }
+                }else{
+                    smsFlag = checked;
+                }
+            })
+            if(smsFlag){
+                var smsContent = $("#smsContent").val();
+                if(smsContent == ''){
+                    alertPopup("请输入短信文案！");
+                    submitFlag = false;
+                    return false;
+                }
+                if(smsContent.length>100){
+                    alertPopup("短信文案不能超过100字符！");
+                    submitFlag = false;
+                    return false;
+                }
+            }
+            if(submitFlag){
+                if(arr.length==0){
+                    alertPopup("请至少选择一种纬度！");
+                    return;
+                }
+                $("#saveBtn").prop("disabled","disabled");
+                var data= {
+                    couponName:$("#couponName").val(),
+                    typeId:parseInt($("#couponType").val()),
+                    termOfValidityStart:$("#startDate").val(),
+                    termOfValidityEnd:$("#endDate").val(),
+                    value:$("#value").val(),
+                    describe:$("#describe").val()
+                };
+                console.log(data)
+                $.ajax({
+                    type   : "post",
+                    data   : {couponInfo:JSON.stringify(data),latInfo:JSON.stringify(arr),smsFlag:smsFlag,smsContent:$("#smsContent").val()},
+                    url    : [[@{/coupon/save}]],
+                    success: function(resp) {
+                        alertPopup(resp.msg,function(){
+                            location.href='/coupon/couponList';
+                        });
+                    }
+                })
+            }
+        }
+    }
+    function couponValid(){
+        if($("#couponName").val().trim() == ''){
+            alertPopup("请输入优惠券名称！");
+            return false;
+        }
+        if($("#startDate").val().trim() == ''){
+            alertPopup("请输入有效期开始时间！");
+            return false;
+        }
+        if($("#endDate").val().trim() == ''){
+            alertPopup("请输入有效期结束时间！");
+            return false;
+        }
+        if($("#value").val().trim() == ''){
+            alertPopup("请输入优惠券值！");
+            return false;
+        }
+        return true;
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

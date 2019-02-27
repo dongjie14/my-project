@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="ckeditor.js"></script>
+  <script src="config.js"></script>
+  <script src="style.js"></script>
+</head>
+<body>
+  <textarea id="tx" name="tx" class="ckeditor"></textarea>
+  <script>CKEDITOR.replace('tx');</script>
+  <script type="text/javascript">
+function ckeditorUpload(file){
+alert(1)
+   $("#cke_160_textInput").val(file);
+   $("#cke_241_label").click();
+}
+</script>
+</body>
+</html>

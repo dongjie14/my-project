@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+	<style>
+		input{
+			font-weight: bold;
+			color:black;
+			background-color: white;
+		}
+		.boxDIv{
+			margin-left:200px;
+		}
+
+	</style>
+</head>
+<body>
+	<form action="" id="bannerForm">
+		<input type="hidden" id="id" name="id" th:value="${assetRenewalOrder.id}" />
+		<div class="row">
+			<div class="col-md-12">
+				<!-- START TABS -->
+				<div class="panel panel-default tabs">
+					<div class="panel-body tab-content tabBox">
+						<div class="page-title">
+							<h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+						</div>
+						<div class="tab-pane active col-md-6 boxDIv" id="tab-first">
+							<table>
+								<tr>
+									<td class="td-left"><font color="red">*</font>用户ID</td>
+									<td class="td-right">
+										<input type="text"  readonly="readonly" class="col-md-4" id="userId" name="userId" th:value="${assetRenewalOrder.userId}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>用户手机号</td>
+									<td class="td-right">
+										<input type="text"  readonly="readonly" class="col-md-4" id="userPhone" name="userPhone" th:value="${assetRenewalOrder.userPhone}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>用户姓名</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="userName" name="userName" th:value="${assetRenewalOrder.userName}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>借款订单ID</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="orderId" name="orderId" th:value="${assetRenewalOrder.orderId}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>借款金额</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="moneyAmount" name="moneyAmount" th:value="${assetRenewalOrder.moneyAmount}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>违约金</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="penaltyAmount" name="penaltyAmount" th:value="${assetRenewalOrder.penaltyAmount}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>借款期限/天</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="moneyDay" name="moneyDay" th:value="${assetRenewalOrder.moneyDay}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>放款时间</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="creditRepaymentTime" name="creditRepaymentTime" th:value="${assetRenewalOrder.creditRepaymentTime==null?'': (assetRenewalOrder.creditRepaymentTime=='0000-00-00 00:00:00' ?  '':#dates.format(assetRenewalOrder.creditRepaymentTime,'yyyy-MM-dd HH:mm:ss'))}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>续期时间</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="renewalTime" name="renewalTime" th:value="${assetRenewalOrder.renewalTime==null?'': (assetRenewalOrder.renewalTime=='0000-00-00 00:00:00' ?  '':#dates.format(assetRenewalOrder.renewalTime,'yyyy-MM-dd HH:mm:ss'))}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>续期期限/天</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="renewalDay" name="renewalDay" th:value="${assetRenewalOrder.renewalDay}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>续期后应还款时间</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="repaymentTime" name="repaymentTime" th:value="${assetRenewalOrder.repaymentTime==null?'': (assetRenewalOrder.repaymentTime=='0000-00-00 00:00:00' ?  '':#dates.format(assetRenewalOrder.repaymentTime,'yyyy-MM-dd HH:mm:ss'))}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>续期类型</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="renewalType" name="renewalType" th:value="${assetRenewalOrder.renewalType}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>备注</td>
+									<td class="td-right">
+										<input type="text" readonly="readonly" class="col-md-4" id="renealComment" name="renealComment" th:value="${assetRenewalOrder.renealComment}"/>
+									</td>
+								</tr>
+
+								<tr>
+									<td class="td-left">图片凭证</td>
+									<td class="td-right">
+										<img th:src="${assetRenewalOrder.pictureVoucher}" th:width="400px"/>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- END TABS -->
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href="/assetRenewalOrder/pageList";
+    })
+        </script>
+</html>

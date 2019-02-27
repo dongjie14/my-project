@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme"
+          th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/v2/css/jqueryDatatable.css}"/>
+</head>
+<body>
+<form role="form"
+      th:action="@{/paymentChannel}" id="formpro"
+      class="form-horizontal">
+    <input type="hidden" id="type" name="type" value="6"/>
+    <div class="block no-col-padding" style="margin-bottom: 0;">
+        <div class="form-group col-md-4 btn-form" style="text-align: right;">
+            <button type="submit" class="btn btn-info">查询</button>
+        </div>
+    </div>
+</form>
+<div class="panel-body">
+    <table class="table" id="bigDataList">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>资方</th>
+            <th>每日放款额度上限(元)</th>
+            <th>放款开关是否开启</th>
+            <th>优先级(数字越小越优先)</th>
+            <th>适用类型</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="page,iterStat:${pageInfo.list}">
+            <td th:text="${page.id}"></td>
+            <td th:text="${page.description}"></td>
+            <td th:text="${page.moneyLimit}"></td>
+            <td th:text="${page.enable == 1 ? '是' : '否'}"></td>
+            <td th:text="${page.sort}"></td>
+            <td th:text="${oldStsMap[page.oldSts]}"></td>
+            <td>
+                <a href="#" th:onclick='${
+                "showUpdate("+page.id+",&#39;"+page.description+"&#39;,"+page.moneyLimit+","+page.sort+","+page.enable+","+page.oldSts+")"
+                }'>编辑</a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="message-box animated fadeIn" data-sound="alert" id="update">
+        <div class="nav col-md-8 nav-ul" style="left: 18%; top: 16%;">
+            <form action="" id="paymentChannel">
+
+                <input type="hidden" name="id" id="id"/>
+                <table class="openBox">
+                    <tr>
+                        <td class="td-left">资方<font color="red">*</font></td>
+                        <td class="td-right">
+                            <input type="text" class="form-control" id="zifang" readonly="readonly"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left"><font color="red">*</font>每日额度上限</td>
+                        <td class="td-right">
+                            <input type="text" class="form-control" id="moneyLimit" name="moneyLimit"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left"><font color="red">*</font>优先级</td>
+                        <td class="td-right">
+                            <input type="text" class="form-control" id="sort" name="sort"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left"><font color="red">*</font>开关</td>
+                        <td class="td-right">
+                            <input type="radio" class="form-control" name="enable" value="1"/>开
+                            <input type="radio" class="form-control" name="enable" value="0"/>关
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-left"><font color="red">*</font>适用类型</td>
+                        <td class="td-right">
+                            <select class="form-control" id="oldSts" name="oldSts">
+                                <option th:each="item, itemStat: ${oldStsMap}" th:value="${item.key}" th:text="${item.value}" />
+                            </select>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td colspan="4">
+                            <button type="button" class="btn btn-success"
+                                    onclick="post()">保存
+                            </button>
+                            <button type="button" onclick="$('#update').removeClass('show');"
+                                    class="btn btn-default renewalActive">放弃
+                            </button>
+                        </td>
+
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <table width="95%" border="0" align="center" cellpadding="0"
+           cellspacing="0">
+        <tr>
+            <td height="33">
+                <table width="100%" border="0" align="center" cellpadding="0"
+                       cellspacing="0" class="right-font08">
+                    <tr>
+                        <td align="left" class="td2"
+                            th:if="${not #lists.isEmpty(pageInfo)}"
+                            th:text="   ${'共'+pageInfo.total+ '条'}"></td>
+                        <td align="right" class="td2" id="pageFooter"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}"
+        type="text/javascript"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(function () {
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+    });
+
+
+    function showUpdate(id, description, moneyLimit, sort, enable, oldSts) {
+        console.log(id, description, moneyLimit, sort, enable);
+        $("#id").val(id);
+        $("#zifang").val(description);
+        $("#moneyLimit").val(moneyLimit);
+        $("#sort").val(sort);
+        $("#oldSts").val(oldSts);
+        $("input[name='enable'][value='"+enable+"'] ").attr("checked",true);
+        $("#update").addClass("show");
+    }
+
+    //续期操作
+    function post() {
+        var url = [[@{/paymentChannel}]];
+        $.ajax({
+            type: "post",
+            data: $("#paymentChannel").serialize(),
+            url: url,
+            success: function (resp) {
+                if (resp.code != 200) {
+                    alertPopup(resp.message);
+                } else {
+                    alertPopup(resp.message, function () {
+                        location.href = '/paymentChannel';
+                    });
+                }
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+</html>

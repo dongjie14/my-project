@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+    <style type="text/css">
+        .modelBox{
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.3);
+            z-index: 999;
+            display: none;
+        }
+        .model{
+            position: absolute;
+            top: 40%;
+            left: 40%;
+            background: rgba(255,255,255,1);
+            border-radius: 5px;
+            width: 200px;
+        }
+        .modelHeader{
+            overflow:hidden;
+        }
+        .model h3{
+            line-height: 30px;
+            padding: 0 10px;
+            float: left;
+        }
+        .cl{
+            float: right;
+            margin: 10px;
+        }
+        .modelBody textarea{
+            width: 180px;
+            border-radius: 5px;
+            border:1px solid #ccc;
+        }
+        .modelFooter{
+            margin-top: 10px;
+            padding: 0 10px;
+            display: flex;
+        }
+        .modelFooter button{
+            flex: 1;
+            background: #fff;
+            border-radius: 2px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<form role="form" id="formpro" class="form-horizontal" >
+
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="form-group col-md-12 btn-form" style="text-align:left;">
+            <a href="#"  class="btn btn-info loadExcel">导出excel</a>
+        </div>
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">订单号:</label>
+                <div class="col-md-8">
+                    <input type="text" id="id" name="id" th:value="${order.id}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">手机:</label>
+                <div class="col-md-8">
+                    <input type="text" id="userPhone" name="userPhone" th:value="${order.userPhone}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">姓名:</label>
+                <div class="col-md-8">
+                    <input type="text" id="userName" name="userName" th:value="${order.userName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4 min-w330">
+                <label class="col-md-4 control-label">申请时间:</label>
+                <div class="col-md-8">
+                    <input name="startDate" id="startDate" th:value="${startDate}"
+                           type="text" class="required"
+                           style="width: 45%; float: left; padding: 6px 9px;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'})"
+                           title="请输入开始日期" size="30" /><span class="line">-</span><input
+                        name="endDate" style="width: 45%; float: left; padding: 6px 9px;"
+                        id="endDate" th:value="${endDate}" type="text" class="required"
+                        onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')||\'%y-%M-%d\'}'})"
+                        title="请输入截止日期" size="30" />
+                </div>
+            </div>
+            <div th:if="${hasParamStatus eq '1'}"  class="form-group col-md-4">
+                <input type="hidden" name="hasParamStatus" value="1"/>
+                <label class="col-md-4 control-label">状态:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="status" name="status">
+                        <option value="" selected="selected">全部</option>
+                        <option value="1" th:selected="${order.status == 1}">待审核</option>
+                        <option value="2" th:selected="${order.status == 2}">待放款</option>
+                        <option value="3" th:selected="${order.status == 3}">放款成功</option>
+                        <option value="4" th:selected="${order.status == 4}">放款失败</option>
+                        <option value="5" th:selected="${order.status == 5}">审核拒绝</option>
+                    </select>
+                </div>
+            </div>
+            <span th:if="${hasParamStatus eq '0'}"  >
+                	<input type="hidden" id="status" name="status" th:value="${status}"/>
+                </span>
+
+            <div class="form-group col-md-12 btn-form" style="text-align:right;">
+                <button type="submit" class="btn btn-info">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="panel-body">
+    <table class="table" id="bigDataList">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>订单号</th>
+            <th>姓名</th>
+            <th>手机号</th>
+            <th>手机型号</th>
+            <th>借款金额</th>
+            <th>总费用</th>
+            <th>实际到账金额</th>
+            <th>借款期限</th>
+            <th>申请时间</th>
+            <th>放款时间</th>
+            <th>状态</th>
+            <th>风控</th>
+            <th>更新时间</th>
+            <th>操作 </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="page,iterStat:${pageInfo.list}">
+            <td th:text="${iterStat.index+1	}" ></td>
+            <td th:text="${page.id}"></td>
+            <td th:text="${page.userName}"></td>
+            <td th:text="${page.userPhone}"></td>
+            <td th:text="${page.deviceModel}"></td>
+            <td th:text="${page.moneyAmount}"></td>
+            <td th:text="${page.totalCost}"></td>
+            <td th:text="${page.perPayMoney}"></td>
+            <td th:text="${page.moneyDay}"></td>
+            <td th:text="${page.orderTime==null?'':#dates.format(page.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${page.loanTime==null?'':#dates.format(page.loanTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td>
+                <span th:text="${orderStatus[page.status]}"></span>
+            </td>
+            <td>
+                <span target="external-frame" th:text="${page.score}"></span>
+                <br/>
+                <span target="external-frame" th:text="${page.detail}"></span>
+            </td>
+            <td th:text="${page.updateTime==null?'':#dates.format(page.updateTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td ><a th:href="'/borrowUser/borrowUserDetail?userId='+${page.userId}" >详情</a>&nbsp;&nbsp;
+                <a href="#" th:onclick="${'audit('+page.id+')'}">审核</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="modelBox message-box animated fadeIn">
+        <div class="model">
+            <div class="modelHeader">
+                <h3>人工审核</h3><a class="cl">x</a>
+            </div>
+            <div class="modelBody">
+                <textarea id="remark"></textarea>
+            </div>
+            <div class="modelFooter">
+                <button type="button" onclick="dosubmit(1)" style="color: red;" >审核通过</button>
+                <button type="button" onclick="dosubmit(0)">审核拒绝</button>
+            </div>
+            <input type="hidden" name="orderId" id="orderId" />
+        </div>
+    </div>
+    <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td height="33">
+                <table width="100%" border="0" align="center" cellpadding="0"
+                       cellspacing="0" class="right-font08">
+                    <tr>
+                        <td align="left" class="td2" th:if="${not #lists.isEmpty(pageInfo)}"
+                            th:text="   ${'共'+pageInfo.total+ '条'}">
+                        </td>
+                        <td align="right" class="td2" id="pageFooter">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}"	type="text/javascript"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(function(){
+        $(".loadExcel").click(function(){
+            var id=$("#id").val();
+            var userName=$("#userName").val();
+            var userPhone=$("#userPhone").val();
+            var startDate=$("#startDate").val();
+            var endDate=$("#endDate").val();
+            var href="/audit/orderExport?id="+id+"&userName="+userName+"&userPhone="+userPhone
+                +"&startDate="+startDate+"&endDate="+endDate;
+
+            location.href=href;
+        });
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+
+
+    });
+
+    function audit (orderId) {
+        $("#orderId").val(orderId);
+        $("#remark").val("");
+        var el = document.getElementsByClassName("modelBox")[0];
+        var close = document.getElementsByClassName("cl")[0];
+        el.style.display = 'block';
+        close.onclick = function (){
+            el.style.display = 'none'
+        }
+    }
+
+    function dosubmit(status) {
+        var orderId = $("#orderId").val();
+        var remark = $("#remark").val();
+
+        var data = {
+            orderId:orderId,
+            status:status,
+            remark:remark
+        }
+        var url=[[@{/audit/resultNotify}]];
+        $.ajax({
+            type   : "post",
+            data   : data,
+            url    : url,
+            success: function (resp) {
+                alertPopup(resp.message,function(){
+                    location.href='/audit/orderList?type=6';
+                });
+            }
+        });
+    }
+    /*]]>*/
+</script>
+</html>

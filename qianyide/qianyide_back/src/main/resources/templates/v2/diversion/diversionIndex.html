@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <head>        
+        <!-- META SECTION -->
+        <title>主页</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" th:href="@{/v2/img/logoApp.png}" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+        <link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+    </head>
+    	
+    <body style="overflow:hidden;">
+        <div class="page-container">
+            <div class="page-sidebar">
+                <ul class="x-navigation">
+                    <li class="xn-logo">
+                        <a href="index.html">首页</a>
+                        <a href="#" class="x-navigation-control"></a>
+                    </li>   
+                    <li class="xn-profile">
+                        <div class="profile">
+                            <div class="profile-image">
+                                <img id="indexPortraitImg" src="/v2/img/logoApp.png" alt="John Doe"/>
+                            </div>
+                            <div class="profile-data">
+                                <div class="profile-data-name"><span th:text="${backUser.account}"></span></div>
+                                <div class="profile-data-title"><span id="indexNickName" th:text="${backUser.nickName}"></span></div>
+                            </div>
+                        </div>                                                                        
+                    </li>
+                    </ul>
+                    <ul class="x-navigation" id="menu">
+                        <li class="xn-openable fli active">
+                            <a href="#"><span class="fa"></span> <span class="xn-text">渠道统计</span></a>
+                            <ul>
+                                <li class="sli active">
+                                    <a href="/diversion/statistics" target="external-frame"><span class="fa"></span> 当天统计</a>
+                                    <span class="leftBlock" style="position:absolute;left:0;display:inline-block;width: 10px;height:100%;background:#1caf9a;"></span>
+                                </li>
+                                <li class="sli">
+                                    <a href="/diversion/statisticsHis" target="external-frame"><span class="fa"></span> 历史统计</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+            </div>
+            
+            <div class="page-content">
+            	
+            	<ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+            	<li class="xn-icon-button" style="display:none;">
+                        <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+                    </li>
+            		<li class="xn-icon-button pull-right">
+                        <a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>                        
+                    </li> 
+            		<li class="xn-icon-button pull-right">
+                        <a href="#" class="mb-control" data-box="#user-message"><span class="fa fa-cogs"></span></a>                        
+                    </li> 
+                </ul>
+                <div class="breadcrumb">
+                    <div class="first" style="display:inline-block;">渠道管理</div>
+                    <div class="second" style="display:inline-block;">&gt;<span class="fa "></span> 当天统计</div>
+                    <div class="third" style="display:inline-block;"></div>
+                </div>
+            <iframe  name="external-frame" id="external-frame" width="100%"  height="87%" scrolling="auto"  frameborder="0" src="/diversion/statistics"></iframe>
+        	</div>
+            </div>
+            
+        
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+			<div class="nav col-md-6 nav-ul">
+				<ul class="nav popup-ul bg-ul">
+					<li>确认退出吗？</li>
+					<li class="btn-li">
+						<button type="button" class="btn btn-success active" onclick="javascript:window.location.href='/user/logout'" id="sureid">确认</button>
+						<button type="button" class="btn btn-default active mb-control-close" id="extid">取消</button>
+					</li>
+				</ul>
+			</div>
+        </div>
+        
+        <div class="message-box animated fadeIn" data-sound="alert" id="user-message">
+        	<div class="nav col-md-6 user-bg">
+        		<ul class="nav popup-ul">
+		    		<li><span>旧密码</span><input type="password" name="oldPassword" id="oldPassword" value="" /></li>
+		    		<li><span>新密码</span><input type="password" name="password" id="password" value="" /></li>
+		    		<li><span>确认新密码</span><input type="password" name="password2" id="password2" value="" /></li>
+	    		</ul>
+	    		<ul class="nav col-md-12">
+	    			<li class="btn-li">
+	    				<button type="button" onclick="dosubmit()" class="btn btn-success active">保存</button>
+	    				<button type="button" class="btn btn-default active mb-control-close">放弃</button>
+	    			</li>
+	    		</ul>
+	    	</div>
+        </div>
+        <audio id="audio-alert" th:src='@{/v2/audio/alert.mp3}' preload="auto"></audio>
+        <audio id="audio-fail" th:src='@{/v2/audio/fail.mp3}' preload="auto"></audio>
+        <script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+        <script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+        <script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>        
+		<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+		<script type="text/javascript" th:src="@{/v2/js/plugins/morris/morris.min.js}"></script>  
+        <script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+        <script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+        <script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>        
+        <script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>         
+        <script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+		<script type="text/javascript" th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+    </body>
+<script th:inline="javascript">
+        /*<![CDATA[*/
+    	$(function(){
+            $(".theme-settings").hide();
+            // 获取用户权限树
+
+            $(".x-navigation li").click(function(event){
+                event.stopPropagation();
+            });
+            $(".sli").click(function(){
+                var shtml = $(this).find('a:first').html();
+                var ohtml = $(this).parent().parent().find('a:first').find(".xn-text").html();
+                $(".third").empty();
+                $(".first").html(ohtml);
+                $(".second").html('>'+shtml);
+                if($(this).find("li").hasClass("tli")){
+                    $(".tli").click(function(){
+                        var thtml = $(this).find('a:first').html();
+                        $(".third").html('>'+thtml);
+                    });
+                }else{
+                    $(".third").empty();
+                }
+            });
+
+            $(".xn-openable").click(function(){
+                /*var acthtml = $(this).find("a").html();
+                $(".breadcrumb").find("li:last").html(acthtml);*/
+                var liChild = $(this);
+                if(liChild.hasClass("active")){
+                    liChild.removeClass("active");
+                }else{
+                    liChild.addClass("active");
+                    liChild.siblings().removeClass("active");
+                }
+            });
+            var oSpan = '<span class="leftBlock" style="position:absolute;left:0;display:inline-block;width: 10px;height:100%;background:#1caf9a;"></span>';
+            $("a[target='external-frame']").click(function(){
+                $(this).parent().addClass("active");
+                $(this).parent().siblings().removeClass("active");
+                $(".fli").find(".active").find('.leftBlock').remove();
+                $(this).closest(".sli").siblings().find("li").removeClass("active");
+                $(this).parent().find('.leftBlock').remove();
+                $(this).parent().append(oSpan);
+                $(this).parent().siblings().find('.leftBlock').remove();
+                $(this).closest(".fli").siblings().find("li").find("a[target='external-frame']").parent().removeClass("active");
+                $(this).closest(".fli").siblings().find("li").removeClass("active");
+            });
+	    });
+    	function dosubmit() {
+    		if($("#oldPassword").val()!= ''){
+    			if($("#password").val()== ''){
+        			alertPopup("新密码不能为空!");
+        			return;
+        		}
+        		if($("#password2").val()== ''){
+        			alertPopup("确认密码不能为空!");
+        			return;
+        		}
+        		if($("#password").val()!=$("#password2").val()){
+        			alertPopup("两次密码输入不一致!");
+        			return;
+        		}
+    		}
+    		loading();
+    		$.ajax({
+                type   : "post",
+                data   : {
+                	id:[[${backUser.id}]],
+                	password:$("#password").val(),
+                	oldPassword:$("#oldPassword").val()
+                },
+                url    : [[@{/sysUserManagement/updateUserInfo}]],
+                success: function (resp) {
+                	hidden();
+                	if(resp.errorCode=="0000"){
+                		alertPopup(resp.errorMsg,function(){
+                			$('#user-message').removeClass("open");
+                    	});
+                	}else{
+                		alertPopup(resp.errorMsg);
+                	}
+                	$("#password").val("");
+                	$("#oldPassword").val("");
+                	$("#password2").val("");
+                }
+            }); 
+    	}
+    	 /*]]>*/
+    </script>
+</html>
+
+
+
+
+
+

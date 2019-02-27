@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TSysReturnCodeMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TSysReturnCode">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="return_code" jdbcType="VARCHAR" property="returnCode" />
+    <result column="return_type" jdbcType="INTEGER" property="returnType" />
+    <result column="return_info" jdbcType="VARCHAR" property="returnInfo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+
+  <select id="getByCode" resultMap="BaseResultMap">
+    select return_code,return_type,return_info from t_sys_return_code where return_code=#{returnCode}
+  </select>
+</mapper>

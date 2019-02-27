@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+</head>
+<body>
+<form role="form" id="formpro" class="form-horizontal">
+
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="form-group col-md-12 btn-form" style="text-align:left;">
+            <a href="#" class="btn btn-info loadExcel">导出excel</a>
+        </div>
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">订单号:</label>
+                <div class="col-md-8">
+                    <input type="text" id="id" name="id" th:value="${order.id}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">手机:</label>
+                <div class="col-md-8">
+                    <input type="text" id="userPhone" name="userPhone" th:value="${order.userPhone}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">姓名:</label>
+                <div class="col-md-8">
+                    <input type="text" id="userName" name="userName" th:value="${order.userName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4 min-w330">
+                <label class="col-md-4 control-label">申请时间:</label>
+                <div class="col-md-8">
+                    <input name="startDate" id="startDate" th:value="${startDate}"
+                           type="text" class="required"
+                           style="width: 45%; float: left; padding: 6px 9px;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'})"
+                           title="请输入开始日期" size="30"/><span class="line">-</span><input
+                        name="endDate" style="width: 45%; float: left; padding: 6px 9px;"
+                        id="endDate" th:value="${endDate}" type="text" class="required"
+                        onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')||\'%y-%M-%d\'}'})"
+                        title="请输入截止日期" size="30"/>
+                </div>
+            </div>
+            <div th:if="${hasParamStatus eq '1'}" class="form-group col-md-4">
+                <input type="hidden" name="hasParamStatus" value="1"/>
+                <label class="col-md-4 control-label">状态:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="status" name="status">
+                        <option value="" selected="selected">全部</option>
+                        <option value="1" th:selected="${order.status == 1}">待审核</option>
+                        <option value="2" th:selected="${order.status == 2}">待放款</option>
+                        <option value="3" th:selected="${order.status == 3}">放款成功</option>
+                        <option value="4" th:selected="${order.status == 4}">放款失败</option>
+                        <option value="5" th:selected="${order.status == 5}">审核拒绝</option>
+                        <option value="6" th:selected="${order.status == 6}">处理中</option>
+                        <option value="7" th:selected="${order.status == 7}">已逾期</option>
+                        <option value="8" th:selected="${order.status == 8}">已还款</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">渠道:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="channelId" name="channelId">
+                        <option th:value="-1" th:text="全部" th:selected="${channelId} == -1" selected="selected"/>
+                        <!--<option th:value="0" th:text="自然流量" th:selected="${channelId} == 0" />selected="${channelId} == 0" selected="selected"/>-->
+                        <option th:each="item, itemStat: ${channelList}"
+                                th:selected="${item.id} == ${channelId}" th:value="${item.id}"
+                                th:text="${item.channelName}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-4 min-w330">
+                <label class="col-md-4 control-label">放款时间:</label>
+                <div class="col-md-8">
+                    <input name="startLoanDate" id="startLoanDate" th:value="${startLoanDate}"
+                           type="text" class="required"
+                           style="width: 45%; float: left; padding: 6px 9px;"
+                           onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endLoanDate\')||\'%y-%M-%d\'}'})"
+                           title="请输入开始日期" size="30"/><span class="line">-</span><input
+                        name="endLoanDate" style="width: 45%; float: left; padding: 6px 9px;"
+                        id="endLoanDate" th:value="${endLoanDate}" type="text" class="required"
+                        onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startLoanDate\')||\'%y-%M-%d\'}'})"
+                        title="请输入截止日期" size="30"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">资方:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="paymentChannel" name="paymentChannel">
+                        <option value="" th:text="全部" th:selected="${paymentChannel} == ''" selected="selected"/>
+                        <!--<option th:value="0" th:text="自然流量" th:selected="${channelId} == 0" />selected="${channelId} == 0" selected="selected"/>-->
+                        <option th:each="item, itemStat: ${paymentChannels}"
+                                th:selected="${item.key} == ${paymentChannel}" th:value="${item.key}"
+                                th:text="${item.value}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">性别:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="sex" name="sex">
+                        <option th:value="-1" th:text="全部" th:selected="${sex} == -1" selected="selected"/>
+                        <option th:value="1" th:text="男" th:selected="${sex} == 1"/>
+                        <option th:value="0" th:text="女" th:selected="${sex} == 0"/>
+                    </select>
+                </div>
+            </div>
+            <span th:if="${hasParamStatus eq '0'}">
+                	<input type="hidden" id="status" name="status" th:value="${status}"/>
+                </span>
+
+
+            <div class="form-group col-md-12 btn-form" style="text-align:right;">
+                <button type="submit" class="btn btn-info">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="panel-body">
+    <table class="table" id="bigDataList">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>订单号</th>
+            <th>姓名</th>
+            <th>手机号</th>
+            <th>手机型号</th>
+            <!--<th>设备号</th>-->
+            <th>借款金额</th>
+            <th>总费用</th>
+            <th>实际到账金额</th>
+            <th>借款期限</th>
+            <th>申请时间</th>
+            <th>放款时间</th>
+            <th>资方</th>
+            <th>状态</th>
+            <th>风控</th>
+            <th>更新时间</th>
+            <th>渠道</th>
+            <th>老用户</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="page,iterStat:${pageInfo.list}">
+            <td th:text="${iterStat.index+1	}"></td>
+            <td th:text="${page.id}"></td>
+            <td th:text="${page.userName}"></td>
+            <td th:text="${page.userPhone}"></td>
+            <td th:text="${page.deviceModel}"></td>
+            <!--<td th:text="${page.deviceNumber}"></td>-->
+            <td th:text="${page.moneyAmount}"></td>
+            <td th:text="${page.totalCost}"></td>
+            <td th:text="${page.perPayMoney}"></td>
+            <td th:text="${page.moneyDay}"></td>
+            <td th:text="${page.orderTime==null?'':#dates.format(page.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${page.loanTime==null?'':#dates.format(page.loanTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${paymentChannels[page.paymentChannel]}"></td>
+            <td>
+                <span th:text="${orderStatus[page.status]}"></span>
+            </td>
+            <td>
+                <span style="margin-bottom:5px;" target="external-frame" th:text="${page.adoptStatus == 1 ? '风控通过': (page.adoptStatus == 3 ? '审核中' : ((page.ppxStatus == 1 || page.dsStatus == 1) ? '审核拒绝' : '未风控'))}"></span>
+                <br/>
+                <span target="external-frame" th:text="${page.detail}"></span>
+            </td>
+            <td th:text="${page.updateTime==null?'':#dates.format(page.updateTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${page.channelName}"></td>
+            <td th:text="${page.applyNew==1?'是':'否'}"></td>
+            <td><a th:href="'/borrowUser/borrowUserDetail?userId='+${page.userId}">详情</a>&nbsp;&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+    <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td height="33">
+                <table width="100%" border="0" align="center" cellpadding="0"
+                       cellspacing="0" class="right-font08">
+                    <tr>
+                        <td align="left" class="td2" th:if="${not #lists.isEmpty(pageInfo)}"
+                            th:text="   ${'共'+pageInfo.total+ '条'}">
+                        </td>
+                        <td align="right" class="td2" id="pageFooter">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(function () {
+        $(".loadExcel").click(function () {
+            var id = $("#id").val();
+            var userName = $("#userName").val();
+            var userPhone = $("#userPhone").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            var startLoanDate = $("#startLoanDate").val();
+            var endLoanDate = $("#endLoanDate").val();
+            var status = $("#status").val();
+            var channelId = $("#channelId").val();
+            var href = "/assetBorrowOrder/orderExport?id=" + id + "&userName=" + userName + "&userPhone=" + userPhone
+                + "&startDate=" + startDate + "&endDate=" + endDate + "&startLoanDate=" + startLoanDate + "&endLoanDate=" + endLoanDate
+                + "&status=" + status + "&channelId=" + channelId;
+
+
+            location.href = href;
+        });
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+
+
+    });
+    /*]]>*/
+</script>
+</html>

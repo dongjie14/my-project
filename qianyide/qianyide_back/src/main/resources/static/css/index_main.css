@@ -1,0 +1,7 @@
+.main_left {table-layout:auto; background:url(../images/left_bg.gif)}
+.main_left_top{ background:url(../images/left_menu_bg.gif); padding-top:2px !important; padding-top:5px;}
+.main_left_title{text-align:left; padding-left:15px; font-size:14px; font-weight:bold; color:#fff;}
+.left_iframe{HEIGHT: 92%; VISIBILITY: inherit;WIDTH: 180px; background:transparent;}
+.main_iframe{HEIGHT: 92%; VISIBILITY: inherit; WIDTH:100%; Z-INDEX: 1}
+table { font-size:12px; font-family : tahoma, 宋体, fantasy; }
+td { font-size:12px; font-family : tahoma, 宋体, fantasy;}

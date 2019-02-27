@@ -28,7 +28,7 @@
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>
-                logs/dev_api_%d{yyyy-MM-dd}.log
+                logs/dev_task_%d{yyyy-MM-dd}.log
             </FileNamePattern>
             <maxHistory>60</maxHistory>
         </rollingPolicy>
@@ -43,7 +43,7 @@
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--<File>d:/mmalllog/error.log</File>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/error_dev_api_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/error_dev_task_%d{yyyy-MM-dd}.log</fileNamePattern>
             <!--<fileNamePattern>d:/mmalllog/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
             <!--<append>true</append>-->
             <maxHistory>20</maxHistory>

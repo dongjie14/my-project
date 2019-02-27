@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TMessageRecordMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TMessageRecord">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="rec_name" jdbcType="VARCHAR" property="recName" />
+    <result column="rec_phone" jdbcType="VARCHAR" property="recPhone" />
+    <result column="rec_user_type" jdbcType="INTEGER" property="recUserType" />
+    <result column="msg_title" jdbcType="VARCHAR" property="msgTitle" />
+    <result column="msg_content" jdbcType="VARCHAR" property="msgContent" />
+    <result column="msg_send_time" jdbcType="TIMESTAMP" property="msgSendTime" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" id="theme"
+		  th:href="@{/v2/css/theme-default.css}" />
+	<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+		  type="text/css" />
+</head>
+<body>
+<form action="" id="backConfigForm">
+	<input type="hidden" id="id" name="id" th:value="${backConfigParams.id}" />
+	<div class="block">
+		<div class="page-title">
+			<h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+			<button type="button" onclick="doSubmit()" class="btn btn-info">保存</button>
+			<button type="button" class="btn btn-default giveUp">放弃</button>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<!-- START TABS -->
+			<div class="panel panel-default tabs">
+				<div class="panel-body tab-content tabBox">
+					<div class="tab-pane active" id="tab-first" style="width:50%">
+						<table>
+							<tr>
+								<td class="td-left"><font color="red">*</font>名称</td>
+								<td class="td-right">
+									<input type="text" class="form-control" id="sysName" name="sysName" th:value="${backConfigParams.sysName}"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="td-left"><font color="red">*</font>参数键</td>
+								<td class="td-right">
+									<input type="text" id="sysKey" name="sysKey" th:value="${backConfigParams.sysKey}" />
+								</td>
+							</tr>
+							<tr>
+								<td class="td-left"><font color="red">*</font>参数值</td>
+								<td class="td-right">
+									<input type="text" class="form-control" id="sysValue" name="sysValue" th:value="${backConfigParams.sysValue}"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="td-left"><font color="red">*</font>参数类型(分类)</td>
+								<td class="td-right">
+									<select class="form-control" id="sysType" name="sysType">
+										<option th:selected="backConfigParams.sysType == '' ? true : false" th:value="请选择" th:text="请选择"></option>
+										<option th:each="item, itemStat: ${sysTypes}"
+												th:value="${item}" th:text="${item}" th:selected="${item == backConfigParams.sysType}"/>
+									</select>
+
+									<input type="button" style="border-radius: 5px;margin: 3px 0 3px 0;width:70px;" onclick="otherClick()" value="其他"/>
+									<input type="hidden" placeholder="请输入其他类型" onblur="otherBlur()" class="form-control" id="sysTypeOther" name="sysTypeOther"/>
+								</td>
+								<!--<td class="td-right">
+
+
+								</td>-->
+							</tr>
+							<tr>
+								<td class="td-left">描述</td>
+								<td class="td-right">
+									<input type="text" class="form-control" id="remark" name="remark" th:value="${backConfigParams.remark}"/>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- END TABS -->
+		</div>
+	</div>
+</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+		th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+		th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+		th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+		th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript" type="text/javascript">
+	var obj ={
+	    "name":"test"
+	}
+    function doSubmit () {
+        if($("#sysName").val().trim() == ""){
+            alertPopup("名称不能为空！");
+            return;
+        }
+        if($("#sysKey").val()== ''){
+            alertPopup("参数键不能为空!");
+            return;
+        }
+        if($("#sysValue").val()== ''){
+            alertPopup("参数值不能为空!");
+            return;
+        }
+         if($("#sysType").val()== "请选择" ){
+             if($("#sysTypeOther").val().trim() == ""){
+                 alertPopup("请选择参数类型!");
+                 return;
+             }
+         }
+        if($("#sysTypeOther").val().trim() == ""){
+            if($("#sysType").val()== "请选择" ){
+                alertPopup("请选择参数类型!");
+                return;
+            }
+        }
+        $.ajax({
+            type   : "post",
+            data   : $('#backConfigForm').serialize(),
+            url    : [[@{/backConfigManagement/save}]],
+			success: function (resp) {
+				hidden();
+				alertPopup(resp.msg,function(){
+					location.href='/backConfigManagement/backConfigList';
+				});
+			}
+    	});
+    }
+	function otherClick(){
+	    $("#sysTypeOther").prop("type","text");
+	    $("#sysTypeOther").focus();
+	}
+	function otherBlur(){
+	    var val = $("#sysTypeOther").val();
+	    if(val.trim() == ''){
+            $("#sysTypeOther").prop("type","hidden");
+		}
+	}
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href="/backConfigManagement/backConfigList";
+    })
+
+    $(".giveUp").click(function(){
+        $("#commonPopup").remove();
+        var val = $(this).html();
+        popup(val);
+        $("#commonPopup").addClass("open");
+    });
+
+    $("body").delegate("#sureid","click",function(){
+        $("#commonPopup").removeClass("open");
+        window.history.go(-1);
+    });
+</script>
+</html>

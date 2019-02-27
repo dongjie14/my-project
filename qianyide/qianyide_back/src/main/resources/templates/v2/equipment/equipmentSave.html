@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+</head>
+<body>
+	<form action="" id="equipmentForm">
+		<input type="hidden" id="id" name="id" th:value="${equipmentInfo.id}" />
+		<div class="block">
+			<div class="page-title">                    
+                    <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+                    <button type="button" onclick="dosubmit()" class="btn btn-info">保存</button>
+					<button type="button" class="btn btn-default giveUp">放弃</button> 
+                </div>
+				
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- START TABS -->
+				<div class="panel panel-default tabs">
+					<div class="panel-body tab-content tabBox">
+						<div class="tab-pane active" id="tab-first">
+							<table>
+								<tr>
+									<td class="td-left"><font color="red">*</font>设备名称</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="equipmentName" style="width: 15%" name="equipmentName" th:value="${equipmentInfo.equipmentName}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>icon</td>
+									<td class="td-right">
+										<img th:src="${equipmentInfo.piceUrl}" id="portraitImg_preview"
+											style="width: 33px; height: 33px;" />
+										<div id="portraitImgDiv"></div>
+										<input class="required text" id="piceUrl"
+											name='piceUrl' type="hidden"
+											th:value="${equipmentInfo.piceUrl}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>内存(G)</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="memory" name="memory" style="width: 10%" th:value="${equipmentInfo.memory}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>新旧程度</td>
+									<td class="td-right">
+										<select id="degree" name="degree" style="width: 10%" >
+					                        <option value="9" th:selected="${equipmentInfo.degree == 9}" selected="selected">9成新</option>
+					                        <option value="8" th:selected="${equipmentInfo.degree == 8}">8成新</option>
+					                        <option value="5" th:selected="${equipmentInfo.degree == 5}">5成新</option>
+					                        <option value="3" th:selected="${equipmentInfo.degree == 3}">3成新</option>
+					                    </select>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>参考价(元)</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="price" name="price" style="width: 10%" th:value="${equipmentInfo.price}"/>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- END TABS -->
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+		//var id=[[${equipmentInfo.id}]];
+		$('#portraitImgDiv').Huploadify({
+			auto:true,
+			fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.bmp',
+			multi:false,
+			fileSizeLimit:99999999,
+			showUploadedPercent:true,//是否实时显示上传的百分比，如20%
+			showUploadedSize:true,
+			removeTimeout:2000,
+			uploader: '/backUpload/uploadFiles',
+			method:'post',
+			fileObjName:'Filedata',
+			onUploadSuccess:function(file,response){
+				 var respJson = JSON.parse(response);
+				 
+		            $("#piceUrl").val(respJson.data);
+		            $("#portraitImg_preview").attr("src", respJson.data);
+			}
+		});
+		$(".fa-arrow-circle-o-left").click(function(){
+			
+			location.href="/equipment/getEquipmentList";
+		})
+			
+		$(".giveUp").click(function(){
+				$("#commonPopup").remove();
+				var val = $(this).html();
+				popup(val);
+			    $("#commonPopup").addClass("open");
+		});
+		$("body").delegate("#sureid","click",function(){
+			    $("#commonPopup").removeClass("open");
+			    window.history.go(-1);
+		});
+			
+			
+			 function dosubmit() {
+        	   
+ 				
+        		if($("#equipmentName").val()== ''){
+        			alertPopup("设备名称不能为空!");
+        			return;
+        		}
+        		
+        		if($("#piceUrl").val()== ''){
+        			alertPopup("图片不能为空!");
+        			return;
+        		}
+        		if($("#memory").val()== ''){
+        			alertPopup("内存不能为空!");
+        			return;
+        		}
+        		if($("#degree").val()== ''){
+        			alertPopup("新旧程度不能为空!");
+        			return;
+        		}
+        		if($("#price").val()== ''){
+        			alertPopup("参考价不能为空!");
+        			return;
+        		}
+        		
+        		
+        		if(isNaN( $("#memory").val() ) ){
+        			alertPopup("内存必须是数字!");
+        			return;
+        		}
+        		if(isNaN( $("#price").val() ) ){
+        			alertPopup("参考价必须是数字!");
+        			return;
+        		}
+ 				
+        		$.ajax({
+                    type   : "post",
+                    data   : $('#equipmentForm').serialize(),
+                    url    : [[@{/equipment/save}]],
+                    success: function (resp) {
+                    	hidden();
+                    	if(resp.code=='-1'){
+                    		alertPopup(resp.msg);
+                    		return;
+                    	}
+                        alertPopup(resp.msg,function(){
+                        	location.href='/equipment/getEquipmentList';
+                        });
+                    }
+                }); 
+				
+        	} 
+        	
+        	        	
+        	
+        	
+        	
+        </script>
+</html>

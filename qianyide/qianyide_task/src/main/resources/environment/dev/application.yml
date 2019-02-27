@@ -1,3 +1,48 @@
 server:
   context-path: /
-  port: 8084
+  port: 8086
+
+spring:
+  profiles:
+    active: druid
+  boot:
+    admin:
+      url: http://localhost:${server.port}
+    application:
+      name: qianyide_task
+  datasource :
+    url: jdbc:mysql://localhost:3306/qianyide_dev?characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
+    username: qianyide
+    password: 123456
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    timeout: 1000
+    database: 0
+    pool:
+      #连接池最大连接数
+      maxActive: 10
+      #连接池最大阻塞等待时间（负值代表没有限制）
+      maxWait: -1
+      #连接池最大空闲数
+      maxIdle: 10
+      #连接池最小空闲数
+      minIdle: 0
+  activemq:
+    user: qianyide
+    password: qianyide123
+    #集群配置
+    broker-url: failover:(tcp://10.219.132.140:61616)
+
+####################
+### logback 配置 ###
+####################
+logging:
+  level: debug
+  config: classpath:config/logback.xml
+
+####################
+### swagger 配置 ###
+####################
+swaggerui: true

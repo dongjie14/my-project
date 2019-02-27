@@ -1,7 +1,8 @@
 package com.easyget.service.impl;
 
-import com.easyget.configuration.BaseDao;
+import com.easyget.configuration.BaseMapper;
 import com.easyget.service.BaseSerivce;
+import com.easyget.service.TSysReturnCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -9,87 +10,90 @@ import java.util.List;
 public class BaseServiceImpl<T> implements BaseSerivce<T> {
 
     @Autowired
-    private BaseDao<T> baseDao;
+    private BaseMapper<T> baseMapper;
 
-    public void setBaseDao(BaseDao<T> baseDao) {
-        this.baseDao = baseDao;
+    @Autowired
+    public TSysReturnCodeService sysReturnCodeService;
+
+    public void setbaseMapper(BaseMapper<T> baseMapper) {
+        this.baseMapper = baseMapper;
     }
 
     @Override
     public int insert(T record) {
-        return baseDao.insert(record);
+        return baseMapper.insert(record);
     }
 
     @Override
     public int insertSelective(T record) {
         // TODO Auto-generated method stub
-        return baseDao.insertSelective(record);
+        return baseMapper.insertSelective(record);
     }
 
     @Override
     public int insertList(List<T> recordList) {
         // TODO Auto-generated method stub
-        return baseDao.insertList(recordList);
+        return baseMapper.insertList(recordList);
     }
 
     @Override
     public int insertUseGeneratedKeys(T record) {
         // TODO Auto-generated method stub
-        return baseDao.insertUseGeneratedKeys(record);
+        return baseMapper.insertUseGeneratedKeys(record);
     }
 
     @Override
     public int updateByPrimaryKey(T record) {
         // TODO Auto-generated method stub
-        return baseDao.updateByPrimaryKey(record);
+        return baseMapper.updateByPrimaryKey(record);
     }
 
     @Override
     public int updateByPrimaryKeySelective(T record) {
         // TODO Auto-generated method stub
-        return baseDao.updateByPrimaryKeySelective(record);
+        return baseMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
     public List<T> selectAll() {
         // TODO Auto-generated method stub
-        return baseDao.selectAll();
+        return baseMapper.selectAll();
     }
 
     @Override
     public List<T> select(T record) {
         // TODO Auto-generated method stub
-        return baseDao.select(record);
+        return baseMapper.select(record);
     }
 
     @Override
     public T selectByPrimaryKey(Object key) {
         // TODO Auto-generated method stub
-        return baseDao.selectByPrimaryKey(key);
+        return baseMapper.selectByPrimaryKey(key);
     }
 
     @Override
     public int selectCount(T record) {
         // TODO Auto-generated method stub
-        return baseDao.selectCount(record);
+        return baseMapper.selectCount(record);
     }
 
     @Override
     public T selectOne(T record) {
         // TODO Auto-generated method stub
-        return baseDao.selectOne(record);
+        return baseMapper.selectOne(record);
     }
 
     @Override
     public int deleteByPrimaryKey(Object key) {
         // TODO Auto-generated method stub
-        return baseDao.deleteByPrimaryKey(key);
+        return baseMapper.deleteByPrimaryKey(key);
     }
 
     @Override
     public int delete(T record) {
         // TODO Auto-generated method stub
-        return baseDao.delete(record);
+        return baseMapper.delete(record);
     }
 
 }

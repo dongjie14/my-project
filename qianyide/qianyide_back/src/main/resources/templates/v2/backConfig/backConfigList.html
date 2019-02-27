@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+    <style>
+        .panel-body{
+            width: 100%;
+        }
+        table{
+            overflow: hidden;
+        }
+        td{
+            overflow: hidden;
+        }
+
+    </style>
+
+</head>
+<body>
+<form role="form" id="formpro" class="form-horizontal">
+
+    <div class="block no-col-padding" style="margin-bottom:0;">
+
+        <div class="form-group col-md-12 btn-form" style="text-align:left;">
+            <a href="/backConfigManagement/to-save" class="btn btn-info insertSpread">新增</a>
+        </div>
+
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">参数名称:</label>
+                <div class="col-md-8">
+                    <input type="text" id="sysName" name="sysName" th:value="${backConfigParams.sysName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">参数值:</label>
+                <div class="col-md-8">
+                    <input type="text" id="sysValue" name="sysValue" th:value="${backConfigParams.sysValue}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">参数Key:</label>
+                <div class="col-md-8">
+                    <input type="text" id="sysKey" name="sysKey" th:value="${backConfigParams.sysKey}"/>
+                </div>
+            </div>
+            <!--<span th:if="${hasParamStatus eq '0'}">
+                	<input type="hidden" id="status" name="status" th:value="${status}"/>
+                </span>-->
+
+
+            <div class="form-group col-md-12 btn-form" style="text-align:right;">
+                <button type="submit" class="btn btn-info">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+    <div class="panel-body">
+        <table class="table" id="bigDataList">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>名称</th>
+                <th>参数键</th>
+                <th>参数值</th>
+                <th>类别</th>
+                <th>描述</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="backConfig,iterStat:${pageInfo.list}">
+                <td th:text="${iterStat.index+1	}" ></td>
+                <td th:text="${backConfig.sysName}"></td>
+                <td th:text="${backConfig.sysKey}"></td>
+                <td th:text="${backConfig.sysValue == null ? '' : (#strings.append(#strings.substring(backConfig.sysValue,0,#strings.length(backConfig.sysValue)>50 ? 50 : #strings.length(backConfig.sysValue)),#strings.length(backConfig.sysValue)>50 ? '...':''))}"></td>
+                <td th:text="${backConfig.sysType}"></td>
+                <td th:text="${backConfig.remark}"></td>
+                <td class="details">
+                    <a th:href="'/backConfigManagement/to-save?id='+${backConfig.id}" target="external-frame">编辑</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tr>
+                <td height="33">
+                    <table width="100%" border="0" align="center" cellpadding="0"
+                           cellspacing="0" class="right-font08">
+                        <tr>
+                            <td align="left" class="td2" th:if="${not #lists.isEmpty(pageInfo)}"
+                                th:text="   ${'共'+pageInfo.total+ '条'}">
+                            </td>
+                            <td align="right" class="td2" id="pageFooter">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:inline="javascript">
+    //$('#bigDataList').DataTable()
+    $(function() {
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+    })
+</script>
+</html>

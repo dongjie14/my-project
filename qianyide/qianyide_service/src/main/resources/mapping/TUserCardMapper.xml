@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TUserCardMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TUserCard">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_no" jdbcType="VARCHAR" property="userNo" />
+    <result column="bank_card_no" jdbcType="VARCHAR" property="bankCardNo" />
+    <result column="bank_code" jdbcType="VARCHAR" property="bankCode" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bind_id" jdbcType="VARCHAR" property="bindId" />
+    <result column="bind_sts" jdbcType="INTEGER" property="bindSts" />
+    <result column="bind_type" jdbcType="INTEGER" property="bindType" />
+    <result column="bind_time" jdbcType="TIMESTAMP" property="bindTime" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

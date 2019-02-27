@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+</head>
+<body>
+	<form action="" id="systemUserForm">
+		<input type="hidden" id="id" name="id" th:value="${backUser.id}" />
+		<input type="hidden" id="oldPassword" name="oldPassword" th:value="${backUser.password}" />
+		<input type="hidden" id="userModules" name="userModules" />
+		<input type="hidden" id="status" name="status" />
+		<div class="block">
+			<div class="page-title">                    
+                    <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+                    <button type="button" onclick="dosubmit()" class="btn btn-info">保存</button>
+					<button type="button" class="btn btn-default giveUp">放弃</button> 
+					<!-- <a th:if="${backUser.id!=null}" href="/sysUserManagement/to-save" class="btn btn-info">新建</a> -->
+                </div>
+				
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- START TABS -->
+				<div class="panel panel-default tabs">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="active"><a href="#tab-first" role="tab"
+							data-toggle="tab">系统用户</a></li>
+						<li><a href="#tab-second" onclick="treeShow()" role="tab" data-toggle="tab">菜单权限列表</a></li>
+						<li><a href="#tab-third" role="tab" data-toggle="tab">登录日志</a></li>
+					</ul>
+					<div class="panel-body tab-content tabBox">
+						<div class="tab-pane active" id="tab-first">
+							<div class="nav col-md-6 nav-ul">
+								<div class="col-md-12">
+									<span class="col-md-2">编号</span><span class="col-md-6"
+										th:text="${backUser.userNo}"></span>
+								</div>
+
+								<div class="col-md-12">
+									<span class="col-md-2"><font color="red">*</font>用户类型</span>
+									<div class="col-md-6">
+										<select class="form-control" id="userType" name="userType">
+										    <option value="">没有选中任何项</option>
+											<option value="01">普通用户</option>
+											<option value="02">导流渠道</option>
+											<option value="03">发布渠道</option>
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">导流渠道</span>
+									<div class="col-md-6">
+										<select id="diversionChannel" name="diversionChannel"
+											class="selectpicker show-tick form-control"
+											data-live-search="true">
+											<option th:each="item, itemStat: ${channelList}"
+												th:value="${item.id}" th:text="${item.channelName}" />
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">发布渠道</span>
+									<div class="col-md-6">
+										<select id="publishingChannel" name="publishingChannel"
+											class="selectpicker show-tick form-control"
+											data-live-search="true" multiple="multiple">
+											<option th:each="item, itemStat: ${pushChannelList}"
+												th:value="${item.id}" th:text="${item.channelName}" />
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2"><font color="red">*</font>用户角色</span>
+									<div class="col-md-6">
+										<input type="text" id="depName" name="depName" class="form-control" value="" readonly="readonly"  />
+									 	<input type="hidden" id="userRoles" name="userRoles" th:value="${backUser.userRoles}"/>
+									 	
+									<div class="col-md-12" id="treebox" style="display:none;">
+										<input type="text" class="form-control" id="input-search" placeholder="" value=""/>
+										<div class="form-control" id="matching">没有找到匹配项</div>
+										<div class="col-md-12" id="treeview">
+									</div>
+									</div>
+									</div>
+									
+								</div>
+								
+
+								<div class="col-md-12">
+									<span class="col-md-2"><font color="red">*</font>用户名</span> <span
+										class="col-md-6"> <input type="text" id="account" class="validate[required,maxSize[8]] form-control"
+										name="account" th:value="${backUser.account}" pattern="^[^\u4e00-\u9fa5]{0,}$" data-bv-regexp-message="用户名格式不正确"
+										autocomplete="new-password" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2"><font color="red">*</font>密码</span> <span
+										class="col-md-6"> <input type="password" id="password"
+										name="password" th:value="${backUser.password}"
+										autocomplete="new-password" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">昵称</span> <span class="col-md-6">
+										<input type="text" id="nickName" name="nickName"
+										th:value="${backUser.nickName}" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">备注</span> <span class="col-md-6">
+										<textarea id="remarks" name="remarks" maxlength="200" 
+											th:text="${backUser.remarks}" rows="" cols="" class="remark"></textarea>
+									</span>
+								</div>
+
+								<div class="col-md-12">
+									<span class="col-md-2">创建人</span><span class="col-md-6"
+										th:text="${backUser.createAccount}"></span>
+								</div>
+								<div class="col-md-12">
+									<span class="col-md-2">创建于</span><span class="col-md-6"
+										th:text="${backUser.createTime==null?'':#dates.format(backUser.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+								</div>
+								<div class="col-md-12">
+									<span class="col-md-2">更新人</span><span class="col-md-6"
+										th:text="${backUser.updateAccount}"></span>
+								</div>
+								<div class="col-md-12">
+									<span class="col-md-2">更新于</span><span class="col-md-6"
+										th:text="${backUser.updateTime==null?'':#dates.format(backUser.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+								</div>
+							</div>
+							<div class="nav col-md-6 nav-ul">
+								<div class="col-md-12">
+									<span class="col-md-2" >有效</span><span class="col-md-6"><input
+										type="checkbox" id="statusCheck" name="statusCheck"
+										th:checked="${backUser.status}==1?true:false" /></span>
+								</div>
+
+								<div class="col-md-12">
+									<span class="col-md-2">公司</span> <span class="col-md-6">
+										<input type="text" id="company" name="company"
+										th:value="${backUser.company}" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">部门</span> <span class="col-md-6">
+										<input type="text" id="department" name="department"
+										th:value="${backUser.department}" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">岗位</span> <span class="col-md-6">
+										<input type="text" id="post" name="post"
+										th:value="${backUser.post}" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">姓名</span> <span class="col-md-6">
+										<input type="text" id="fullName" name="fullName"
+										th:value="${backUser.fullName}" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">电话</span> <span class="col-md-6">
+										<input type="tel" id="telephone" name="telephone" pattern="^1[345678][0-9]{9}$" data-bv-regexp-message="手机号码格式不正确"
+										th:value="${backUser.telephone}" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">邮箱</span> <span class="col-md-6">
+										<input id="email" name="email" type="email" data-bv-emailaddress-message="邮箱格式不正确"
+										th:value="${backUser.email}" />
+									</span>
+								</div>
+
+								<div class="col-md-12">
+									<span class="col-md-2">头像(200*200)</span>
+									<div class="col-md-6">
+										<img th:src="${backUser.portraitImg}" id="portraitImg_preview"
+											style="width: 200px; height: 200px;" />
+										<div id="portraitImgDiv"></div>
+										<input class="required text" id="portraitImg"
+											name='portraitImg' type="hidden"
+											th:value="${backUser.portraitImg}" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-second">
+							<div class="tab-box">
+									<div id="searchModuleTree"></div>
+
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-third">
+							<div class="panel-body">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>编号</th>
+											<th>登录时间</th>
+											<th>IP</th>
+										</tr>
+									</thead>
+									<tbody th:if="${userLoginRecordList != null }">
+										<tr th:each="page,iterStat:${userLoginRecordList}">
+											<td th:text="${page.id}"></td>
+											<td
+												th:text="${page.createTime==null?'':#dates.format(page.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+											<td th:text="${page.loginIp}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END TABS -->
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script type="text/javascript" th:src="@{/js/base.js}"></script>
+<script th:inline="javascript">
+        /*<![CDATA[*/
+        	var id=[[${backUser.id}]];
+        	var oldParentId=[[${backUser.userRoles}]];
+        	var nodeIds = new Array();
+	  		var nodesTexts = new Array();
+        	$(function(){
+	        		$('.selectpicker').selectpicker({});
+	        		$('#systemUserForm').bootstrapValidator();
+	        		loadModule([[${backUser.userRoles}]]);
+	        		 var timeOut = "";
+	             	/* $("#diversionChannel").parent().find(".input-block-level").bind("input propertychange",function(event){   //添加input框事件
+	             		searchData = $(this).val();
+	     		       clearTimeout(timeOut);
+	     		       timeOut = setTimeout(function(){   //设置延后ajax请求
+	     		           var tempAjax = "";
+	     		           var request = $.ajax({
+	     			            type: 'GET',
+	     			            url: '/channel/search?channelName=' + searchData,
+	     			       });
+	     		           request.done(function(data){
+	     			            var option_list = eval(data);
+	     			            $("#diversionChannel").empty();
+	     			            $("#diversionChannel").append(tempAjax);  
+	     			            for (var i = 0; i < option_list.length; i++) {
+	     			                $("#diversionChannel").append(
+	     			                    $("<option></option>").attr(
+	     			                        "value", option_list[i].id).text(option_list[i].channel_name)
+	     			                );
+	     			            }
+	     			            $('#diversionChannel').selectpicker('refresh');
+	     			            $('#diversionChannel').selectpicker('render');
+	     			            clearTimeout(timeOut);
+	     			        });
+	     		           
+	     		        },300);
+	     		   }); */
+					if(id==null){
+						$("#statusCheck").attr("checked","checked");
+						$("#userType").val("01");
+                        $('#diversionChannel').selectpicker('val', '');
+					}else{
+						$("#account").attr("readonly","readonly");
+						$("#userType").val([[${backUser.userType}]]);
+						var diversionChannel=[[${backUser.diversionChannel}]];
+						if(diversionChannel!=null && diversionChannel != ""){
+							$('#diversionChannel').selectpicker('val', diversionChannel.split(","));
+                            $('#diversionChannel').selectpicker('refresh');
+						} else {
+                            $('#diversionChannel').selectpicker('val', '');
+						}
+                        var publishingChannel=[[${backUser.publishingChannel}]];
+						if(publishingChannel!=null){
+							$('#publishingChannel').selectpicker('val', publishingChannel.split(","));
+							$('#publishingChannel').selectpicker('refresh');
+						}
+					}
+					$(".giveUp").click(function(){
+					$("#commonPopup").remove();
+					  var val = $(this).html();
+						popup(val);
+		    			$("#commonPopup").addClass("open");
+		    		});
+					$("body").delegate("#sureid","click",function(){
+		    			$("#commonPopup").removeClass("open");
+		    			if(id==null){
+		    				window.history.go(-1);
+		    			}else{
+		    				location.href='/sysUserManagement/to-Preview?id='+id;
+		    			}
+		    		});
+        	})
+        	$('#portraitImgDiv').Huploadify({
+		    	auto:true,
+				fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.bmp',
+				multi:false,
+				fileSizeLimit:99999999,
+				showUploadedPercent:true,//是否实时显示上传的百分比，如20%
+				showUploadedSize:true,
+				removeTimeout:2000,
+				uploader: '/backUpload/uploadFiles',
+				method:'post',
+				fileObjName:'Filedata',
+				onUploadSuccess:function(file,response){
+					 var respJson = JSON.parse(response);
+			            $("#portraitImg").val(respJson.data);
+			            $("#portraitImg_preview").attr("src", respJson.data);
+				}
+			});
+        	function dosubmit() {
+        		$('#systemUserForm').data('bootstrapValidator').validate();
+        		if($("#userType").val()== ''){
+        			alertPopup("用户类型不能为空!");
+        			return;
+        		}
+        		if($("#userRoles").val()== ''){
+        			alertPopup("用户角色不能为空!");
+        			return;
+        		}
+        		if($("#account").val()== ''){
+        			alertPopup("用户名不能为空!");
+        			return;
+        		}
+        		if($("#password").val()== ''){
+        			alertPopup("密码不能为空!");
+        			return;
+        		}
+        		$('#status').val($('#statusCheck').is(':checked')?1:0);
+        		var arrs=new Array();
+        		 $(".tab-box").find("input[type=checkbox]").each(function(){ 
+                     if($(this).is(':checked')){
+                         arrs.push($(this).val());
+                     }
+                 });
+        		$("#userModules").val(arrs.join(","));
+				if($("#systemUserForm").data("bootstrapValidator").isValid()){
+				 	loading();
+	        		 $.ajax({
+	                    type   : "post",
+	                    data   : $('#systemUserForm').serialize(),
+	                    url    : [[@{/sysUserManagement/save}]],
+	                    success: function (resp) {
+	                    	hidden();
+	                    	if(resp.id!=null){
+	                    		alertPopup(resp.errorMsg,function(){
+		                    		location.href='/sysUserManagement/to-Preview?id='+resp.id;
+		                    	});
+	                    	}else{
+	                    		alertPopup(resp.errorMsg);
+	                    	}
+	                    }
+	                }); 
+				}
+        	}
+        	function loadModule(roleId){
+        		oldParentId=roleId;
+        		loading();
+        		$.ajax({
+                    type: "post",
+                    data: {"roleId": roleId},
+                    dataType: "json",
+                    url: "/sysRoleManagement/getModule",
+                    success: function (ret) {
+                    	$("#searchModuleTree").html('<span><i class="icon-minus-sign"></i><input value="0" type="checkbox"/> 全选</span>' + ret.msg);
+                    	var userModules=[[${backUser.userModules}]];
+                	    if(userModules!=null){
+                	    	var userModule=userModules.split(",");
+                	    	$.each(userModule,function(i,value){
+	  							$(".tab-box").find("input[type=checkbox]")
+	  							$(".chp_"+value).prop('checked',true);
+	  						});
+                	    }
+	                   		wait();
+                	    
+  						hidden();
+                    }
+                });
+        	}
+        	function transData(a, idStr, pidStr, chindrenStr,onselect){   
+        	    var r = [], hash = {}, id = idStr, pid = pidStr, children = chindrenStr, i = 0, j = 0, len = a.length;  
+        	    if(onselect!=null){
+        	    	nodeIds=onselect.split(",");
+        	    }
+        	    var userRoleNames={};
+        	    for(; i < len; i++){    
+        	    	if(nodeIds.indexOf(a[i].id+"")>-1){
+        	    		a[i].state={checked: true};
+        	    		nodesTexts.push(a[i].text);
+        	    	}
+        	        hash[a[i][id]] = a[i];    
+        	    }    
+        	    $("#depName").val(nodesTexts);
+        	    for(; j < len; j++){    
+        	        var aVal = a[j], hashVP = hash[aVal[pid]];    
+        	        if(hashVP){    
+        	            !hashVP[children] && (hashVP[children] = []);    
+        	            hashVP[children].push(aVal);    
+        	        }else{    
+        	            r.push(aVal);    
+        	        }    
+        	    }    
+        	    return r;    
+        	}    
+		
+        	$(function() {
+		        var options = {
+		          bootstrap2: false, 
+		          showTags: true,
+				  showCheckbox:true,
+				  checkedIcon:"glyphicon glyphicon-check",
+		          data: transData([[${roleList}]], 'id', 'pid', 'nodes',[[${backUser.userRoles}]]),
+				  onNodeChecked: nodeChecked,  
+          		  onNodeUnchecked: nodeUnchecked
+		        };
+		        var search = function(e) {
+		            var pattern = $('#input-search').val();
+		            var results = $('#treeview').treeview('search', [ pattern, options ]);
+		            var searchVal = $("#input-search").val();
+		            if($(".search-result")){
+		            	$(".search-result").siblings().addClass("searchsiblings");
+		            	$(".search-result").removeClass("searchsiblings");
+		            	$(".searchsiblings").hide();
+		            }
+		            if(results.length==0){
+		            	$("#matching").show();
+		            	$("#treeview").hide();
+		            }else{
+		            	$("#matching").hide();
+		            	$("#treeview").show();
+		            }
+		            if(searchVal==""){
+		            	$("#matching").hide();
+		            	$("#treeview").show();
+		            }
+		            
+				};
+				$('#input-search').on('keyup', search);
+		        var nodeCheckedSilent = false;  
+					function nodeChecked (event, node){  
+					    if(nodeCheckedSilent){  
+					        return;  
+					    }  
+					    nodeCheckedSilent = true;
+					    /* checkAllSon(node);   */
+   					 	if(nodeIds.indexOf(node.id+"")==-1){
+					    	nodeIds.push(node.id+"");
+	  						nodesTexts.push(node.text);
+					    }
+   					    $("#depName").val(nodesTexts.join(","));
+   						$("#userRoles").val(nodeIds.join(","));
+   						
+					    nodeCheckedSilent = false;  
+					}
+		  			var nodeUncheckedSilent = false;  
+						function nodeUnchecked  (event, node){  
+						    if(nodeUncheckedSilent)  
+						        return;  
+						    nodeUncheckedSilent = true;  
+						    /*  uncheckAllSon(node);  */ 
+   						 	if(nodeIds.indexOf(node.id+"")>-1){
+						    	nodeIds.splice(nodeIds.indexOf(node.id+""),1);
+		  						nodesTexts.splice(nodesTexts.indexOf(node.text),1);
+						    }
+   							$("#depName").val(nodesTexts.join(","));
+   							$("#userRoles").val(nodeIds.join(","));
+						    nodeUncheckedSilent = false;  
+						}  
+						/* //级联选中所有子节点  
+						function checkAllSon(node){
+						    $('#treeview').treeview('checkNode',node.nodeId,{silent:true});  
+						    if(node.nodes!=null&&node.nodes.length>0){ 
+						        for(var i in node.nodes){  
+						            checkAllSon(node.nodes[i]);  
+						        }
+						         
+						    }
+						    if(nodeIds.indexOf(node.id)==-1){
+						    	nodeIds.push(node.id);
+		  						nodesTexts.push(node.text);
+						    }
+						   
+						    		
+						}  
+						//级联取消所有子节点  
+						function uncheckAllSon(node){  
+						    $('#treeview').treeview('uncheckNode',node.nodeId,{silent:true});  
+						    if(node.nodes!=null&&node.nodes.length>0){  
+						        for(var i in node.nodes){  
+						            uncheckAllSon(node.nodes[i]); 
+						        }  
+						    }
+						    if(nodeIds.indexOf(node.id)>-1){
+						    	nodeIds.splice(nodeIds.indexOf(node.id),1);
+		  						nodesTexts.splice(nodesTexts.indexOf(node.text),1);
+						    }
+						} */
+						
+				        $('#treeview').treeview(options);
+						
+		  		});
+		  		$(".tab-box").delegate('input','change',function(){
+	        		if($(this).is(':checked')){
+	        			$(".tab-box").find('input[pid='+$(this).val()+']').prop('checked',true).change();
+	        			//var pid=$(this).attr("pid");
+	        			//$(".tab-box").find('input[value='+pid+']').prop('checked',true);
+	        		}else{
+	        			$(".tab-box").find('input[pid='+$(this).val()+']').prop('checked',false).change();
+	        		}
+	        	})
+	        	
+	        	$(".tab-box").delegate('input','click',function(){
+	        		if($(this).is(':checked')){
+	        			var pid=$(this).attr("pid");
+	        			if(pid){
+	        				checkedParent(pid);
+	        			}
+	        		}
+	        	})
+	        	function checkedParent(pid){
+		  			$(".tab-box").find('input[value='+pid+']').prop('checked',true);
+		  			if($(".tab-box").find('input[value='+pid+']').attr("pid")){
+		  				checkedParent($(".tab-box").find('input[value='+pid+']').attr("pid"));
+		  			}
+		  		}
+				$(".fa-arrow-circle-o-left").click(function(){
+					base.quitParent("/sysUserManagement/searchBackUser");
+				})	 
+				
+				
+				document.querySelector('#depName').addEventListener('click', function(e){
+				 e.stopPropagation();
+				    document.querySelector('#treebox').classList.add('show');
+				}, false);
+				document.querySelector('#treebox').addEventListener('click', function(e){
+				    e.stopPropagation();
+				}, false);
+				
+				document.addEventListener('click', function(){
+				    document.querySelector('#treebox').classList.remove('show');
+				}, false);
+				function treeShow() {
+					if(oldParentId!=$("#userRoles").val()){
+						loadModule($("#userRoles").val());
+					}
+	        	}
+        	 /*]]>*/
+        </script>
+</html>

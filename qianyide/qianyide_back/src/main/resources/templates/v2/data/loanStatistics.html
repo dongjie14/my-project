@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title>放款统计</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/v2/css/jqueryDatatable.css}" />
+</head>
+<body>
+	<form role="form"
+		th:action="@{/data/loanStatisticsList?type=7}" id="formpro"
+		class="form-horizontal">
+		<input type="hidden" id="type" name="type" value="7"/>
+		<div class="block" style="margin-bottom: 0;">
+			<div class="form-group col-md-12 btn-form" style="text-align: left;">
+				<button type="button" id="export" class="btn btn-info">导出excel</button>
+			</div>
+			<div class="form-group col-md-4">
+				<label class="col-md-4 control-label">申请日期</label>
+				<div class="col-md-8">
+					<input name="startDate" id="startDate" th:value="${startDate}"
+						type="text" class="required"
+						style="width: 43%; float: left; padding: 6px 9px;"
+						onfocus="WdatePicker({isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'})"
+						title="请输入开始日期" size="30" /><span class="line">到</span><input
+						name="endDate" style="width: 43%; float: left; padding: 6px 9px;"
+						id="endDate" th:value="${endDate}" type="text" class="required"
+						onfocus="WdatePicker({isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-%d',minDate:'#F{$dp.$D(\'startDate\')}'})"
+						title="请输入截止日期" size="30" />
+				</div>
+			</div>
+			<div class="form-group col-md-4">
+				<label class="col-md-4 control-label">渠道:</label>
+				<div class="col-md-8">
+					<select class="form-control" id="channelId" name="channelId">
+						<option th:value="-1" th:text="全部" th:selected="${channelId} == -1" selected="selected"/>
+						<!--<option th:value="0" th:text="自然流量" th:selected="${channelId} == 0" />selected="${channelId} == 0" selected="selected"/>-->
+						<option th:each="item, itemStat: ${channelList}"
+								th:selected="${item.id} == ${channelId}"	th:value="${item.id}" th:text="${item.channelName}" />
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-md-4 btn-form" style="text-align: right;">
+				<button type="submit" class="btn btn-info">查询</button>
+			</div>
+		</div>
+	</form>
+	<div class="panel-body">
+		<table class="table" id="bigDataList">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>渠道</th>
+					<th>申请日期</th>
+					<th>新用户申请人数</th>
+					<th>新用户审核通过人数</th>
+					<th>新用户审核通过率</th>
+					<th>老用户申请人数</th>
+					<th>老用户审核通过人数</th>
+					<th>老用户审核通过率</th>
+					<th>应放款总额</th>
+					<th>放款成功总额</th>
+					<th>放款失败单数</th>
+					<th>审核通过率</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="page,iterStat:${pageInfo.list}">
+					<td th:text="${iterStat.index+1	}" ></td>
+					<td th:text="${curChannelName}"></td>
+					<td th:text="${page.applyTime}"></td>
+					<td style="border-left: #ccc 1px solid" th:text="${page.newApplyQuantity}"></td>
+					<td th:text="${page.newAuditQuantity}"></td>
+					<td style="border-right: #ccc 1px solid" th:text="${page.newRate}"></td>
+					<td th:text="${page.oldApplyQuantity}"></td>
+					<td th:text="${page.oldAuditQuantity}"></td>
+					<td style="border-right: #ccc 1px solid" th:text="${page.oldRate}"></td>
+					<td th:text="${page.loanMoneyCount}"></td>
+					<td th:text="${page.loanMoneyCountSuccess}"></td>
+					<td th:text="${page.loanFail}"></td>
+					<td th:text="${page.rate}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="95%" border="0" align="center" cellpadding="0"
+			cellspacing="0">
+			<tr>
+				<td height="33">
+					<table width="100%" border="0" align="center" cellpadding="0"
+						cellspacing="0" class="right-font08">
+						<tr>
+							<td align="left" class="td2"
+								th:if="${not #lists.isEmpty(pageInfo)}"
+								th:text="   ${'共'+pageInfo.total+ '条'}"></td>
+							<td align="right" class="td2" id="pageFooter"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}"
+	type="text/javascript"></script>
+<script th:inline="javascript">
+        /*<![CDATA[*/
+        	$(function(){
+        		$("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));  
+        		
+        		$("#export").click(function () {
+        			var startDate=$("#startDate").val();
+        			var endDate=$("#endDate").val();
+        			var channelId=$("#channelId").val();
+        	    	var href="/data/exportLoanExcelFile";
+        	    	if(startDate){
+        	    		href+="?startDate="+startDate;
+        	    	}
+        	    	if(endDate){
+        	    		if(href.indexOf('?') >= 0){
+        	    			href+="&endDate="+endDate;
+        	    		}else{
+	        	    		href+="?endDate="+endDate;
+        	    		}
+        	    	}
+                    if(channelId){
+                        if(href.indexOf('?') >= 0){
+                            href+="&channelId="+channelId;
+                        }else{
+                            href+="?channelId="+channelId;
+                        }
+                    }
+        	    	location.href=href;
+                });
+        	});
+        	 /*]]>*/
+        </script>
+</html>

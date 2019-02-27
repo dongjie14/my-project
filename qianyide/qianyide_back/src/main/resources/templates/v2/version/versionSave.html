@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme"
+          th:href="@{/v2/css/theme-default.css}" />
+    <link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+          type="text/css" />
+</head>
+<body>
+<form role="form" id="spreadForm" class="form-horizontal col-md-6">
+    <div class="block">
+        <div class="page-title">
+            <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+            <button type="button" onclick="doSubmit()" class="btn btn-info">保存</button>
+        </div>
+
+    </div>
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="block" style="margin-bottom:0;">
+            <input type="hidden" id="id" name="id" th:value="${iterationVersion.id}"/>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>版本号:</label>
+                <div class="col-md-8">
+                    <input type="text" id="versionNo" name="versionNo" th:value="${iterationVersion.versionNo}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label">版本Code:</label>
+                <div class="col-md-8">
+                    <input type="text" placeholder="安卓才有版本Code" id="versionCode" name="versionCode" th:value="${iterationVersion.versionCode}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>版本更新内容:</label>
+                <div class="col-md-8">
+                    <div style="display: none" id="contentDiv">
+                    </div>
+                    <input type="hidden" id="versionContent"  name='versionContent' th:value="${iterationVersion.versionContent}"/>
+                    <input placeholder="键入内容,按回车键输入下一条"  class="required text" id="contentInput"  onkeydown="contentPacking(event)" type="text"  />
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>APP下载地址:</label>
+                <div class="col-md-8">
+                    <input type="text" id="downloadUrl" name="downloadUrl" th:value="${iterationVersion.downloadUrl}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>H5下载页面:</label>
+                <div class="col-md-8">
+                    <input type="text" id="h5Url" name="h5Url" th:value="${iterationVersion.h5Url}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>是否强更:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="forceUpdate" name="forceUpdate">
+                        <option value="0" th:selected="${iterationVersion.forceUpdate == 0}">否</option>
+                        <option value="1" th:selected="${iterationVersion.forceUpdate == 1}">是</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>操作系统:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="os" name="os">
+                        <option value="0" th:selected="${iterationVersion.os == 0}">安卓</option>
+                        <option value="1" th:selected="${iterationVersion.os == 1}">IOS</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label">备注:</label>
+                <div class="col-md-8">
+                    <input type="text" id="remark" name="remark" th:value="${iterationVersion.remark}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label class="col-md-4 control-label"><span style="color: red">*</span>版本状态:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="status" name="status">
+                        <option value="1" th:selected="${iterationVersion.status == 1}">最新版本</option>
+                        <option value="0" th:selected="${iterationVersion.status == 0}">旧版本</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+        th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    window.onload = init;
+
+    function init(){
+        //var versionContent = "${iterationVersion.versionContent}";
+        //console.log(versionContent);
+        versionContext();
+    }
+
+    function contentPacking(e){
+        var keynum;
+        keynum = window.event ? e.keyCode : e.which;
+        if(keynum == 13){
+            var oldHtml = $("#contentDiv").html();
+            var inputVal = $("#contentInput").val();
+            if(inputVal.trim() != ''){
+                var num = 1;
+                var children = $("#contentDiv").children();
+                //console.log(children.length);
+                if(children.length>0){
+                    children.each(function () {
+                        var pval = $(this).html();
+                        var split = pval.split("</span>");
+                        //console.log("split"+split);
+                        var split1 = split[0].split("<span>");
+                        //console.log("split1"+split1);
+                        num = parseInt(split1[1].trim())+1;
+                    })
+                }
+                var spanBtn = '<span id="span'+num+'" style="border-radius:20px;color:red;cursor:pointer;" onclick="removeClick(id)">&nbsp;&nbsp;删除&nbsp;&nbsp;</span>'
+                var inputSpan = '<span name="textSpan">'+inputVal+'</span>&nbsp;&nbsp;&nbsp;&nbsp;'
+                $("#contentDiv").html(oldHtml+'<p><span>'+num+'</span>.'+inputSpan+spanBtn+'</p>');
+                $("#contentInput").val("");
+                $("#contentDiv").prop("style","display:inline-block");
+            }
+        }
+    }
+
+    function versionContext() {
+        var val = $("#versionContent").val();
+        if(val != ''){
+            if(val != '[]'){
+                val = val.replace('[','');
+                val = val.replace(']','');
+                val = val.replace(/"/g,'');
+                var arr = val.split(",");
+                var html = "";
+                var finalHtml = "";
+                for (var i=1;i<=arr.length;i++){
+                    var spanBtn = '<span id="span'+i+'" style="border-radius:20px;color:red;cursor:pointer;" onclick="removeClick(id)">删除</span>'
+                    var inputSpan = '<span name="textSpan">'+arr[i-1]+'</span>&nbsp;&nbsp;&nbsp;&nbsp;'
+                    finalHtml+='<p><span>'+i+'</span>.'+inputSpan+spanBtn+'</p>';
+                }
+                $("#contentDiv").html(finalHtml);
+                $("#contentDiv").prop("style","display:inline-block");
+            }
+        }
+    }
+
+    function removeClick(id){
+        //console.log($("#"+id).parent().html())
+        $("#"+id).parent().remove();
+        var html = "";
+        var num = 1;
+        $("#contentDiv").children().each(function(){
+            var pval = $(this).html();
+            var split = pval.split("</span>");
+            //console.log(split);
+            html += '<p><span>'+num+'</span>'+split[1] + '</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="span'+num+'" style="border-radius:20px;color:red;cursor:pointer;" onclick="removeClick(id)">删除</span></p>';
+            num++;
+        })
+        if(html == ''){
+            $("#contentDiv").prop("style","display:none");
+        }
+        $("#contentDiv").html(html);
+    }
+
+    function versionContextPacking(){
+        var html = $("#contentDiv").html();
+        var versionContent = $("#contentInput").val();
+        var finalVal = "";
+        if(html != ''){
+            $("span[name='textSpan']").each(function(){
+                finalVal+=$(this).html()+"-";
+            })
+        }
+        $("#versionContent").val(finalVal+versionContent);
+        console.log($("#versionContent").val());
+    }
+
+    function doSubmit() {
+        //$('#bannerForm').data('bootstrapValidator').validate();
+        versionContextPacking();
+        if($("#versionNo").val()== ''){
+            alertPopup("版本号不能为空!");
+            return;
+        }
+        if($("#versionNo").val().length>10){
+            alertPopup("版本号长度不能超过10位!");
+            return;
+        }
+        if($("#versionContent").val() == ''){
+            alertPopup("版本更新内容不能为空!");
+            return;
+        }
+
+        if($("#downloadUrl").val()== ''){
+            alertPopup("下载地址不能为空!");
+            return;
+        }
+        if($("#downloadUrl").val().length>255){
+            alertPopup("下载地址不能超过255位!");
+            return;
+        }
+        if($("#h5Url").val()== ''){
+            alertPopup("H5下载页地址不能为空!");
+            return;
+        }
+        if($("#h5Url").val().length>255){
+            alertPopup("H5下载页地址长度不能超过255位!");
+            return;
+        }
+        if($("#os").val() == 0){
+            var reg = /^\d*$/;
+            if($("#versionCode").val().trim() == ''){
+                alertPopup("当版本是安卓时版本Code不能为空!");
+                return;
+            }else{
+                if(!reg.test($("#versionCode").val())){
+                    alertPopup("版本Code只能为数字!");
+                    return;
+                }
+            }
+        }
+
+        $.ajax({
+            type   : "post",
+            data   : $('#spreadForm').serialize(),
+            url    : [[@{/version/save}]],
+        success: function(resp) {
+            hidden();
+            if(resp.code == '200'){
+                alertPopup(resp.msg,function(){
+                    location.href='/version/versionList';
+                });
+            }else{
+                alertPopup(resp.msg);
+            }
+        }
+    });
+
+    }
+
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href='/version/versionList';
+    })
+
+    $(function () {
+
+
+        /*$(".loadExcel").click(function () {
+            var id = $("#id").val();
+            var userName = $("#userName").val();
+            var userPhone = $("#userPhone").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            var startLoanDate = $("#startLoanDate").val();
+            var endLoanDate = $("#endLoanDate").val();
+            var status = $("#status").val();
+            var channelId = $("#channelId").val();
+            var href = "/assetBorrowOrder/orderExport?id=" + id + "&userName=" + userName + "&userPhone=" + userPhone
+                + "&startDate=" + startDate + "&endDate=" + endDate + "&startLoanDate=" + startLoanDate + "&endLoanDate=" + endLoanDate
+                + "&status=" + status + "&channelId=" + channelId;
+
+
+            location.href = href;
+        });*/
+
+    });
+    /*]]>*/
+</script>
+</html>

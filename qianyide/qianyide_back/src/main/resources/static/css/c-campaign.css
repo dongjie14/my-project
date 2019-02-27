@@ -1,0 +1,178 @@
+@charset "utf-8";
+
+/* path */
+.g-header .m-inner {
+    display: block !important;
+}
+
+.g-header .m-hand {
+    display: none;
+}
+
+/* content */
+.block {
+    margin-bottom: 20px;
+}
+
+.aside {
+    margin-top: 309px;
+}
+
+.mainside .main-cont {
+    border: 1px solid #e4e4e4;
+    padding: 10px 15px;
+}
+
+.mainside .main-cont h1 {
+    padding-top: 20px;
+    border-bottom: 1px solid #e4e4e4;
+    font-size: 16px;
+    line-height: 2;
+    text-align: center;
+}
+
+.mainside .main-cont .cont .date {
+    padding: 5px 0;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+}
+
+/* classify area */
+.classify-area h1 {
+    width: 900px;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 auto;
+    padding: 10px;
+    border-bottom: 1px #ccc solid
+}
+
+.classify-area .rec-pager li {
+    background-image: url(../images/g-sprite.png);
+    background-repeat: no-repeat;
+}
+
+.classify-area .rec-pager {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+
+.classify-area .rec-pager li {
+    background-position: -168px -237px;
+    width: 10px;
+    height: 10px;
+    float: left;
+    display: inline;
+    margin-left: 5px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.classify-area .rec-pager .active {
+    background-position: -178px -237px;
+}
+
+.classify-area .tab-item a {
+    background-image: url(../images/g-repeatx.png);
+    background-repeat: repeat-x;
+}
+
+.classify-area .prev,
+.classify-area .next {
+    background-image: url(../images/c-order.png);
+    background-repeat: no-repeat;
+}
+
+.classify-area {
+    border: 1px solid #e4e4e4;
+    border-top: 3px solid #6c3;
+    margin-top: 10px;
+    position: relative;
+    zoom: 1;
+}
+
+.classify-area .tab-item {
+    height: 40px;
+    overflow: hidden;
+}
+
+.classify-area .tab-item ul {
+    margin-left: -3px;
+    zoom: 1;
+}
+
+.classify-area .tab-item li {
+    float: left;
+    width: 316px;
+    height: 39px;
+    border-left: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    text-align: center;
+}
+
+.classify-area .tab-item a {
+    background-position: 0 -109px;
+    display: block;
+    line-height: 38px;
+    margin: 0 1px;
+    height: 38px;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.classify-area .tab-item .active {
+    border-bottom-color: #fff;
+}
+
+.classify-area .tab-item .active a {
+    background: none;
+    color: #390;
+    cursor: default;
+}
+
+.classify-area .tab-cont {
+    width: 948px;
+    height: 319px;
+    overflow: hidden;
+}
+
+.classify-area .tab-cont ul {
+    padding: 10px 0;
+}
+
+.classify-area .tab-cont .cont {
+    width: 948px;
+    height: 319px;
+    overflow: hidden;
+}
+
+.classify-area .product-list {
+    width: 888px;
+}
+
+.classify-area .product-list li {
+    padding: 0;
+}
+
+.classify-area .prev,
+.classify-area .next {
+    position: absolute;
+    width: 22px;
+    height: 100px;
+    top: 135px;
+    cursor: pointer;
+    z-index: 50;
+}
+
+.classify-area .prev {
+    background-position: -317px 0;
+    left: 0;
+}
+
+.classify-area .next {
+    background-position: -339px 0;
+    right: 0;
+}

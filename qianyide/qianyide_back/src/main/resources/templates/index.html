@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" style="height: 100%;width: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>网站后台管理系统</title>
+    <link th:href="@{/css/style1.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/index_main.css}" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        var status = 1;
+        //		var Menus = new DvMenuCls;
+        //		document.onclick=Menus.Clear;
+        function switchSysBar() {
+            if (1 == window.status) {
+                window.status = 0;
+                switchPoint.innerHTML = '<img th:src="@{/images/left.gif}"/>';
+                document.all("frmTitle").style.display = "none"
+            }
+            else {
+                window.status = 1;
+                switchPoint.innerHTML = '<img th:src="@{/images/teble_bottom_right.gif}"/>';
+                document.all("frmTitle").style.display = ""
+            }
+        }
+
+    </script>
+</head>
+<body style="height: 100%;width: 100%;">
+
+<!--导航部分-->
+
+<div class="top_table">
+    <div class="top_table_leftbg">
+        <div class="system_logo"><img th:src="@{/images/logo_up.gif}"/></div>
+    </div>
+</div>
+<div style="height:24px; background:#337ABB;"></div>
+<!--导航部分结束-->
+
+<table border='0' cellPadding='0' cellSpacing='0' height="92%" width="100%" style="background:#337ABB;">
+    <tbody>
+    <tr>
+        <!--style="height: 900px;"-->
+        <td align="center" id='frmTitle' vAlign='top' class="main_left" style="width: 180px;height: 100%;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="main_left_top">
+                <tr height="32">
+                    <td valign="top"></td>
+                    <td class="main_left_title" id="leftmenu_title"></td>
+                    <td valign="top" align="right"></td>
+                </tr>
+            </table>
+            <!--<div th:include="left :: left" frameBorder='0'  class="left_iframe" allowTransparency="true"></div>-->
+            <iframe id="frmleft" name='frmleft' frameborder="0" th:src="@{/left}" class="left_iframe" allowTransparency="true"></iframe>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr height="32">
+                    <td valign="top"></td>
+                    <td valign="bottom" align="center"></td>
+                    <td valign="top" align="right"></td>
+                </tr>
+            </table>
+        </td>
+
+        <td bgColor='#337ABB' style="WIDTH: 10px" onclick='switchSysBar()'>
+            <span class='navPoint' id='switchPoint' title="关闭/打开左栏"><img
+                    th:src="@{/images/right.gif}"/></span>
+        </td>
+
+        <td bgcolor="#337ABB" width="100%" vAlign='top'>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#C4D8ED">
+                <tr height="32">
+                    <td valign="top" width="10" th:background="@{/images/bgi2.gif}">
+                        <img th:src="@{/images/teble_top_left.gif}" alt=""/>
+                    </td>
+                    <td th:background="@{/images/bgi2.gif}" width="28">
+                        <img th:src="@{/images/arrow.gif}" alt="" align="middle"/>
+                    </td>
+                    <td th:background="@{/images/bgi2.gif}">
+                        <span style="float:left">官方公告：</span>
+                        <span style="color:#c00; font-weight:bold; float:left;width:300px;" id="dvbbsannounce">
+		    		<marquee scrollamount="2" direction="left" th:each="item:${noticeList}">
+                        <!--<span th:text="*{notContent}"></span>-->
+                        <!--<c:forEach var="item" items="${noticeList}">
+                            <c:out value="${item.notContent}"></c:out>|
+                        </c:forEach>-->
+		    		</marquee>
+
+		    	</span>
+                    </td>
+                    <td th:background="@{/images/bgi2.gif}" style="text-align:right; color: #135294; ">
+                        您好,辛苦的
+                        <span th:text="${session.JIEJIEKAN_BACK_USER.account}"></span>
+                        | <a href="/back/index" target='_top'>后台首页</a> |
+                        <a href="#" target="_top">网站首页</a> | <a href="/user/logout" target="_top">退出</a> | <a href="/refreshCache" target="_top">刷新系统缓存</a></td>
+                    <td align="right" valign="top" th:background="@{/images/bgi2.gif}" width="28">
+                        <img th:src="@{/images/teble_top_right.gif}" alt=""/>
+                    </td>
+                    <td align="right" width="16" bgcolor="#337ABB"></td>
+                </tr>
+            </table>
+            <iframe frameBorder='0' id="mainFrame" name='mainFrame' scrolling='yes' src="" class="main_iframe" ></iframe>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background:#C4D8ED;">
+                <tr>
+                    <td><img th:src="@{/images/teble_bottom_left.gif}" alt="" width="5" height="6"/></td>
+                    <td align="right"><img th:src="@{/images/teble_bottom_right.gif}" alt="" width="5" height="6"/>
+                    </td>
+                    <td align="right" width="16" bgcolor="#337ABB"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+</html>

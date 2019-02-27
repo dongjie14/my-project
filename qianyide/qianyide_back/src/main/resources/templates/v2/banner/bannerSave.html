@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+</head>
+<body>
+	<form action="" id="bannerForm">
+		<input type="hidden" id="id" name="id" th:value="${bannerInfo.id}" />
+		<div class="block">
+			<div class="page-title">                    
+                    <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+                    <button type="button" onclick="dosubmit()" class="btn btn-info">保存</button>
+					<button type="button" class="btn btn-default giveUp">放弃</button> 
+                </div>
+				
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- START TABS -->
+				<div class="panel panel-default tabs">
+					<div class="panel-body tab-content tabBox">
+						<div class="tab-pane active" id="tab-first">
+							<table>
+								<tr>
+									<td class="td-left"><font color="red">*</font>海报名称</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="title" name="title" th:value="${bannerInfo.title}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>海报封面	</td>
+									<td class="td-right">
+										<img th:src="${bannerInfo.url}" id="portraitImg_preview"
+											style="width: 750px; height: 370px;" />
+										<div id="portraitImgDiv"></div>
+										<input class="required text" id="url"
+											name='url' type="hidden"
+											th:value="${bannerInfo.url}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left">海报详情</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="reurl" name="reurl" th:value="${bannerInfo.reurl}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>排序</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="sort" name="sort" th:value="${bannerInfo.sort}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>上下架</td>
+									<td class="td-right">
+										<input type="radio" class="form-control"  name="status" value="1"   th:checked="${bannerInfo.status==1}" />上架
+										<input type="radio" class="form-control"  name="status" value="0"   th:checked="${bannerInfo.status==0}"/>下架
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- END TABS -->
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+		var id=[[${bannerInfo.id}]];
+		$('#portraitImgDiv').Huploadify({
+			auto:true,
+			fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.bmp',
+			multi:false,
+			fileSizeLimit:99999999,
+			showUploadedPercent:true,//是否实时显示上传的百分比，如20%
+			showUploadedSize:true,
+			removeTimeout:2000,
+			uploader: '/backUpload/uploadFiles',
+			method:'post',
+			fileObjName:'Filedata',
+			onUploadSuccess:function(file,response){
+				 var respJson = JSON.parse(response);
+				 
+		            $("#url").val(respJson.data);
+		            $("#portraitImg_preview").attr("src", respJson.data);
+			}
+		});
+			
+		$(".fa-arrow-circle-o-left").click(function(){
+			
+			location.href="/banner/bannerList";
+		})
+			
+		$(".giveUp").click(function(){
+				$("#commonPopup").remove();
+				var val = $(this).html();
+				popup(val);
+			    $("#commonPopup").addClass("open");
+		});
+		$("body").delegate("#sureid","click",function(){
+			    $("#commonPopup").removeClass("open");
+			    window.history.go(-1);
+		});
+			
+			
+			 function dosubmit() {
+        	    //$('#bannerForm').data('bootstrapValidator').validate();
+        	   
+ 				
+        		if($("#title").val()== ''){
+        			alertPopup("海报名称不能为空!");
+        			return;
+        		}
+        		
+        		if($("#url").val()== ''){
+        			alertPopup("海报封面不能为空!");
+        			return;
+        		}
+        		
+        		
+        		
+        		if($("#sort").val()== ''){
+        			alertPopup("排序不能为空!");
+        			return;
+        		}
+        		
+        		if (!(/(^[1-9]\d*$)/.test($("#sort").val()))) { 
+        		　　　alertPopup("排序请输入数字!"); 
+        		　　　return ; 
+        		}
+        		
+       
+ 				if($('input:radio[name="status"]:checked').val()==null){
+ 					alertPopup("请选择上下架!");
+ 	                return ;
+ 	            }
+ 				
+        		$.ajax({
+                    type   : "post",
+                    data   : $('#bannerForm').serialize(),
+                    url    : [[@{/banner/save}]],
+                    success: function (resp) {
+                    	hidden();
+                        alertPopup(resp.msg,function(){
+                        	location.href='/banner/bannerList';
+                        });
+                    }
+                }); 
+				
+        	} 
+        	
+        	        	
+        	
+        	
+        	
+        </script>
+</html>

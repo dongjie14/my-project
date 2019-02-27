@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TSysModuleMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TSysModule">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="module_id" jdbcType="VARCHAR" property="moduleId" />
+    <result column="super_module_id" jdbcType="VARCHAR" property="superModuleId" />
+    <result column="module_url" jdbcType="VARCHAR" property="moduleUrl" />
+    <result column="module_type" jdbcType="INTEGER" property="moduleType" />
+    <result column="module_rank" jdbcType="INTEGER" property="moduleRank" />
+    <result column="enable" jdbcType="INTEGER" property="enable" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_account" jdbcType="VARCHAR" property="createAccount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_account" jdbcType="VARCHAR" property="updateAccount" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

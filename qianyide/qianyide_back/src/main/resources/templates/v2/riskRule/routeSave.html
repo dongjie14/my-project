@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme"
+          th:href="@{/v2/css/theme-default.css}" />
+    <link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+          type="text/css" />
+    <style>
+        .myTable{
+            width:80%;
+            margin:0 auto;
+        }
+        .myTable select{
+            width:60%;
+            display: inline-block;
+        }
+        #routeForm{
+            width:100%;
+        }
+        input{
+            width:60%;
+            display: inline-block;
+            text-align: center;
+        }
+        .ruleSpan{
+            display: inline-block;
+            border: 1px solid gray;
+            padding: 5px 5px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin:0 auto;
+            -moz-user-select:none;/*火狐*/
+            -webkit-user-select:none;/*webkit浏览器*/
+            -ms-user-select:none;/*IE10*/
+            -khtml-user-select:none;/*早期浏览器*/
+            user-select:none;
+        }
+        .innerDiv{
+            width:100%;
+            margin:0 auto;
+        }
+        .ruleSpan:hover{
+            background-color: rgba(95,180,181,0.43);
+            cursor: pointer;
+        }
+        .spanClass{
+            display: inline-block;
+            width:24%;
+            margin-bottom:10px;
+        }
+        .block-right{
+            width:80%;
+            margin-top:50px;
+            margin:0 auto;
+            padding-left:20px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .explain_div{
+            width: 80%;
+            margin:5px auto;
+        }
+        .block-left{
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+<form role="form" id="routeForm" class="form-horizontal col-md-6">
+    <div class="block">
+        <div class="page-title">
+            <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+            <button type="button" onclick="doSubmit()" class="btn btn-info">保存</button>
+        </div>
+
+    </div>
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="block-left" style="margin-bottom:0;">
+            <!--<p style="text-align: center;font-size: 25px" th:text="${rightInfo.rigthName}"></p>-->
+            <p style="font-size:25px;font-weight: bold;text-align: center;" th:text="${rightInfo.rigthName}"></p>
+            <input type="hidden" id="rightId" name="rightId" th:value="${rightId}"/>
+            <table class="myTable">
+                <thead>
+                    <tr>
+                        <th>规则名称</th>
+                        <th>执行顺序</th>
+                        <th>值</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="rule,iterRule:${routeInfo.ruleByRouteDtoList}">
+                        <td width="30%">
+                            <input th:value="${rule.ruleName}" name="ruleName" type="text"/>
+                            <input type="hidden" th:value="${rule.ruleId}" name="ruleId"/>
+                            <input type="hidden" th:value="${rule.ruleCode}" name="ruleCode"/>
+                        </td>
+                        <td  width="13%">
+                            <input readonly="readonly" name="ruleSort" th:value="${rule.ruleSort}"/>
+                        </td>
+                        <td width="13%">
+                            <input name="ruleValue" th:value="${rule.ruleValue}"/>
+                            <input type="hidden" name="routeId" th:value="${rule.routeId}"/>
+                            <!--<input type="hidden" name="ruleId" th:value="${rule.ruleId}"/>-->
+                        </td>
+                        <td width="20%">
+                            <select th:if="${rule.ruleStatus == 1}" style="color: #1DC116;text-align: center" name="ruleStatus">
+                                <option style="color: black" th:selected="${rule.ruleStatus == 1}" th:value="1" th:text="使用中"></option>
+                                <option style="color: black" th:selected="${rule.ruleStatus == 0}" th:value="0" th:text="未使用"></option>
+                            </select>
+                            <select th:if="${rule.ruleStatus == 0}" style="color: red;text-align: center" name="ruleStatus">
+                                <option style="color: black" th:selected="${rule.ruleStatus == 1}" th:value="1" th:text="使用中"></option>
+                                <option style="color: black" th:selected="${rule.ruleStatus == 0}" th:value="0" th:text="未使用"></option>
+                            </select>
+                        </td>
+                        <td width="24%">
+                            <button type="button" class="btn btn-gray" th:if="${iterRule.index != 0}" name="upBtn" onclick="upSortClick(this)">↑排序上调</button>
+                            <button type="button" class="btn btn-gray" th:if="${iterRule.index+1 != iterRule.size}" name="downBtn" onclick="downSortClick(this)">↓排序下调</button>
+                            <button type="button" class="btn btn-gray" onclick="removeClick(this)">移除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="explain_div">
+                <p style="padding:0 20px;text-align: left"><font color="red">*</font>注：规则值是对应不同规则而言的，如果存在上限值和下限值 请用“&amp;”符号隔开(例：23&amp;35)</p>
+            </div>
+        </div>
+        <div class="block-right">
+            <div class="innerDiv">
+                <p style="text-align: center;font-size: 25px">未选中规则</p>
+                <p style="text-align: center;font-size: 12px;border-bottom:1px solid gray">(双击选择)</p>
+                <div class="spanClass" th:each="item, itemStat: ${noSelectRuleInfo}">
+                    <span class="ruleSpan" ondblclick="chooseRule(this)" th:text="${item.value.rlueName}" th:value="${item.value.rlueCode}" th:id="${item.value.id+'_'+rightId}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+        th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script type="text/javascript">
+    /*<![CDATA[*/
+
+    let selectVal;
+    let selectText;
+    let ruleId;
+    function getSelectedVal(self) {
+        selectVal = $(self).val();
+        selectText = $(self).find("option:selected").text();
+        ruleId = $(self).find("option:selected").attr("id").split("_")[1];
+    }
+
+    function selectChange(self) {
+        let currentVal = $(self).val();
+        let flag = 0;
+        $(".myTable").children("tbody:last-child").children().each(function () {
+            var val = $(this).children("td:first-child").children("select:first-child").val();
+            if(val == currentVal){
+                flag++;
+            }
+        })
+        if(flag >1){
+            alert("已存在,请重新选择！");
+            $(self).val(selectVal);
+            $(self).find("option:selected").text(selectText);
+        }else{
+            $(".innerDiv").children("div").each(function(){
+                var sapnChild = $(this).children("span:first-child");
+                var spanVal = $(sapnChild).attr("value");
+                if(spanVal == currentVal){
+                    console.log(spanVal + " -- "+currentVal)
+                    $(sapnChild).attr("value",selectVal);
+                    $(sapnChild).text(selectText);
+                    $(sapnChild).attr("id",ruleId+"_"+$("#rightId").val())
+                }
+            })
+        }
+    }
+
+    function chooseRule(self){
+        let len = $(".myTable").children("tbody:last-child").children().length;
+        if(len>0){
+            var lastChild = $(".myTable").children("tbody:last-child").children("tr:last-child");
+            var clone = lastChild.clone();
+            //console.log(lastChildHtml)
+            var prev = lastChild.prev();
+            var lastTdHtml = lastChild.children("td:last-child").html();
+            var beforeHtml = prev.children("td:last-child").html();
+            lastChild.children("td:last-child").html(beforeHtml);
+
+            //var newLastChild = $(".myTable").children("tbody:last-child").children("tr:last-child");
+            var tdFirstChild = clone.children("td:first-child");
+            //设置第一个input的值
+            var tdHtml = '<input value="'+$(self).text()+'" name="ruleName" type="text"/>\n' +
+                '                            <input type="hidden" value="'+$(self).attr("id").split("_")[0]+'" name="ruleId"/>\n' +
+                '                            <input type="hidden" value="'+$(self).attr("value")+'" name="ruleCode"/>'
+            tdFirstChild.html(tdHtml)
+            console.log(clone.html())
+            clone.children().eq(2).children("input:first-child").val(0);
+            $(".myTable").children("tbody:last-child").append(clone);
+            indexSort($(".myTable"));
+            $(self).parent().remove();
+            addButton();
+        }else{
+            var ids = $(self).attr("id");
+            var split = ids.split("_");
+            location.href="/ruleRoute/to-save?rightId="+split[1]+"&ruleId="+split[0];
+        }
+    }
+
+    function upSortClick(self){
+        var parent = $(self).parent().parent();
+        var prev = parent.prev();
+        var parentRuleValue = parent.children("td").find("input[name='ruleValue']").val();
+        var prevRuleValue = prev.children("td").find("input[name='ruleValue']").val();
+        var parentHtml = parent.html();
+        var prevHtml = prev.html();
+        parent.html(prevHtml);
+        prev.html(parentHtml);
+        parent.children("td").find("input[name='ruleValue']").val(prevRuleValue);
+        prev.children("td").find("input[name='ruleValue']").val(parentRuleValue);
+        indexSort($(".myTable"));
+        addButton();
+    }
+
+    function removeClick(self){
+        var parent = $(self).parent().parent();
+        var prev = parent.prev();
+        //console.log(prev.html())
+        var next = parent.next();
+        if(prev.html() == undefined){
+            parent.next().children("td:last-child").html(parent.children("td:last-child").html());
+        }
+        if(next.html() == undefined){
+            parent.prev().children("td:last-child").html(parent.children("td:last-child").html());
+        }
+        var rightId = $("#rightId").val();
+        var inputs = parent.children("td:first-child").children("input");
+        var ruleName = inputs.eq(0).val();
+        var ruleId = inputs.eq(1).val();
+        var ruleCode = inputs.eq(2).val();
+        var lastDivChild = $(".innerDiv").children("div:last-child");
+        var clone = lastDivChild.clone();
+        var spanChild = clone.children("span:first-child");
+        spanChild.html(ruleName);
+        spanChild.attr("value",ruleCode);
+        spanChild.attr("id",ruleId+"_"+rightId);
+        $(".innerDiv").append(clone);
+        //var lastDivHtml = "<div class='spanClass'><span class='ruleSpan' ondblclick='chooseRule(this)' value='"+selectVal+"'>"+selectText+"</span></div>";
+        parent.remove();
+        indexSort($(".myTable"));
+        addButton();
+    }
+
+    function addButton(){
+        let len = $(".myTable").children("tbody:last-child").children().length;
+        var downHtml = '<button type="button" class="btn btn-gray"  name="downBtn" onclick="downSortClick(this)">↓排序下调</button>\n' +
+            '                            <button type="button" class="btn btn-gray" onclick="removeClick(this)">移除</button>';
+        var upHtml = '<button type="button" class="btn btn-gray"  name="upBtn" onclick="upSortClick(this)">↑排序上调</button>\n' +
+            '                            <button type="button" class="btn btn-gray" onclick="removeClick(this)">移除</button>';
+        var removeHtml = '<button type="button" class="btn btn-gray" onclick="removeClick(this)">移除</button>';
+
+        var allHtml = '<button type="button" class="btn btn-gray" name="upBtn" onclick="upSortClick(this)">↑排序上调</button>\n' +
+            '                            <button type="button" class="btn btn-gray" name="downBtn" onclick="downSortClick(this)">↓排序下调</button>\n' +
+            '                            <button type="button" class="btn btn-gray" onclick="removeClick(this)">移除</button>'
+        if(len == 2){
+            var firstChild = $(".myTable").children("tbody:last-child").children().eq(0);
+            firstChild.children("td:last-child").html(downHtml);
+
+            var secondChild = $(".myTable").children("tbody:last-child").children().eq(1);
+            secondChild.children("td:last-child").html(upHtml)
+        }
+        if(len == 1){
+            var firstChild = $(".myTable").children("tbody:last-child").children().eq(0);
+            firstChild.children("td:last-child").html(removeHtml)
+        }
+        if(len>2){
+            let index = 0;
+            $(".myTable").children("tbody:last-child").children().each(function () {
+                if(index == 0){
+                    $(this).children("td:last-child").html(downHtml);
+                }else if(index+1 == len){
+                    $(this).children("td:last-child").html(upHtml);
+                }else{
+                    $(this).children("td:last-child").html(allHtml);
+                }
+                index++;
+            })
+        }
+    }
+
+    function indexSort(currentDom){
+        //console.log(currentDom.html())
+        var index = 1;
+        $(currentDom).children("tbody:last-child").children().each(function () {
+            $(this).children().eq(1).children("input:first-child").val(index);
+            index++;
+        })
+    }
+
+    function downSortClick(self){
+        var parent = $(self).parent().parent();
+        var next = parent.next();
+        var parentRuleValue = parent.children("td").find("input[name='ruleValue']").val();
+        var nextRuleValue = next.children("td").find("input[name='ruleValue']").val();
+        var parentHtml = parent.html();
+        var nextHtml = next.html();
+        parent.html(nextHtml);
+        next.html(parentHtml);
+        parent.children("td").find("input[name='ruleValue']").val(nextRuleValue);
+        next.children("td").find("input[name='ruleValue']").val(parentRuleValue);
+        indexSort($(".myTable"));
+        addButton();
+    }
+    /*]]>*/
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function doSubmit() {
+        let arr = new Array();
+        //tr
+        $(".myTable tbody").children().each(function () {
+            let obj = {};
+            $(this).find("input").each(function() {
+                obj[$(this).attr("name")] = getVal($(this).attr("name"),$(this).val());
+            })
+            $(this).find("select").each(function() {
+                obj[$(this).attr("name")] = getVal($(this).attr("name"),$(this).val());
+            })
+            arr.push(obj);
+        })
+        console.log(arr)
+        let rightId = $("#rightId").val();
+        var serialize = $('#routeForm').serialize();
+        console.log(serialize)
+        $.ajax({
+            type   : "post",
+            data   :{rightId:rightId,rules:JSON.stringify(arr)},
+            /*contentType: 'application/json; charset=UTF-8',*/
+            url    : [[@{/ruleRoute/save}]],
+        success: function(resp) {
+            hidden();
+            alertPopup(resp.msg,function(){
+                location.href='/ruleRoute/routeList?rightId='+rightId;
+            });
+        }
+    });
+
+    }
+
+    function getVal(name,val){
+        if(name == 'routeId'){
+            return parseInt(val);
+        }
+        else if(name == 'ruleId'){
+            return parseInt(val);
+        }
+        else if(name == 'ruleSort'){
+            return parseInt(val);
+        }
+        else if(name == 'ruleStatus'){
+            return parseInt(val);
+        } else {
+            return val;
+        }
+    }
+
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href="/ruleRoute/routeList?rightId="+$("#rightId").val();
+    })
+
+    /*$(function () {
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+    });*/
+    /*]]>*/
+</script>
+</html>

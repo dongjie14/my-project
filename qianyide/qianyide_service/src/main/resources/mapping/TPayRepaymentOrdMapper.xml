@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TPayRepaymentOrdMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TPayRepaymentOrd">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="borrow_ord_no" jdbcType="VARCHAR" property="borrowOrdNo" />
+    <result column="repayment_ord_no" jdbcType="VARCHAR" property="repaymentOrdNo" />
+    <result column="user_no" jdbcType="VARCHAR" property="userNo" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_id_no" jdbcType="VARCHAR" property="userIdNo" />
+    <result column="repayment_period" jdbcType="INTEGER" property="repaymentPeriod" />
+    <result column="installment_num" jdbcType="INTEGER" property="installmentNum" />
+    <result column="repayment_amt" jdbcType="DECIMAL" property="repaymentAmt" />
+    <result column="repayment_fee" jdbcType="DECIMAL" property="repaymentFee" />
+    <result column="repayment_end_date" jdbcType="DATE" property="repaymentEndDate" />
+    <result column="repayment_cycle" jdbcType="INTEGER" property="repaymentCycle" />
+    <result column="repayment_sts" jdbcType="INTEGER" property="repaymentSts" />
+    <result column="is_renewal" jdbcType="INTEGER" property="isRenewal" />
+    <result column="is_overdue" jdbcType="INTEGER" property="isOverdue" />
+    <result column="repaymented_amt" jdbcType="DECIMAL" property="repaymentedAmt" />
+    <result column="waiver_amount" jdbcType="DECIMAL" property="waiverAmount" />
+    <result column="overdue_day" jdbcType="INTEGER" property="overdueDay" />
+    <result column="overdue_rate" jdbcType="DECIMAL" property="overdueRate" />
+    <result column="overdue_fee" jdbcType="DECIMAL" property="overdueFee" />
+    <result column="overdue_amt" jdbcType="DECIMAL" property="overdueAmt" />
+    <result column="repaymented_time" jdbcType="TIMESTAMP" property="repaymentedTime" />
+    <result column="repayment_channel" jdbcType="VARCHAR" property="repaymentChannel" />
+    <result column="bank_card_no" jdbcType="VARCHAR" property="bankCardNo" />
+    <result column="bank_code" jdbcType="VARCHAR" property="bankCode" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="reserve_field1" jdbcType="VARCHAR" property="reserveField1" />
+    <result column="reserve_field2" jdbcType="VARCHAR" property="reserveField2" />
+    <result column="reserve_field3" jdbcType="VARCHAR" property="reserveField3" />
+    <result column="update_manage_name" jdbcType="VARCHAR" property="updateManageName" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

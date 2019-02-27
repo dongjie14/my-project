@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TUserRealnameMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TUserRealname">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_no" jdbcType="VARCHAR" property="userNo" />
+    <result column="face_picture_url" jdbcType="VARCHAR" property="facePictureUrl" />
+    <result column="face_picture_pub_url" jdbcType="VARCHAR" property="facePicturePubUrl" />
+    <result column="id_positive_picture_url" jdbcType="VARCHAR" property="idPositivePictureUrl" />
+    <result column="id_positive_picture_pub_url" jdbcType="VARCHAR" property="idPositivePicturePubUrl" />
+    <result column="id_anti_picture_url" jdbcType="VARCHAR" property="idAntiPictureUrl" />
+    <result column="id_anti_picture_pub_url" jdbcType="VARCHAR" property="idAntiPicturePubUrl" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+</mapper>

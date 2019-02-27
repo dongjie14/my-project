@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" class="body-full-height">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>支撑平台</title>
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="icon" th:href="@{/v2/img/titleicon.png}" type="image/x-icon" />
+    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+</head>
+<body>
+<div class="login-container">
+        
+            <div class="login-box animated fadeInDown">
+            <div class="blankDiv"></div>
+                <div class="login-body">
+                	
+                    <div class="login-title"><img th:src="@{/v2/img/logoApp.png}"/><span>加速卡支撑平台</span></div>
+                    <form name="loginForm" id="loginForm" action="/user/loginSubmit" method="post" onsubmit="return login();">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="text" id="userAccount" name="userAccount" maxlength="100" class="input" placeholder="用户名"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input name="userPassword" type="password" id="userPassword" maxlength="32" class="input" placeholder="密码" style=""/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-captcha">
+                            <input maxlength="4"  name="captcha" type="text" id="captcha" class="" placeholder="验证码"/>
+                        </div>
+                        <div class="col-md-6">
+                            <img th:src="@{/captcha.svl}" style="color: #fff;line-height: 26px;width: 100%;height: 29px;border-radius: 4px;"
+                                     th:onclick="@{this.src = '/captcha.svl?d=' + new Date() * 1 }" alt="点击更新" title="点击更新"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12" style="text-align:center;">
+                            <input type="submit" class="btn btn-info btn-block" value="登录" style="width: 50%;display: inline-block; border-radius: 4px;"
+                               onfocus="this.blur();"/>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+</body>
+<script th:inline="javascript">
+    function login() {
+        if (loginForm.userAccount.value == "") {
+            alert("用户名不能为空！");
+            return false;
+        } else if (loginForm.userPassword.value == "") {
+            alert("密码不能为空！");
+            return false;
+        } else if (loginForm.captcha.value == "") {
+            alert("验证码不能为空！");
+            return false;
+        }
+    }
+
+    var msg = [[${message}]];
+    if (msg) {
+        alert(msg);
+    }
+</script>
+</html>

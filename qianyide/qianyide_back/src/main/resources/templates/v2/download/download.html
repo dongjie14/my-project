@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 20px;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media only screen and (min-width: 330px) {
+            html {
+                font-size: 17px !important
+            }
+        }
+
+        @media only screen and (min-width: 350px) {
+            html {
+                font-size: 18px !important
+            }
+        }
+
+        @media only screen and (min-width: 370px) {
+            html {
+                font-size: 19px !important
+            }
+        }
+
+        @media only screen and (min-width: 400px) {
+            html {
+                font-size: 20px !important
+            }
+        }
+
+        @media only screen and (min-width: 420px) {
+            html {
+                font-size: 22px !important
+            }
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+        }
+
+        .wrap {
+            width: 100%;
+            height: 100%;
+            background-image: url("/images/bg1.jpg");
+            background-size: 100% 100%;
+            padding-top: 1px;
+        }
+
+        .logo {
+            width: 6rem;
+            margin: 3rem auto 0 auto;
+            display: block;
+        }
+
+        .logotext {
+            text-align: center;
+            color: #fff;
+            margin-top: .4rem;
+        }
+
+        .slogen {
+            font-size: .7rem;
+            font-family: PingFangSC-Light;
+            font-weight: 300;
+            text-align: center;
+            color: rgba(255, 255, 255, 1);
+            padding: 0 1rem;
+            margin: 1rem 0 1rem 0;
+        }
+
+        .btn-content {
+            width: 13rem;
+            margin: 4.4rem auto 0 auto;
+        }
+
+        .btn {
+            display: flex;
+            height: 3.3rem;
+            border: 1px solid #ffffff;
+            border-radius: 5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn i, p {
+            color: #fff;
+            flex: 0 0 auto;
+        }
+
+        .btn i {
+            font-size: 1.7rem;
+            margin-right: .4rem;
+        }
+
+        .btn p {
+            font-size: .8rem;
+        }
+
+        .corporate {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            bottom: 1rem;
+            color: #9DD2FC;
+            font-size: 12px;
+        }
+
+        @font-face {
+            font-family: "iconfont";
+            src: url('iconfont.eot?t=1543887548219'); /* IE9*/
+            src: url('iconfont.eot?t=1543887548219#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),
+            url('iconfont.ttf?t=1543887548219') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/ url('iconfont.svg?t=1543887548219#iconfont') format('svg'); /* iOS 4.1- */
+        }
+
+        .iconfont {
+            font-family: "iconfont" !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .icon-anzhuo:before {
+            content: "\e612";
+        }
+
+        .icon-anzhuo1:before {
+            content: "\e60c";
+        }
+
+        .icon-duigou1:before {
+            content: "\e744";
+        }
+
+        .icon-ios:before {
+            content: "\e60d";
+        }
+        .btn-content img {
+            width: 1.5rem;
+        }
+        .arror-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background: rgba(0, 0, 0, .8);
+            z-index: 200;
+        }
+        .arror {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 10rem;
+        }
+        .operation {
+            position: absolute;
+            bottom: 1rem;
+            width: 90%;
+            left: 5%;
+        }
+        .layer-text {
+            position: absolute;
+            width: 100%;
+            top: 10rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <img th:src="@{/images/logo.png}" alt="" class="logo"/>
+    <h2 class="logotext">加速卡</h2>
+    <p class="slogen">全程线上申请，机器审核，易通过；5分钟审核到账；银行级别加密方式，保障用户信息安全。</p>
+    <!--<div class="btn-content" >
+        <div class="btn" @click="androidEvent" >
+            <i class="iconfont icon-anzhuo"></i>
+            <p>Android版下载</p>
+        </div>
+        <div class="btn" style="margin-top: .6rem;" @click="iosEvent" >
+            <i class="iconfont icon-ios"></i>
+            <p>iPhone版下载</p>
+        </div>
+    </div>-->
+    <div class="btn-content">
+        <div class="btn" v-on:click="androidEvent">
+            <img th:src="@{/images/android.png}" alt="" />
+            <p>Android版下载</p>
+        </div>
+        <div class="btn" style="margin-top: .6rem;" v-on:click="iosEvent" >
+            <img th:src="@{/images/ios.png}" alt="" />
+            <p>iPhone版下载</p>
+        </div>
+    </div>
+    <div class="arror-wrap" v-if="wxop">
+        <div class="layer-text">
+            <p>点击右上角的按钮</p>
+            <p>选择“在safari中打开”</p>
+        </div>
+        <img th:src="@{/images/arror.png}" alt="" class="arror"/>
+        <img th:src="@{/images/operation.png}" alt="" class="operation"/>
+    </div>
+    <p class="corporate">宿迁才聚网络科技有限公司</p>
+    <a href="" ref="target" style="display: block;"></a>
+</div>
+
+
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/vue.js}"></script>
+<script th:inline="javascript">
+    new Vue( {
+        el: '.wrap',
+        data () {
+            return {
+                os:null,
+                url:'https://back.spdoncard.com/',
+                wxop:false
+            }
+        },mounted: function () {
+            var ua = window.navigator.userAgent.toLowerCase();
+            if(ua.match(/MicroMessenger/i) == 'micromessenger' || ua.match(/_SQ_/i) == '_sq_'){
+                this.wxop=true
+            }else{
+                this.wxop=false
+            }
+        },
+        methods:{
+            target(url) {
+                var target = this.$refs.target;
+                target.setAttribute('href', url);
+                target.click();
+            },
+            androidEvent() {
+                var _this = this;
+                if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                    alert('苹果手机请点击IOS下载');
+                    return;
+                }
+                $.ajax({
+                    url: [[@{/version/renewVersion}]],
+                    type:"post",
+                    data: {
+                        os: 0
+                    },
+                    success: function (res) {
+                        _this.target(res.result.downloadUrl);
+                    }
+                });
+            },
+            iosEvent() {
+                var _this = this;
+                if (/(Android)/i.test(navigator.userAgent))  {
+                    alert('安卓手机请点击安卓下载');
+                    return;
+                }
+                $.ajax({
+                    type:"post",
+                    url: [[@{/version/renewVersion}]],
+                    data: {
+                        os: 1
+                    },
+                    success: function (res) {
+                        _this.target(res.result.downloadUrl);
+                    }
+                });
+            }
+        }
+    })
+</script>
+</body>
+</html>

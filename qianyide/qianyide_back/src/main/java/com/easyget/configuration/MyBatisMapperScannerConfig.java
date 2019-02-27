@@ -17,7 +17,7 @@ public class MyBatisMapperScannerConfig {
 
         // 通用mapper配置
         Properties properties = new Properties();
-        properties.setProperty("mappers", "com.easyget.configuration.BaseDao");
+        properties.setProperty("mappers", "com.easyget.configuration.BaseMapper");
         properties.setProperty("notEmpty", "false");
         properties.setProperty("IDENTITY", "MYSQL");
         mapperScannerConfigurer.setProperties(properties);

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="UTF-8"/>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+	</head>
+	<body>
+	<form role="form" id="formpro" class="form-horizontal"> 
+	
+		<div class="block" style="margin-bottom:0;">
+                        <div class="form-group col-md-12 btn-form" style="text-align:left;">
+                           <a href="/sysRoleManagement/to-save" class="btn btn-info">新建</a>
+                        </div>                               
+                </div>
+                </form>
+                <div class="panel-body">
+                        <table class="table datatable tdLeft" id="bigDataList">
+                        </table>
+                    </div>
+	</body>
+         <script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+        <script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+        <script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>        
+		<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+        <script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+        <script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+     	<!-- <script type="text/javascript" th:src="@{/v2/js/jquery.dataTables.min.js}"></script> -->
+        <script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+        <script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>        
+        <script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+        <script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script> 
+        <script type="text/javascript" th:src="@{/v2/js/common.js}"></script>    
+        <script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+	    <script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+	    
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+        	$(function(){
+        		//$("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));  
+        	})
+           var columns = [
+        	  {
+          	      title: '编号',
+          	      target: 0,
+          	      data: function (item) {
+          	          return item.roleNo;
+          	      }
+          	  },
+         	  {
+         	      title: '序号',
+         	      target: 1,
+         	      data: function (item) {
+         	          return item.rank;
+         	      }
+         	  },
+         	  {
+         	      title: '',
+         	      target: 2,
+         	      className: 'treegrid-control',
+         	      data: function (item) {
+         	          if (item.children) {
+         	              return '<span>+</span>';
+         	          }
+         	          return '';
+         	      }
+         	  },
+         	  {
+         	      title: '名称',
+         	      target: 3,
+         	      data: function (item) {
+         	          return item.name;
+         	      }
+         	  },
+         	  {
+         	      title: '有效',
+         	      target: 4,
+         	      data: function (item) {
+         	    	 if(item.enabled==1){
+         	    		 return '是';
+         	    	  }else{
+         	    		 return '否';
+         	    	  }
+         	      }
+         	  },
+         	  {
+         	      title: '操作',
+         	      target: 5,
+         	      data: function (item) {
+         	    	  var resultHtml='<a href="/sysRoleManagement/to-Preview?id='+item.id+'" target="external-frame">查看</a>&nbsp;'
+         	    	  +'<a href="/sysRoleManagement/to-save?id='+item.id+'"  target="external-frame">编辑</a>&nbsp;'
+         	    	  +'<a href="#" onclick="del('+item.id+')" class="del">删除</a>';
+         	    	 return resultHtml;
+         	      }
+         	  }
+         	  ];
+           $('#bigDataList').DataTable({
+     	      'columns': columns,
+     	      "ajax": [[@{/sysRoleManagement/getRoleData}]],
+     	      'treeGrid': {
+     	          'left': 50,
+     	          'expandIcon': '<span>+</span>',
+     	          'collapseIcon': '<span>-</span>'
+     	      },
+     	      "oLanguage" : {  
+	            "sProcessing" : "正在加载中......",  
+	            "sLengthMenu" : "每页显示 _MENU_ 条记录",  
+	            "sZeroRecords" : "正在加载中......",  
+	            "sEmptyTable" : "表中无数据存在！",  
+	            "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",  
+	            "sInfoEmpty" : "显示0到0条记录",  
+	            "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",  
+	            "sSearch" : "搜索",  
+	            "oPaginate" : {  
+	                "sFirst" : "首页",  
+	                "sPrevious" : "上一页",  
+	                "sNext" : "下一页",  
+	                "sLast" : "末页"  
+	            }
+	            },
+	            "order": [[ 1, "asc" ]]
+     	  });
+           var delId="";
+          	$("body").delegate("#sureid","click",function(){
+      			$("#commonPopup").removeClass("open");
+      			$.ajax({
+             	        type   : "post",
+             	        data   : {id: delId},
+             	        url    : [[@{/sysRoleManagement/del}]],
+             	        success: function (resp) {
+             	            alertPopup(resp.message,function(){
+             	            	$("#formpro").submit();
+             	            });
+             	        }
+             	    }); 
+      		});
+             function del(id){
+          	   delId=id;
+          	   var delhtml = $(".del").html();
+          	   popup(delhtml);
+          	   $("#commonPopup").addClass("open");
+             }
+        	 /*]]>*/
+        </script>
+</html>

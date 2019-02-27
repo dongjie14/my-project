@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+    <style>
+        .innerTable{
+
+        }
+        .innerTable td{
+            border:1px solid black;
+        }
+        .add_btn_div{
+            width: 93px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<!--<form role="form" id="formpro" class="form-horizontal">
+
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <div class="form-group col-md-12 btn-form" style="text-align:left;">
+            <a href="/riskRule/to-save" class="btn btn-info insertSpread">新增</a>
+        </div>
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">规则包名:</label>
+                <div class="col-md-8">
+                    <input type="text" id="rightName" name="rightName" th:value="${rightName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">规则名称:</label>
+                <div class="col-md-8">
+                    <input type="text" id="ruleName" name="ruleName" th:value="${ruleName}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-12 btn-form" style="text-align:right;">
+                <button type="submit" class="btn btn-info">查询</button>
+            </div>
+        </div>
+    </div>
+</form>-->
+<div class="form-group col-md-12 btn-form" style="text-align:left;">
+    <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+    <!--<a href="/riskType/typeList" class="btn btn-info">新增</a>-->
+</div>
+<div class="panel-body">
+    <table class="table" id="bigDataList" th:if="${not #lists.isEmpty(pageInfo.list)}">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>规则包名</th>
+            <th>规则详情</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="page,iterStat:${pageInfo.list}">
+            <td th:text="${iterStat.index+1	}" style="vertical-align:middle;width: 10%;"></td>
+            <td th:text="${page.rightName}" style="vertical-align:middle;font-size: 20px;font-weight: bold;width: 14%"></td>
+            <td style="width: 50%">
+                <table class="innerTable">
+                    <tr>
+                        <th>规则名称</th>
+                        <th>执行顺序</th>
+                        <th>值</th>
+                        <th>状态</th>
+                        <th>启用操作</th>
+                    </tr>
+                    <tr th:each="rule,iterRule:${page.ruleByRouteDtoList}">
+                        <td th:text="${rule.ruleName}" width="40%"></td>
+                        <td th:text="${rule.ruleSort}" width="15%"></td>
+                        <td th:text="${rule.ruleValue}" width="15%"></td>
+                        <td th:if="${rule.ruleStatus == 0}" style="color:red" width="15%">未使用</td>
+                        <td th:if="${rule.ruleStatus == 1}" style="color: #1DC116" width="15%">使用中</td>
+                        <td th:if="${rule.ruleStatus == 0}" width="15%">
+                            <!--<a class="btn btn-gray" th:href="'/ruleRoute/updateRuleStatus?routeId='+${rule.routeId}+'&amp;status=1'">启用</a>-->
+                            <button class="btn btn-gray" th:onclick="${'useClick('+rule.routeId+',1,'+page.rightId+')'}">启用</button>
+                        </td>
+                        <td th:if="${rule.ruleStatus == 1}" width="15%">
+                           <!-- <a class="btn btn-gray" th:href="'/ruleRoute/updateRuleStatus?routeId='+${rule.routeId}+'&amp;status=0'">禁用</a>-->
+                            <button class="btn btn-gray" th:onclick="${'useClick('+rule.routeId+',0,'+page.rightId+')'}">禁用</button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="color: #1DC116;font-size: 20px;vertical-align:middle;width: 13%" th:if="${page.rightStatus == 1}">使用中</td>
+            <td style="color:red;font-size: 20px;vertical-align:middle;width: 13%" th:if="${page.rightStatus == 0}">未使用</td>
+            <td style="vertical-align:middle;width: 13%">
+                <button th:if="${page.rightStatus == 0}" class="btn btn-gray" th:onclick="${'useRightClick('+page.rightId+',1)'}">启用</button>
+                <button th:if="${page.rightStatus == 1}" class="btn btn-gray" th:onclick="${'useRightClick('+page.rightId+',0)'}">禁用</button>
+                <button class="btn btn-gray" th:onclick="${'modify('+page.rightId+')'}">编辑</button>
+                <!--<a th:href="'/ruleRoute/to-save?rightId='+${page.rightId}">编辑</a>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${#lists.isEmpty(pageInfo.list)}">
+        <div>
+            <p style="font-size: 20px;text-align: center">当前规则包暂无规则</p>
+        </div>
+        <div class="add_btn_div">
+            <button class="btn btn-info" th:onclick="${'modify('+rightId+')'}">+ 添加规则</button>
+        </div>
+    </div>
+    <!--<table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td height="33">
+                <table width="100%" border="0" align="center" cellpadding="0"
+                       cellspacing="0" class="right-font08">
+                    <tr>
+                        <td align="left" class="td2" th:if="${not #lists.isEmpty(pageInfo)}"
+                            th:text="   ${'共'+pageInfo.total+ '条'}">
+                        </td>
+                        <td align="right" class="td2" id="pageFooter">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>-->
+</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    /*$(function () {
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+    });*/
+
+    function useRightClick(rightId,status){
+        var url = [[@{/riskRight/updateRightStatus}]];
+        $.ajax({
+            url:url,
+            type:"POST",
+            data:{rightId:rightId,status:status},
+            success:function (resp) {
+                alertPopup(resp.msg,function(){
+                    location.href='/ruleRoute/routeList?rightId='+rightId;
+                });
+            }
+        })
+    }
+
+    function modify(rightId){
+        location.href='/ruleRoute/to-save?rightId='+rightId;
+    }
+
+    function useClick(id,status,rightId){
+        var url=[[@{/ruleRoute/updateRuleStatus}]];
+       $.ajax({
+           url:url,
+           type:"POST",
+           data:{routeId:id,status:status},
+           success:function (resp) {
+               alertPopup(resp.msg,function(){
+                   location.href='/ruleRoute/routeList?rightId='+rightId;
+               });
+           }
+       })
+    }
+
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href="/riskType/typeList";
+    })
+
+    // function setIsStatus(status,id) {
+    //     $.ajax({
+    //         type   : "post",
+    //         data   : {"spreadId":id,"spreadStatus":status},
+    //         url    : [[@{/spread/save}]],
+    //         success: function(resp) {
+    //             hidden();
+    //             alertPopup(resp.msg,function(){
+    //                 location.href='/spread/pageList';
+    //             });
+    //         }
+    //     }
+    // }
+</script>
+</html>

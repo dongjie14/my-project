@@ -29,10 +29,10 @@
         </profile>
         <profile>
             <!-- 生产环境 -->
-            <id>prd</id>
+            <id>pro</id>
             <properties>
-                <environment>prd</environment>
-                <finalName>prd_task</finalName>
+                <environment>pro</environment>
+                <finalName>pro_task</finalName>
             </properties>
         </profile>
         <profile>

@@ -1,0 +1,175 @@
+/*
+* @Author: Administrator
+* @Date:   2017-03-27 11:18:48
+* @Last Modified by:   Administrator
+* @Last Modified time: 2017-03-27 14:25:09
+*/
+/* 推广页 */
+.extend-banner{
+	position: relative;
+	width: 100%;
+	height: 14rem;
+}
+.extend-banner .extend-title{
+	position: absolute;
+	width: 17.25rem;
+	height: 1.55rem;
+	left: 50%;
+	margin-left: -8.625rem;
+	top:0.7rem;
+	overflow: hidden;
+}
+.extend-banner .extend-title .extend-logo{
+	float: left;
+	width: 4.5rem;
+	height: 1.55rem;
+	background: url(../images/tgy/logo.png) 0 0 no-repeat;
+	-webkit-background-size: 100% 100%;
+	background-size: 100% 100%;
+	text-indent: -999px;
+}
+.extend-banner .extend-title .share{
+	float: right;
+	width: 3.2rem;
+	height: 1.3rem;
+	font-size: 0.65rem;
+	color: #f94c28;
+	text-align: center;
+	line-height: 1.3rem;
+	border-radius: 1rem;
+	background-color: #fff;
+}
+.extend-banner .extend-title .share:active{
+	background: #fafafa;
+}
+.extend-banner img{
+	width: 100%;
+	height: 100%;
+}
+
+.extend-wrap{
+	background: -webkit-linear-gradient(90deg, #f14141, #f7622e);
+    background: -o-linear-gradient(90deg, #f14141, #f7622e);
+    background: -moz-linear-gradient(90deg, #f14141, #f7622e);
+    background: linear-gradient(90deg, #f14141, #f7622e);
+}
+.extend-register {
+	margin: 0 0.875rem;
+	background-color: #fff;
+	border-radius: 0.25rem;
+	padding: 1.3rem 1.35rem;
+	margin-bottom: 1.125rem;
+}
+.extend-register dd {
+	height: 2.15rem;
+	line-height: 2.15rem;
+	background-color: #f7f7f7;
+	border: 1px solid #e0e0e0;
+	border-radius: 2rem;
+	margin-bottom: 0.75rem;
+	overflow: hidden;
+}
+.extend-register dd input {
+	width: 90%;
+	font-size: 0.75rem;
+	color: #333;
+	padding: 0.6rem 0;
+	float: left;
+	margin: 0 0.75rem;
+	background-color: #f7f7f7;
+}
+.gain-code {
+	text-align: center;
+	width: 4.75rem;
+	height: 2.15rem;
+	line-height: 2.15rem;
+	font-size: 0.75rem;
+	color: #fff;
+	cursor: pointer;
+	float: right;
+	background-color: #3a8fde;
+}
+.zc-btn {
+    height: 2.2rem;
+    display: block;
+    font-size: 0.9rem;
+    line-height: 2.2rem;
+    text-align: center;
+    color: #fff !important;
+    border-radius: 2rem;
+    margin: 0 auto;
+    background: -webkit-linear-gradient(left top, #fb7749, #ed4848);
+    background: -o-linear-gradient(bottom right, #fb7749, #ed4848);
+    background: -moz-linear-gradient(bottom right, #fb7749, #ed4848);
+    background: linear-gradient(to bottom right, #fb7749, #ed4848);
+
+}
+.choose-reason{
+	position: relative;
+	margin: 0 0.875rem;
+	background-color: #fff;
+	border-radius: 0.25rem;
+	padding: 1.5rem 0.85rem 0;
+}
+.choose-reason .choose-title{
+	position: absolute;
+	width: 11rem;
+	height: auto;
+	left: 3rem;
+	top:-0.375rem;
+}
+.choose-reason ul li{
+	padding: 0.95rem 0;
+	overflow: hidden;
+	border-bottom: 1px dashed #cdcccb;
+}
+.choose-reason ul li img{
+	float: left;
+	width: 4.1rem;
+	height: 4.1rem;
+	margin: 0 1.5rem;
+}
+.choose-reason ul li .reason-txt{
+	float: right;
+	width: 52%;
+	font-size: 0.6rem;
+	color: #888;
+	line-height: 0.9rem;
+	margin-top: 0.5rem;
+}
+.choose-reason ul li .reason-txt h2{
+	font-size: 0.8rem;
+	color: #444;
+	line-height: 1rem;
+}
+.choose-reason ul li .fr{
+	float: right;
+}
+.choose-reason ul li.nobd{
+	border: none;
+}
+.extend-footer{
+	margin-top: 0.75rem;
+	height: 6.4rem;
+	background: url(../images/tgy/t_07.png) left bottom no-repeat;
+	-webkit-background-size: 100% auto;
+	background-size: 100% auto;
+}
+.extend-footer .down-link{
+	width: 17rem;
+	height: 2.9rem;
+    display: block;
+    font-size: 0.9rem;
+    line-height: 2.9rem;
+    text-indent: -999px;
+    margin: 0 auto 2rem;
+    background: url(../images/tgy/t_06.png) 0 0 no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+}
+.extend-footer .copyright{
+	font-size: 0.5rem;
+	color: #fff;
+	text-align: center;
+	line-height: 0.65rem;
+}

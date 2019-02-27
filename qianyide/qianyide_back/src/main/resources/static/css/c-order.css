@@ -1,0 +1,1037 @@
+@charset "utf-8";
+/**
+* order style
+* 订单流程 
+* 创建时间：2013-04-16 by YangHuanmin
+*/
+/* css sprite */
+.my-car thead,
+.classify-area .tab-item a {
+    background-image: url(../images/g-repeatx.png);
+    background-repeat: repeat-x;
+}
+
+.order-step span,
+.my-car .empty-tips span,
+.classify-area .prev,
+.classify-area .next,
+.my-car .btn-numb i,
+.my-car .td-total .btn-closing,
+.fillin-wrap .row textarea,
+.fillin-wrap .total-block .btn-closing,
+.status-tip .icon,
+.warning-tip .icon,
+.payment-block .pay-other i,
+.payment-block .pay-handle .btn-checkpay,
+.pay-select-dialog .selector i,
+.pay-select-dialog .selector-box .close {
+    background-image: url(../images/c-order.png);
+    background-repeat: no-repeat;
+}
+
+/* order step */
+.order-step {
+    overflow: hidden;
+    padding: 10px 0 20px;
+}
+
+.order-step li {
+    width: 255px;
+    margin-right: -18px;
+    text-align: center;
+    float: left;
+}
+
+.order-step span {
+    background-position: 0 0;
+    display: block;
+    height: 28px;
+    line-height: 28px;
+    color: #666;
+}
+
+.order-step .active span {
+    background-position: 0 -28px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.order-step .finish span {
+    background-position: 0 -56px;
+    color: #390;
+}
+
+.order-step .first {
+    background-position: -18px 0;
+}
+
+.order-step .active .first {
+    background-position: -18px -28px;
+}
+
+.order-step .finish .first {
+    background-position: -18px -56px;
+}
+
+/* status tip */
+.status-tip {
+    padding-left: 44px;
+    line-height: 30px;
+    position: relative;
+    zoom: 1;
+    font-size: 14px;
+}
+
+.status-tip .icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 31px;
+    height: 30px;
+    overflow: hidden;
+}
+
+.status-tip b {
+    color: #f60;
+    font-size: 16px;
+}
+
+.status-tip .success {
+    background-position: 0 -104px;
+}
+
+.status-tip .error {
+    background-position: -31px -104px;
+}
+
+/* warning tip */
+.warning-tip {
+    padding: 0 10px 0 34px;
+    background: #fff9d0;
+    line-height: 26px;
+    position: relative;
+    zoom: 1;
+}
+
+.warning-tip .icon {
+    background-position: 0 -148px;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    width: 16px;
+    height: 14px;
+    overflow: hidden;
+}
+
+.warning-tip em {
+    color: #f60;
+}
+
+/*-------- my car --------*/
+.my-car {
+    border: 1px solid #e4e4e4;
+}
+
+.my-car del {
+    color: #999;
+}
+
+.my-car table {
+    border: 0;
+    width: 100%;
+    font-family: Tahoma;
+}
+
+.my-car table a {
+    color: #36c;
+}
+
+.my-car table a:hover {
+    color: #f60;
+}
+
+.my-car thead {
+    background-position: 0 -109px;
+}
+
+.my-car tfoot td {
+    border-top: 2px solid #e4e4e4;
+    padding: 24px 5px;
+}
+
+.my-car tfoot .td-sel {
+    width: auto;
+    vertical-align: top;
+}
+
+.my-car th {
+    line-height: 38px;
+    height: 38px;
+    text-align: center;
+}
+
+.my-car td {
+    padding: 10px 5px;
+    text-align: center;
+}
+
+.my-car .td-sel {
+    padding-left: 34px;
+    text-align: left;
+    width: 60px;
+}
+
+.my-car .td-sel input {
+    vertical-align: middle;
+    margin: 0 3px;
+    *margin: 0;
+}
+
+.my-car .td-img {
+    width: 77px;
+}
+
+.my-car .td-img img {
+    width: 75px;
+    border: 1px solid #e4e4e4;
+}
+
+.my-car .td-name {
+    width: 240px;
+    text-align: left;
+}
+
+.my-car .empty-tips td {
+    padding: 70px;
+}
+
+.my-car .empty-tips span {
+    background-position: -625px 0;
+    display: inline-block;
+    padding-left: 30px;
+    height: 28px;
+    line-height: 28px;
+    vertical-align: top;
+}
+
+.my-car .c-green {
+    color: #37a500;
+}
+
+.my-car .btn-numb {
+    width: 18px;
+    height: 20px;
+    overflow: hidden;
+    font-size: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.my-car .btn-numb i {
+    float: left;
+    width: 18px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.my-car .btn-numb .add {
+    background-position: -381px 0;
+}
+
+.my-car .btn-numb .reduce {
+    background-position: -381px -20px;
+}
+
+.my-car .disable .add {
+    background-position: -399px 0;
+}
+
+.my-car .disable .reduce {
+    background-position: -399px -20px;
+}
+
+.my-car .active td {
+    background-color: #faf9f9;
+}
+
+.my-car .active .td-name {
+    color: #36c;
+}
+
+.my-car .inp-numb {
+    height: 18px;
+    width: 60px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 3px;
+    line-height: 18px;
+}
+
+.my-car .remove-batch {
+    margin-left: 32px;
+    color: #333;
+}
+
+.my-car .td-total {
+    line-height: 38px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.my-car .td-total strong {
+    color: #f60;
+    font-family: '微软雅黑';
+    font-size: 26px;
+}
+
+.my-car .td-total b {
+    color: #f60;
+}
+
+.my-car .td-total .btn-closing {
+    background-position: -381px -60px;
+    width: 135px;
+    height: 40px;
+    border: 0;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+/* classify area */
+.classify-area {
+    border: 1px solid #e4e4e4;
+    border-top: 3px solid #6c3;
+    margin-top: 10px;
+    position: relative;
+    zoom: 1;
+}
+
+.classify-area .tab-item {
+    height: 40px;
+    overflow: hidden;
+}
+
+.classify-area .tab-item ul {
+    margin-left: -3px;
+    zoom: 1;
+}
+
+.classify-area .tab-item li {
+    float: left;
+    width: 316px;
+    height: 39px;
+    border-left: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    text-align: center;
+}
+
+.classify-area .tab-item a {
+    background-position: 0 -109px;
+    display: block;
+    line-height: 38px;
+    margin: 0 1px;
+    height: 38px;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.classify-area .tab-item .active {
+    border-bottom-color: #fff;
+}
+
+.classify-area .tab-item .active a {
+    background: none;
+    color: #390;
+    cursor: default;
+}
+
+.classify-area .tab-cont {
+    width: 948px;
+    height: 319px;
+    overflow: hidden;
+}
+
+.classify-area .tab-cont ul {
+    padding: 10px 0;
+}
+
+.classify-area .tab-cont .cont {
+    width: 948px;
+    height: 319px;
+    overflow: hidden;
+}
+
+.classify-area .product-list {
+    width: 888px;
+}
+
+.classify-area .product-list li {
+    padding: 0;
+}
+
+.classify-area .prev,
+.classify-area .next {
+    position: absolute;
+    width: 22px;
+    height: 100px;
+    top: 135px;
+    cursor: pointer;
+    z-index: 50;
+}
+
+.classify-area .prev {
+    background-position: -317px 0;
+    left: 0;
+}
+
+.classify-area .next {
+    background-position: -339px 0;
+    right: 0;
+}
+
+/*-------- fillin --------*/
+.fillin-wrap {
+    border: 1px solid #e4e4e4;
+    background: #fff;
+    overflow: hidden;
+    font-family: Tahoma;
+}
+
+.fillin-wrap .block {
+    margin-top: -1px;
+    padding-bottom: 10px;
+}
+
+.fillin-wrap .b-title {
+    font-weight: bold;
+    line-height: 37px;
+    height: 37px;
+    background: #f7f7f7;
+    padding: 1px;
+    border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    font-size: 12px;
+    text-indent: 16px;
+}
+
+.fillin-wrap .b-title i {
+    font-weight: normal;
+    color: #999;
+    margin-left: 10px;
+}
+
+.fillin-wrap .b-inner {
+    padding: 12px 16px;
+}
+
+/* 地址列表 */
+.fillin-wrap .fi-table {
+    width: 100%;
+    color: #666;
+}
+
+.fillin-wrap .fi-table td {
+    padding: 10px 3px;
+}
+
+.fillin-wrap .fi-table b {
+    font-size: 14px;
+}
+
+.fillin-wrap .fi-table a {
+    color: #36c;
+}
+
+.fillin-wrap .fi-table a:hover {
+    color: #f60;
+}
+
+.fillin-wrap .fi-table input {
+    *vertical-align: middle;
+}
+
+.fillin-wrap .fi-table .tit {
+    padding-left: 15px;
+}
+
+.fillin-wrap .active td {
+    background: #faf9f9;
+}
+
+.fillin-wrap .fi-table b,
+.fillin-wrap .J_Edit {
+    display: none;
+}
+
+.fillin-wrap .active b,
+.fillin-wrap .active .J_Edit {
+    display: inline;
+}
+
+.fillin-wrap .active .expl {
+    display: block;
+}
+
+.fillin-wrap .expl {
+    font-size: 14px;
+    color: #999;
+    display: none;
+}
+
+.fillin-wrap .hide {
+    display: none;
+}
+
+/* 发票类型/表单输入 */
+.fillin-wrap .row {
+    zoom: 1;
+    padding: 5px;
+    color: #666;
+}
+
+.fillin-wrap .row:after {
+    content: '.';
+    height: 0;
+    display: block;
+    overflow: hidden;
+    font-size: 0;
+    clear: both;
+}
+
+.fillin-wrap .row dt {
+    float: left;
+    width: 85px;
+    text-align: right;
+}
+
+.fillin-wrap .row dd {
+    float: left;
+}
+
+.fillin-wrap .row i {
+    color: #f60;
+}
+
+.fillin-wrap .row select {
+    height: 20px;
+    line-height: 20px;
+    vertical-align: top;
+}
+
+.fillin-wrap .row input {
+    *vertical-align: middle;
+}
+
+.fillin-wrap .row .inp-text {
+    height: 18px;
+    line-height: 18px;
+    width: 260px;
+    padding-left: 5px;
+}
+
+.fillin-wrap .row textarea {
+    background-position: 0 -181px;
+    border: 1px solid #a7a6ac;
+    width: 630px;
+    height: 55px;
+}
+
+.fillin-wrap .row-textarea {
+    padding: 15px 0;
+    border-top: 1px dashed #e4e4e4;
+    margin-top: 10px;
+}
+
+/* 商品列表 */
+.fillin-wrap .goods-list {
+    padding-bottom: 0;
+}
+
+.fillin-wrap .goods-list .pic {
+    width: 79px;
+}
+
+.fillin-wrap .goods-list .tl {
+    text-align: left;
+}
+
+.fillin-wrap .goods-list th {
+    background: #dfb;
+    font-weight: normal;
+    height: 30px;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.fillin-wrap .goods-list td {
+    padding: 10px;
+    text-align: center;
+    border-top: 1px dashed #e4e4e4;
+}
+
+.fillin-wrap .goods-list .first td {
+    border: 0;
+    padding-top: 20px;
+}
+
+.fillin-wrap .goods-list img {
+    width: 75px;
+    height: 75px;
+    vertical-align: middle;
+    border: 2px solid #cfc;
+}
+
+.fillin-wrap .total-block {
+    padding: 20px;
+    border-top: 1px solid #e4e4e4;
+    line-height: 42px;
+    text-align: right;
+}
+
+/* 总价 */
+.fillin-wrap .total-block .price {
+    font-size: 14px;
+    color: #f30;
+}
+
+.fillin-wrap .total-block i {
+    font-size: 30px;
+    font-family: '微软雅黑';
+}
+
+.fillin-wrap .total-block .btn-closing {
+    background-position: -381px -60px;
+    width: 135px;
+    height: 40px;
+    cursor: pointer;
+    border: 0;
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+/* 编辑区域 */
+.fillin-wrap .edit-area {
+    background: #faf9f9;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    line-height: 20px;
+}
+
+.fillin-wrap .edit-area td {
+    background: #faf9f9
+}
+
+.fillin-wrap .edit-area dt {
+    width: 148px;
+    color: #666;
+}
+
+.fillin-wrap .edit-area dd {
+    width: 750px;
+}
+
+.fillin-wrap .edit-area label {
+    color: #666;
+}
+
+.fillin-wrap .edit-area .inp-text {
+    height: 18px;
+    line-height: 18px;
+    width: 86px;
+    vertical-align: middle;
+}
+
+/*-------- payment --------*/
+/* prompt */
+.prompt-block {
+    border: 1px solid #e6e6e6;
+    padding: 30px 0 82px;
+    text-align: center;
+}
+
+.prompt-block .inner {
+    text-align: left;
+}
+
+.prompt-block .inner,
+.prompt-block .status-tip,
+.prompt-block .warning-tip {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.prompt-block .status-tip {
+    padding-bottom: 15px;
+}
+
+/* payment */
+.payment-block {
+    margin-top: -42px;
+}
+
+.payment-block .b-title b {
+    float: left;
+    line-height: 42px;
+    padding: 0 15px 0 35px;
+}
+
+.payment-block .b-title ul {
+    float: left;
+}
+
+.payment-block .b-title li {
+    float: left;
+    margin-right: 6px;
+    line-height: 37px;
+    border: 2px solid #badb99;
+    border-bottom: 3px solid #99cb67;
+    padding: 0 30px;
+    font-size: 14px;
+    font-weight: bold;
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.payment-block .b-title .active {
+    border-color: #99cb67;
+    border-bottom-color: #fff;
+    cursor: default;
+    color: #390;
+}
+
+.payment-block .b-inner {
+    padding: 40px 25px;
+    border: 3px solid #99cb67;
+    margin-top: -3px;
+}
+
+.payment-block .warning-tip {
+    padding-left: 10px;
+    color: #666;
+}
+
+.payment-block .pay-select {
+    padding: 10px 0 0 20px;
+}
+
+.payment-block .pay-select dt {
+    padding-top: 10px;
+}
+
+.payment-block .pay-select dd {
+    overflow: hidden;
+    zoom: 1;
+    white-space: nowrap;
+}
+
+.payment-block .pay-select label {
+    float: left;
+    width: 198px;
+    padding: 10px 0;
+    margin-left: 16px;
+}
+
+.payment-block .pay-select input {
+    float: left;
+    margin-top: 13px;
+    *margin-top: 10px;
+    margin-right: 3px;
+    *margin-right: 0;
+}
+
+.payment-block .pay-select img {
+    float: left;
+    border: 1px solid #c6c6c6;
+    padding: 1px;
+    width: 149px;
+    height: 39px;
+}
+
+.payment-block .pay-select .active img {
+    border: 2px solid #9c3;
+    padding: 0;
+}
+
+.payment-block .pay-other {
+    height: 41px;
+    text-align: center;
+}
+
+.payment-block .pay-other i {
+    background-position: right -53px;
+    line-height: 20px;
+    height: 20px;
+    vertical-align: top;
+    color: #390;
+    margin-top: 10px;
+    display: inline-block;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.payment-block .pay-handle {
+    padding: 30px 20px 0;
+    line-height: 40px;
+    text-align: right;
+    border-top: 1px dashed #e4e4e4;
+    margin-top: 20px;
+    font-size: 14px;
+    overflow: hidden;
+    zoom: 1;
+    text-align: right;
+}
+
+.payment-block .pay-handle span,
+.payment-block .pay-handle button {
+    line-height: 40px;
+    height: 40px;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.payment-block .pay-handle .cont {
+    float: right;
+}
+
+.payment-block .pay-handle .selected {
+    margin-right: 20px;
+}
+
+.payment-block .pay-handle .total {
+    font-size: 30px;
+    font-family: '微软雅黑';
+    color: #f60;
+    vertical-align: top;
+}
+
+.payment-block .pay-handle .btn-checkpay {
+    background-position: -381px -104px;
+    width: 132px;
+    height: 40px;
+    border: 0;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+    background-color: transparent;
+    margin-left: 20px;
+}
+
+.payment-block .pay-handle .inp-cont {
+    height: 22px;
+    line-height: 22px;
+    padding: 9px 0;
+    *padding: 7px 0 11px;
+}
+
+.payment-block .inp-cont input {
+    height: 20px;
+    line-height: 20px;
+    padding-left: 5px;
+    vertical-align: middle;
+    width: 80px;
+    margin: 0 10px 0 5px;
+}
+
+.payment-block .J_PaySwitchCont .cont {
+    display: none;
+}
+
+.payment-block .J_PaySwitchCont .active {
+    display: block;
+}
+
+/* payment-dialog */
+.pay-select-dialog {
+    width: 700px;
+}
+
+.pay-select-dialog .cont {
+    padding-bottom: 30px;
+}
+
+.pay-select-dialog .area {
+    line-height: 24px;
+    padding-left: 30px;
+    position: relative;
+}
+
+.pay-select-dialog .selector {
+    float: left;
+    padding: 0 5px;
+    border: 1px solid #ddd;
+    margin-right: 5px;
+    display: inline;
+    cursor: pointer;
+}
+
+.pay-select-dialog .selector i {
+    background-position: right -91px;
+    float: left;
+    height: 22px;
+    padding-right: 12px;
+    color: #09c;
+}
+
+.pay-select-dialog .selector-box {
+    position: absolute;
+    top: 23px;
+    width: 456px;
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 14px 24px;
+    display: none;
+    left: 0;
+}
+
+.pay-select-dialog .selector-box .close {
+    background-position: -33px -148px;
+    width: 10px;
+    height: 9px;
+    overflow: hidden;
+    font-size: 0;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.pay-select-dialog dl {
+    overflow: hidden;
+    zoom: 1;
+    color: #4d4d4d;
+    line-height: 21px;
+}
+
+.pay-select-dialog dt {
+    font-weight: bold;
+    float: left;
+    width: 42px;
+}
+
+.pay-select-dialog dd {
+    margin-left: 45px;
+    _margin-left: 43px;
+    zoom: 1;
+}
+
+.pay-select-dialog dd a {
+    float: left;
+    marign-right: 5px;
+    padding: 0 5px;
+    color: #4d4d4d;
+}
+
+.pay-select-dialog dd a:hover,
+.pay-select-dialog dd .active {
+    background: #fbcc00;
+    color: #4d4d4d;
+}
+
+/* confirm-dialog */
+.confirm-dialog {
+    width: 400px;
+}
+
+.confirm-dialog .d-inner {
+    color: #666;
+    padding-bottom: 30px;
+}
+
+.confirm-dialog .selected {
+    padding: 20px 0;
+    line-height: 41px;
+}
+
+.confirm-dialog .selected img {
+    border: 1px solid #e4e4e4;
+    width: 149px;
+    height: 39px;
+    vertical-align: middle;
+}
+
+.confirm-dialog table {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.confirm-dialog td {
+    border: 1px solid #cf9;
+    padding: 5px 10px;
+    text-align: center
+}
+
+.confirm-dialog .tit {
+    background: #f8fff7;
+}
+
+.confirm-dialog a {
+    color: #36c;
+}
+
+.confirm-dialog a:hover {
+    color: #f60;
+}
+
+/*-------- pay status --------*/
+.pay-status-cont {
+    padding: 25px 65px;
+}
+
+.pay-status-success {
+    border: 1px solid #d1ffa3;
+    background: #fbfbfb;
+}
+
+.pay-status-error {
+    border: 1px solid #ffd1a3;
+    background: #fffbf7;
+}
+
+.pay-status-cont .status-tip {
+    font-size: 16px;
+}
+
+.pay-status-cont .inner {
+    padding: 20px 44px;
+    color: #666;
+}
+
+.pay-status-cont .box {
+    background: #fff;
+    border: 1px solid #e4e4e4;
+    padding: 18px 25px;
+    float: left;
+    white-space: nowrap;
+}
+
+.pay-status-cont .link {
+    padding-top: 15px;
+    zoom: 1;
+}
+
+.pay-status-cont .link a {
+    margin: 0 10px;
+}
+
+.pay-status-cont em {
+    color: #37a500;
+}
+
+.pay-status-cont a {
+    color: #36c;
+}
+
+.pay-status-cont a:hover {
+    color: #f60;
+}
+
+.pay-status-cont .ui-btn-orange {
+    vertical-align: middle;
+}

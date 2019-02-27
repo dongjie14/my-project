@@ -39,6 +39,7 @@
         <mybatis.version>1.3.2</mybatis.version>
         <pagehelper.version>1.2.5</pagehelper.version>
         <druid.version>1.0.18</druid.version>
+        <tk.mybatis.version>3.3.7</tk.mybatis.version>
     </properties>
 
     <parent>
@@ -48,15 +49,15 @@
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+        </dependency>
         <!-- 自动配置支持，日志和YAML -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <!--对全栈web开发的支持，包括Tomcat和spring-webmvc-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!--对面向切面变成的支持，通过spring-aop和AspectJ -->
         <dependency>
@@ -110,7 +111,11 @@
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper</artifactId>
-            <version>3.3.7</version>
+            <version>${tk.mybatis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <!-- 使用redis实现缓存 -->
         <dependency>
@@ -121,6 +126,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.38</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
         </dependency>
         <!-- 使用activemq实现消息队列 -->
         <dependency>
@@ -152,11 +162,27 @@
                 <artifactId>qianyide_service</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.easyget</groupId>
                 <artifactId>qianyide_druid</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <!-- 图形验证码 -->
+            <dependency>
+                <groupId>com.octo.captcha</groupId>
+                <artifactId>jcaptcha</artifactId>
+                <version>1.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.jhlabs</groupId>
+                        <artifactId>imaging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>

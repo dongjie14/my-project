@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+</head>
+<body>
+	<form action="" id="systemUserForm">
+		<div class="page-title">                    
+                    <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+                    <a th:href="'/sysUserManagement/to-save?id='+${backUser.id}" class="btn btn-info">编辑</a>
+					<a href="/sysUserManagement/to-save" class="btn btn-info">新建</a>
+                </div>
+		
+		<div class="row">
+			<div class="col-md-12">
+				<!-- START TABS -->
+				<div class="panel panel-default tabs">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="active"><a href="#tab-first" role="tab"
+							data-toggle="tab">系统用户</a></li>
+						<li><a href="#tab-second" role="tab" data-toggle="tab">菜单权限列表</a></li>
+						<li><a href="#tab-third" role="tab" data-toggle="tab">登录日志</a></li>
+					</ul>
+					<div class="panel-body tab-content tabBox">
+						<div class="tab-pane active" id="tab-first">
+							<div class="nav col-md-6 nav-ul">
+								<div class="col-md-12">
+									<span class="col-md-2">编号</span><span class="col-md-6"
+										th:text="${backUser.userNo}"></span>
+								</div>
+
+								<div class="col-md-12">
+									<span class="col-md-2"><font color="red">*</font>用户类型</span>
+									<div class="col-md-6">
+										<select class="form-control" id="userType" name="userType" disabled="disabled">
+										    <option value="">没有选中任何项</option>
+											<option value="01">普通用户</option>
+											<option value="02">导流渠道</option>
+											<option value="03">发布渠道</option>
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">导流渠道</span>
+									<div class="col-md-6">
+										<select id="diversionChannel" name="diversionChannel"
+											class="selectpicker show-tick form-control"
+											data-live-search="true" multiple="multiple" disabled="disabled">
+											<option th:each="item, itemStat: ${channelList}"
+												th:value="${item.id}" th:text="${item.channelName}" />
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2">发布渠道</span>
+									<div class="col-md-6">
+										<select id="publishingChannel" name="publishingChannel"
+											class="selectpicker show-tick form-control"
+											data-live-search="true" multiple="multiple" disabled="disabled">
+											<option th:each="item, itemStat: ${pushChannelList}"
+												th:value="${item.id}" th:text="${item.channelName}" />
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class="col-md-2"><font color="red">*</font>用户角色</span>
+									<div class="col-md-6">
+										 <input type="text" id="userRoleNames"
+										name="userRoleNames" th:value="${backUser.userRoleNames}" readonly="readonly" />
+									</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 "><font color="red">*</font>用户名</span> <span
+										class=" col-md-6"> <input type="tel" id="account"
+										name="account" th:value="${backUser.account}" readonly="readonly" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 "><font color="red">*</font>密码</span> <span
+										class=" col-md-6"> <input type="password" id="password"
+										name="password" th:value="${backUser.password}"
+										readonly="readonly" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 ">昵称</span> <span class=" col-md-6">
+										<input type="text" id="nickName" name="nickName"
+										th:value="${backUser.nickName}" readonly="readonly" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 ">备注</span> <span class=" col-md-6">
+										<textarea id="remarks" name="remarks"
+											th:text="${backUser.remarks}" rows="" cols="" class="remark" readonly="readonly"></textarea>
+									</span>
+								</div>
+
+								<div class="col-md-12">
+									<span class="col-md-2">创建人</span><span class="col-md-6"
+										th:text="${backUser.createAccount}"></span>
+								</div>
+								<div class="col-md-12">
+									<span class="col-md-2">创建于</span><span class="col-md-6"
+										th:text="${backUser.createTime==null?'':#dates.format(backUser.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+								</div>
+								<div class="col-md-12">
+									<span class="col-md-2">更新人</span><span class="col-md-6"
+										th:text="${backUser.updateAccount}"></span>
+								</div>
+								<div class="col-md-12">
+									<span class="col-md-2">更新于</span><span class="col-md-6"
+										th:text="${backUser.updateTime==null?'':#dates.format(backUser.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+								</div>
+							</div>
+							<div class="nav col-md-6 nav-ul">
+								<div class="col-md-12">
+									<span class="col-md-2">有效</span><span class="col-md-6"><input
+										type="checkbox" id="status" name="status"
+										th:checked="${backUser.status}==1?true:false" disabled="disabled"/></span>
+								</div>
+
+								<div class="col-md-12">
+									<span class=" col-md-2 ">公司</span> <span class=" col-md-6">
+										<input type="text" id="company" name="company"
+										th:value="${backUser.company}" readonly="readonly" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 ">部门</span> <span class=" col-md-6">
+										<input type="text" id="department" name="department"
+										th:value="${backUser.department}" readonly="readonly"/>
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 ">岗位</span> <span class=" col-md-6">
+										<input type="text" id="post" name="post"
+										th:value="${backUser.post}" readonly="readonly"/>
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 ">姓名</span> <span class=" col-md-6">
+										<input type="text" id="fullName" name="fullName"
+										th:value="${backUser.fullName}" readonly="readonly" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 ">电话</span> <span class=" col-md-6">
+										<input type="tel" id="telephone" name="telephone" 
+										th:value="${backUser.telephone}" readonly="readonly" />
+									</span>
+								</div>
+
+
+								<div class="col-md-12">
+									<span class=" col-md-2 ">邮箱</span> <span class=" col-md-6">
+										<input id="email" name="email" type="email" 
+										th:value="${backUser.email}" readonly="readonly"/>
+									</span>
+								</div>
+
+								<div class="col-md-12">
+									<span class="col-md-2">头像(200*200)</span>
+									<div class="col-md-6">
+										<img th:src="${backUser.portraitImg}" id="portraitImg_preview"
+											style="width: 200px; height: 200px;" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-second">
+							<div class="tab-box">
+									<div id="searchModuleTree"></div>
+							</div>
+						</div>
+						<div class="tab-pane" id="tab-third">
+							<div class="panel-body">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>编号</th>
+											<th>登录时间</th>
+											<th>IP</th>
+										</tr>
+									</thead>
+									<tbody th:if="${userLoginRecordList != null }">
+										<tr th:each="page,iterStat:${userLoginRecordList}">
+											<td th:text="${page.id}"></td>
+											<td
+												th:text="${page.createTime==null?'':#dates.format(page.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+											<td th:text="${page.loginIp}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END TABS -->
+			</div>
+
+			<!-- <div class="message-box animated fadeIn">
+			        	<div class="nav col-md-6 nav-ul">
+			        		<ul class="nav popup-ul bg-ul">
+				    			<li>确认要放弃吗?</li>
+				    			<li class="btn-li">
+				    				<button type="button" class="btn btn-success active">确认</button>
+				    				<button type="button" class="btn btn-default active cancel">取消</button>
+				    			</li>
+				    		</ul>
+				    	</div>
+			        </div>
+			        <div class="mask"></div> -->
+
+		</div>
+	</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script type="text/javascript" th:src="@{/js/base.js}"></script>
+<script th:inline="javascript">
+        /*<![CDATA[*/
+        	$(function(){
+        			$('#systemUserForm').bootstrapValidator();
+	        		$('.selectpicker').selectpicker({});
+					$("#userType").val([[${backUser.userType}]]);
+					var diversionChannel=[[${backUser.diversionChannel}]];
+					if(diversionChannel!=null && diversionChannel != ""){
+						$('#diversionChannel').selectpicker('val', diversionChannel.split(","));
+                        $('#diversionChannel').selectpicker('refresh');
+					} else {
+                        $('#diversionChannel').selectpicker('val', '');
+					}
+					var publishingChannel=[[${backUser.publishingChannel}]];
+					if(publishingChannel!=null){
+						$('#publishingChannel').selectpicker('val', publishingChannel.split(","));
+						$('#publishingChannel').selectpicker('refresh');
+					}
+					loadModule([[${backUser.userRoles}]],true);
+        	})
+        	function loadModule(roleId,isInit){
+        		$.ajax({
+                    type: "post",
+                    data: {"roleId": roleId},
+                    dataType: "json",
+                    url: "/sysRoleManagement/getModule",
+                    success: function (ret) {
+                    	$("#searchModuleTree").html('<span><i class="icon-minus-sign"></i><input value="0" type="checkbox"/> 全选</span>' + ret.msg);
+                    	if(isInit){//第一次加载选中数据库里面的值
+                    		var userModules=[[${backUser.userModules}]];
+                    	    if(userModules!=null){
+                    	    	var userModule=userModules.split(",");
+                    	    	$.each(userModule,function(i,value){
+		  							$(".tab-box").find("input[type=checkbox]")
+		  							$(".chp_"+value).prop('checked',true);
+		  						});
+                    	    }
+                    	}else{
+                    		$(".tab-box").find("input[type=checkbox]").prop("checked", true);
+                    	}
+                    	$("input[type=checkbox]").prop("disabled", "disabled");
+                        wait();
+                    }
+                });
+        	}
+        	$(".fa-arrow-circle-o-left").click(function(){
+        		base.quitParent("/sysUserManagement/searchBackUser");
+				})	
+        	 /*]]>*/
+        </script>
+</html>

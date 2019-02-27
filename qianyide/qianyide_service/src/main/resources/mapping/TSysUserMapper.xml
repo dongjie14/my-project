@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easyget.dao.TSysUserMapper">
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TSysUser">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="role_id" jdbcType="VARCHAR" property="roleId" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="user_passwd" jdbcType="VARCHAR" property="userPasswd" />
+    <result column="user_sts" jdbcType="INTEGER" property="userSts" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    user_id,
+    role_id,
+    user_account,
+    user_passwd,
+    user_sts,
+    user_type,
+    user_name,
+    user_phone,
+    user_email,
+    remark,
+    login_time,
+    create_time,
+    tm_smp
+  </sql>
+
+  <select id="findByAccount" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select user_id,role_id,user_account,user_passwd,user_sts,user_type,
+    user_name,user_phone,user_email,remark,login_time,create_time,tm_smp
+    from t_sys_user where 1=1
+    <if test="userId != null and userId != ''">
+      and user_id = #{userId}
+    </if>
+    <if test="userAccount != null and userAccount != ''">
+      and user_account = #{userAccount}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+</head>
+<body>
+<form role="form" id="formpro" class="form-horizontal">
+
+    <div class="block no-col-padding" style="margin-bottom:0;">
+        <!--<div class="form-group col-md-12 btn-form" style="text-align:left;">
+            <a href="#" class="btn btn-info loadExcel">导出excel</a>
+        </div>-->
+        <div class="form-group col-md-12 btn-form" style="text-align:left;">
+            <a href="/version/to-save" class="btn btn-info insertSpread">新增</a>
+        </div>
+        <div class="block" style="margin-bottom:0;">
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">版本号:</label>
+                <div class="col-md-8">
+                    <input type="text" id="versionNo" name="versionNo" th:value="${version.versionNo}"/>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">操作系统:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="os" name="os">
+                        <option th:value="-1" th:text="全部" th:selected="${version.os} == null" selected="selected"/>
+                        <!--<option th:value="0" th:text="自然流量" th:selected="${channelId} == 0" />selected="${channelId} == 0" selected="selected"/>-->
+                        <option th:selected="${version.os} == 0" th:value="0" th:text="安卓"/>
+                        <option th:selected="${version.os} == 1" th:value="1" th:text="IOS"/>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">版本使用状态:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="status" name="status">
+                        <option th:value="-1" th:text="全部" th:selected="${version.status} == null" selected="selected"/>
+                        <!--<option th:value="0" th:text="自然流量" th:selected="${channelId} == 0" />selected="${channelId} == 0" selected="selected"/>-->
+                        <option th:selected="${version.status} == 0" th:value="0" th:text="旧版本"/>
+                        <option th:selected="${version.status} == 1" th:value="1" th:text="最新版本"/>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="col-md-4 control-label">强更:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="forceUpdate" name="forceUpdate">
+                        <option th:value="-1" th:text="全部" th:selected="${version.forceUpdate} == null" selected="selected"/>
+                        <!--<option th:value="0" th:text="自然流量" th:selected="${channelId} == 0" />selected="${channelId} == 0" selected="selected"/>-->
+                        <option th:selected="${version.forceUpdate} == 1" th:value="1" th:text="强更"/>
+                        <option th:selected="${version.forceUpdate} == 0" th:value="0" th:text="非强更"/>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-12 btn-form" style="text-align:right;">
+                <button type="submit" class="btn btn-info">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="panel-body">
+    <table class="table" id="bigDataList">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>版本号</th>
+            <th>版本Code</th>
+            <th>版本更新内容</th>
+            <th>下载地址</th>
+            <th>H5下载页</th>
+            <th>是否强更</th>
+            <th>操作系统</th>
+            <th>创建人</th>
+            <th>创建时间</th>
+            <th>更新人</th>
+            <th>更新时间</th>
+            <th>备注</th>
+            <th>在用状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="page,iterStat:${pageInfo.list}">
+            <td th:text="${iterStat.index+1	}"></td>
+            <td th:text="${page.versionNo}"></td>
+            <td th:text="${page.versionCode}"></td>
+            <td th:text="${page.versionContent}"></td>
+            <td th:text="${page.downloadUrl}"></td>
+            <td th:text="${page.h5Url}"></td>
+            <td th:text="${page.forceUpdate == 1 ? '是' : '否'}"></td>
+            <td th:text="${page.os == 1 ? 'IOS' : '安卓'}"></td>
+            <td th:text="${page.createUser}"></td>
+            <td th:text="${page.createTime!=null &amp;&amp; page.createTime != '0000-00-00 00:00:00'? #dates.format(page.createTime,'yyyy-MM-dd HH:mm:ss') : ''}"></td>
+            <td th:text="${page.updateUser}"></td>
+            <td th:text="${page.updateTime!=null &amp;&amp; page.updateTime != '0000-00-00 00:00:00'? #dates.format(page.updateTime,'yyyy-MM-dd HH:mm:ss') : ''}"></td>
+            <td th:text="${page.remark}"></td>
+            <td th:if="${page.status == 0}" th:text="旧版本"></td>
+            <td th:if="${page.status == 1}" style="color:red" th:text="最新版本"></td>
+            <td>
+                <a th:href="'/version/to-save?id='+${page.id}">编辑</a>&nbsp;&nbsp;
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td height="33">
+                <table width="100%" border="0" align="center" cellpadding="0"
+                       cellspacing="0" class="right-font08">
+                    <tr>
+                        <td align="left" class="td2" th:if="${not #lists.isEmpty(pageInfo)}"
+                            th:text="   ${'共'+pageInfo.total+ '条'}">
+                        </td>
+                        <td align="right" class="td2" id="pageFooter">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    $(function () {
+        $("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+    });
+
+    // function setIsStatus(status,id) {
+    //     $.ajax({
+    //         type   : "post",
+    //         data   : {"spreadId":id,"spreadStatus":status},
+    //         url    : [[@{/spread/save}]],
+    //         success: function(resp) {
+    //             hidden();
+    //             alertPopup(resp.msg,function(){
+    //                 location.href='/spread/pageList';
+    //             });
+    //         }
+    //     }
+    // }
+</script>
+</html>

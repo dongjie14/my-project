@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" id="theme"
+		  th:href="@{/v2/css/theme-default.css}" />
+	<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+		  type="text/css" />
+</head>
+<body>
+<form action="" id="backConfigForm">
+	<input type="hidden" id="id" name="id" th:value="${backConfig.id}" />
+	<input type="hidden" id="sysKey" name="sysKey" th:value="${backConfig.sysKey}" />
+	<div class="block">
+		<div class="page-title">
+			<h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+			<button type="button" onclick="dosubmit()" class="btn btn-info">保存</button>
+			<button type="button" class="btn btn-default giveUp">放弃</button>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<!-- START TABS -->
+			<div class="panel panel-default tabs">
+				<div class="panel-body tab-content tabBox">
+					<div class="tab-pane active" id="tab-first">
+						<table>
+							<tr>
+								<td class="td-left"><font color="red">*</font>名称</td>
+								<td class="td-right">
+									<input type="text" class="form-control" id="sysName" name="sysName" th:value="${backConfig.sysName}"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="td-left"><font color="red">*</font>是否开启</td>
+								<td class="td-right">
+									<input type="radio" class="form-control"  name="sysValueView" value="0" th:checked="${backConfig.sysValue!='-1'}"/>是
+									<input type="radio" class="form-control"  name="sysValueView" value="-1" th:checked="${backConfig.sysValue=='-1'}"/>否
+								</td>
+							</tr>
+							<tr>
+								<td class="td-left">(小于优质用户分数值并且大于等于次级优质用户分数值的进入人工审核)  <font color="red">*</font>优质用户分数值</td>
+								<td class="td-right">
+									<input type="text" class="form-control" id="fkScore" name="fkScore" readonly="readonly" th:value="${fkScore}"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="td-left"><font color="red">*</font>次级优质用户分数值</td>
+								<td class="td-right">
+									<input type="text" class="form-control" id="sysValue" name="sysValue" th:value="${backConfig.sysValue}"/>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- END TABS -->
+		</div>
+	</div>
+</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+		th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+		th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+		th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+		th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href="/backConfigManagement/backConfigList";
+    })
+
+    $(".giveUp").click(function(){
+        $("#commonPopup").remove();
+        var val = $(this).html();
+        popup(val);
+        $("#commonPopup").addClass("open");
+    });
+
+    $("body").delegate("#sureid","click",function(){
+        $("#commonPopup").removeClass("open");
+        window.history.go(-1);
+    });
+
+    $(function(){
+        var backConfig = [[${backConfig}]];
+        if(backConfig.sysValue == -1) {
+            $("#sysValue").attr("readOnly", "readOnly");
+		}
+
+        $(":radio").click(function(){
+			var value = $(this).val();
+            if(value == -1) {
+                $("#sysValue").val("-1").attr("readOnly", "readOnly");
+            } else if(value == 0){
+                $("#sysValue").removeAttr("readOnly");
+            }
+        });
+    });
+
+    function dosubmit() {
+        $.ajax({
+            type   : "post",
+            data   : $('#backConfigForm').serialize(),
+            url    : [[@{/backConfigManagement/save}]],
+            success: function (resp) {
+                hidden();
+                alertPopup(resp.msg,function(){
+                    location.href='/backConfigManagement/backConfigList';
+                });
+            }
+        });
+    }
+</script>
+</html>

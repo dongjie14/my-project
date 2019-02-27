@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" id="theme"
+          th:href="@{/v2/css/theme-default.css}" />
+    <link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+          type="text/css" />
+    <style>
+        #sortForm{
+            width: 100%;
+        }
+        .myTable{
+            width:80%;
+            margin:0px auto;
+        }
+        input{
+            width: 50%;
+            margin:0 auto;
+            text-align: center;
+        }
+        .titie_p{
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+<form role="form" id="sortForm" class="form-horizontal col-md-6">
+    <div class="block">
+        <div class="page-title">
+            <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+            <button type="button" onclick="doSubmit()" class="btn btn-info">保存</button>
+        </div>
+
+    </div>
+    <p class="titie_p">规类型排序</p>
+    <table class="myTable">
+        <thead>
+            <th>规则名称</th>
+            <th>排序</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+            <tr th:each="type,typeStat:${typeInfo}">
+                <td>
+                    <input type="hidden" name="id" th:value="${type.id}"/>
+                    <input type="text" readonly="readonly" name="typeName" th:value="${type.typeName}"/>
+                </td>
+                <td>
+                    <input type="text" readonly="readonly" name="sort" th:value="${type.sort}"/>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-gray" th:if="${typeStat.index != 0}" name="upBtn" onclick="upSortClick(this)">↑排序上调</button>
+                    <button type="button" class="btn btn-gray" th:if="${typeStat.index+1 != typeStat.size}" name="downBtn" onclick="downSortClick(this)">↓排序下调</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+        th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+        th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function addButton(){
+        let len = $(".myTable").children("tbody:last-child").children().length;
+        var downHtml = '<button type="button" class="btn btn-gray"  name="downBtn" onclick="downSortClick(this)">↓排序下调</button>';
+        var upHtml = '<button type="button" class="btn btn-gray"  name="upBtn" onclick="upSortClick(this)">↑排序上调</button>';
+        var allHtml = '<button type="button" class="btn btn-gray" name="upBtn" onclick="upSortClick(this)">↑排序上调</button>\n' +
+            '                            <button type="button" class="btn btn-gray" name="downBtn" onclick="downSortClick(this)">↓排序下调</button>'
+        if(len == 2){
+            var firstChild = $(".myTable").children("tbody:last-child").children().eq(0);
+            firstChild.children("td:last-child").html(downHtml);
+
+            var secondChild = $(".myTable").children("tbody:last-child").children().eq(1);
+            secondChild.children("td:last-child").html(upHtml)
+        }
+        if(len == 1){
+            var firstChild = $(".myTable").children("tbody:last-child").children().eq(0);
+            firstChild.children("td:last-child").html("")
+        }
+        if(len>2){
+            let index = 0;
+            $(".myTable").children("tbody:last-child").children().each(function () {
+                if(index == 0){
+                    $(this).children("td:last-child").html(downHtml);
+                }else if(index+1 == len){
+                    $(this).children("td:last-child").html(upHtml);
+                }else{
+                    $(this).children("td:last-child").html(allHtml);
+                }
+                index++;
+            })
+        }
+    }
+
+    function upSortClick(self){
+        var parent = $(self).parent().parent();
+        var before = parent.prev();
+        var parentHtml = parent.html();
+        var beforeHtml = before.html();
+        parent.html(beforeHtml);
+        before.html(parentHtml)
+        indexSort($(".myTable"));
+        addButton();
+    }
+
+    function downSortClick(self){
+        var parent = $(self).parent().parent();
+        var next = parent.next();
+        var parentHtml = parent.html();
+        var nextHtml = next.html();
+        parent.html(nextHtml);
+        next.html(parentHtml)
+        addButton();
+        indexSort($(".myTable"));
+    }
+
+    function indexSort(currentDom){
+        //console.log(currentDom.html())
+        var index = 1;
+        $(currentDom).children("tbody:last-child").children().each(function () {
+            $(this).children().eq(1).children("input:first-child").val(index);
+            index++;
+        })
+    }
+
+    function doSubmit() {
+        let arr = new Array();
+        //tr
+        $(".myTable tbody").children().each(function () {
+            let obj = {};
+            $(this).find("input").each(function() {
+                obj[$(this).attr("name")] = getVal($(this).attr("name"),$(this).val());
+            })
+            $(this).find("select").each(function() {
+                obj[$(this).attr("name")] = getVal($(this).attr("name"),$(this).val());
+            })
+            arr.push(obj);
+        })
+        $.ajax({
+            type   : "post",
+            data   : {types:JSON.stringify(arr)},
+            url    : [[@{/riskType/updateSort}]],
+        success: function(resp) {
+            hidden();
+            alertPopup(resp.msg,function(){
+                location.href='/riskType/typeList';
+            });
+        }
+    });
+
+    }
+
+    function getVal(name,val){
+        if(name == 'id'){
+            return parseInt(val);
+        }
+        else if(name == 'sort'){
+            return parseInt(val);
+        }
+        else {
+            return val;
+        }
+    }
+
+    $(".fa-arrow-circle-o-left").click(function(){
+        location.href="/riskType/typeList";
+    })
+
+    $(function () {
+
+
+        /*$(".loadExcel").click(function () {
+            var id = $("#id").val();
+            var userName = $("#userName").val();
+            var userPhone = $("#userPhone").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            var startLoanDate = $("#startLoanDate").val();
+            var endLoanDate = $("#endLoanDate").val();
+            var status = $("#status").val();
+            var channelId = $("#channelId").val();
+            var href = "/assetBorrowOrder/orderExport?id=" + id + "&userName=" + userName + "&userPhone=" + userPhone
+                + "&startDate=" + startDate + "&endDate=" + endDate + "&startLoanDate=" + startLoanDate + "&endLoanDate=" + endLoanDate
+                + "&status=" + status + "&channelId=" + channelId;
+
+
+            location.href = href;
+        });*/
+        //$("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+
+    });
+    /*]]>*/
+</script>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/v2/css/jqueryDatatable.css}" />
+</head>
+<body>
+	<form role="form"
+		th:action="@{/assetLogisticsOrder/pageList}" id="formpro"
+		class="form-horizontal">
+		<div class="block" style="margin-bottom: 0;">
+			<div class="form-group col-md-12 btn-form" style="text-align: left;">
+				<button type="button" id="export" class="btn btn-info">导出excel</button>
+				<a style="display: none"
+					th:href="@{/assetLogisticsOrder/pageListExport}"
+					id="exportExcel">导出</a>
+			</div>
+			<div class="form-group col-md-4">
+				<label class="col-md-4 control-label">订单号：</label>
+				<div class="col-md-8">
+					 <input type="text" id="orderId" name="orderId" th:value="${orderId}"/>
+				</div>
+			</div>
+			<div class="form-group col-md-4">
+				<label class="col-md-4 control-label">手机：</label>
+				<div class="col-md-8">
+					 <input type="text" id="userPhone" name="userPhone" th:value="${userPhone}"/>
+				</div>
+			</div>
+			<div class="form-group col-md-4">
+				<label class="col-md-4 control-label">姓名：</label>
+				<div class="col-md-8">
+					 <input type="text" id="userName" name="userName" th:value="${userName}"/>
+				</div>
+			</div>
+			<div class="form-group col-md-4">
+				<label class="col-md-4 control-label">检测状态：</label>
+				<div class="col-md-8">
+					<select class="form-control" id="auditStatus" name="auditStatus">
+						<option value="">全部</option>
+						<option value="0">不合格</option>
+						<option value="1">检测合格</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-md-4">
+				<label class="col-md-4 control-label">邮寄时间</label>
+				<div class="col-md-8">
+					<input name="startDate" id="startDate" th:value="${startDate}"
+						type="text" class="required"
+						style="width: 45%; float: left; padding: 6px 9px;"
+						onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'})"
+						title="请输入开始日期" size="30" /><span class="line">-</span><input
+						name="endDate" style="width: 45%; float: left; padding: 6px 9px;"
+						id="endDate" th:value="${endDate}" type="text" class="required"
+						onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')||\'%y-%M-%d\'}'})"
+						title="请输入截止日期" size="30" />
+				</div>
+			</div>
+			<div class="form-group col-md-4 btn-form" style="text-align: right;">
+				<button type="submit" class="btn btn-info">查询</button>
+			</div>
+		</div>
+	</form>
+	<div class="panel-body">
+		<table class="table" id="bigDataList">
+			<thead>
+				<tr>
+					<th>订单号</th>
+					<th>姓名</th>
+					<th>手机号</th>
+					<th>借款金额</th>
+					<th>借款期限</th>
+					<th>违约金</th>
+					<th>手机型号</th>
+					<th>设备号</th>
+					<th>快递单号</th>
+					<th>快递公司</th>
+					<th>邮寄时间</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="page,iterStat:${pageInfo.list}">
+					<td th:text="${page.orderId}"></td>
+					<td th:text="${page.userName}"></td>
+					<td th:text="${page.userPhone}"></td>
+					<td th:text="${page.perPayMoney}"></td>
+					<td th:text="${page.moneyDay}"></td>
+					<td th:text="${page.penaltyAmount}"></td>
+					<td th:text="${page.deviceModel}"></td>
+					<td th:text="${page.deviceNumber}"></td>
+					<td th:text="${page.ogisticsNo}"></td>
+					<td th:text="${page.ogisticsName}"></td>
+					<td th:text="${page.createTime==null?'':#dates.format(page.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+					<td th:if="${page.auditStatus!=null}" th:text="${page.auditStatus==0?'不合格':'检测合格'}"></td>
+					<td th:if="${page.auditStatus==null}">
+					    
+					    <span th:if="${page.status ==8}">
+							<span>检测合格</span>&nbsp;
+    	                    <span>不合格</span>
+					    </span>
+					    <span th:if="${page.status != 8}">
+							<a th:onclick="'qualified('+${page.id}+',1)'" href="#" class="des1">检测合格</a>&nbsp;
+    	                    <a href="#" th:onclick="'qualified('+${page.id}+',0)'" class="des0">不合格</a>
+					    </span>
+                    </td>
+				</tr>
+			</tbody>
+		</table>
+		<table width="95%" border="0" align="center" cellpadding="0"
+			cellspacing="0">
+			<tr>
+				<td height="33">
+					<table width="100%" border="0" align="center" cellpadding="0"
+						cellspacing="0" class="right-font08">
+						<tr>
+							<td align="left" class="td2"
+								th:if="${not #lists.isEmpty(pageInfo)}"
+								th:text="   ${'共'+pageInfo.total+ '条'}"></td>
+							<td align="right" class="td2" id="pageFooter"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}"
+	type="text/javascript"></script>
+<script th:inline="javascript">
+        /*<![CDATA[*/
+        	$(function(){
+        		$("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));  
+        		$("#auditStatus").val([[${auditStatus}]]);
+        		$("#export").click(function () {
+                    var exportExcel = document.getElementById("exportExcel");
+                    var href = exportExcel.href;
+                    exportExcel.href = href + '?' + $("#formpro").serialize();
+                    exportExcel.click();
+                    exportExcel.href = href;
+                });
+                $("#queryOperate").click(function(){
+                	/*<![CDATA[*/
+                    var startDate = $("#startDate").val();
+                    var endDate = $("#endDate").val();
+                    if (startDate == null || startDate == "") {
+                        alert("开始时间不能为空");
+                        return;
+                    } 
+                    if (endDate == null || endDate == "") {
+                        alert("结束时间不能为空");
+                        return;
+                    } 
+                    //时间不大于7天
+                    //console.log(startDate+","+endDate);
+                    var d1 = new Date(startDate);
+                    var d2 = new Date(endDate);
+                    //console.log(parseInt(d2 - d1) /1000/60/60/24);//两个时间相差的小时数
+                    var d3=parseInt(d2 - d1) /1000/60/60/24;
+                    if(d3>31){
+                    	alert("查询范围不能超过31天");
+                    	return;
+                    }else{
+                    	$("#formpro").submit();
+                    }
+                });
+        	});
+        	 function qualified(id,auditStatus){
+					popup($(".des"+auditStatus).html(),function(){
+						$.ajax({
+					        type   : "post",
+					        data   : {id: id,
+					        		  auditStatus: auditStatus},
+					        url    : [[@{/assetLogisticsOrder/audit}]],
+					        success: function (resp) {
+					            alertPopup(resp.message,function(){
+					            	$("#formpro").append("<input type='hidden' name='tmp' value='" + Math.round(Math.random()*100000) + "'/>");
+			           	         	$("#formpro").append("<input type='hidden' name='pageNum' value='" + [[${pageInfo.pageNum}]] + "'/>");
+						            $("#formpro").submit();
+					            });
+					        }
+					    });
+		            });
+		 	 }
+        	 /*]]>*/
+        </script>
+</html>

@@ -2,97 +2,115 @@
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-
 <generatorConfiguration>
-    <!--导入属性配置-->
+    <!--配置参考地址：http://www.mybatis.org/generator/configreference/xmlconfig.html-->
+    <!--配置参考地址http://blog.csdn.net/pk490525/article/details/16819307-->
+    <!--配置参考：http://blog.csdn.net/lirui874125/article/details/49589563-->
+    <!--配置参考：http://www.jianshu.com/p/e09d2370b796-->
 
-    <!--指定特定数据库的jdbc驱动jar包的位置-->
-    <classPathEntry location="F:/jar/mysql-connector-java-5.1.46.jar"/>
+    <!-- 引入配置文件 -->
+    <!--<properties resource="init.properties"/>-->
+    <!-- 指定数据连接驱动jar地址 -->
+    <!-- <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
 
-    <context id="default" targetRuntime="MyBatis3">
+    <!--
+    context:生成一组对象的环境
+    id:必选，上下文id，用于在生成错误时提示
+    defaultModelType:指定生成对象的样式
+        1，conditional：类似hierarchical；
+        2，flat：所有内容（主键，blob）等全部生成在一个对象中；
+        3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)
+    targetRuntime:
+        1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；
+        2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；
+    introspectedColumnImpl：类全限定名，用于扩展MBG
+-->
 
-        <!-- optional，旨在创建class时，对注释进行控制 -->
-        <commentGenerator>
-            <property name="suppressDate" value="true"/>
-            <property name="suppressAllComments" value="true"/>
+    <context id="Mysql" targetRuntime="MyBatis3Simple">
+        <!--https://mapperhelper.github.io/docs/3.usembg/，自动生成代码的通用mapper插件-->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="com.easyget.configuration.BaseMapper"/>
+            <!-- caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true -->
+            <!-- <property name="caseSensitive" value="true"/>-->
+        </plugin>
+        <!-- 注释 -->
+        <commentGenerator >
+            <!-- 是否取消自动生成的注释 -->
+            <!--<property name="suppressAllComments" value="false"/>-->
+            <!-- 是否生成注释代时间戳-->
+            <!-- <property name="suppressDate" value="true" />-->
         </commentGenerator>
 
-        <!--jdbc的数据库连接 -->
-        <jdbcConnection
-                driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://47.105.169.92:3306/jiasucard_dev?characterEncoding=utf-8"
-                userId="root"
-                password="Ddfxd23dfdE">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/qianyide_dev"
+                        userId="qianyide"
+                        password="123456">
+            <!-- 针对mysql数据库 -->
+            <property name="useInformationSchema" value="true"/>
         </jdbcConnection>
 
-
-        <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制-->
-        <javaTypeResolver>
-            <property name="forceBigDecimals" value="false"/>
+        <!-- 类型转换 -->
+        <javaTypeResolver >
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
 
-
-        <!-- Model模型生成器,用来生成含有主键key的类，记录类 以及查询Example类
-            targetPackage     指定生成的model生成所在的包名
-            targetProject     指定在该项目下所在的路径
-        -->
-        <!--<javaModelGenerator targetPackage="com.mmall.pojo" targetProject=".\src\main\java">-->
+        <!-- 生成实体类地址 -->
         <javaModelGenerator targetPackage="com.easyget.entity" targetProject="./src/main/java">
-            <!-- 是否允许子包，即targetPackage.schemaName.tableName -->
-            <property name="enableSubPackages" value="false"/>
-            <!-- 是否对model添加 构造函数 -->
-            <property name="constructorBased" value="true"/>
-            <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
-            <property name="trimStrings" value="true"/>
-            <!-- 建立的Model对象是否 不可改变  即生成的Model对象不会有 setter方法，只有构造方法 -->
-            <property name="immutable" value="false"/>
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <!--<property name="enableSubPackages" value="true" />-->
+            <!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+            <!--<property name="trimStrings" value="true" />-->
         </javaModelGenerator>
 
-        <!--mapper映射文件生成所在的目录 为每一个数据库的表生成对应的SqlMap文件 -->
-        <!--<sqlMapGenerator targetPackage="mappers" targetProject=".\src\main\resources">-->
-        <sqlMapGenerator targetPackage="mapping" targetProject="./src/main/resources">
-            <property name="enableSubPackages" value="false"/>
+        <!-- 生成mapxml文件 -->
+        <sqlMapGenerator targetPackage="mapping"  targetProject="./src/main/resources">
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <!-- <property name="enableSubPackages" value="true" />-->
         </sqlMapGenerator>
 
-        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
-                type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
-                type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
-                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
-        -->
-
-        <!-- targetPackage：mapper接口dao生成的位置 -->
-        <!--<javaClientGenerator type="XMLMAPPER" targetPackage="com.mmall.dao" targetProject=".\src\main\java">-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.easyget.dao" targetProject="./src/main/java">
-            <!-- enableSubPackages:是否让schema作为包的后缀 -->
-            <property name="enableSubPackages" value="true" />
-            <property name="domainObjectName" value="Dao"/>
+        <!-- 生成mapxml对应client，也就是接口dao -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.easyget.dao"  targetProject="./src/main/java">
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <!--<property name="enableSubPackages" value="true" />-->
         </javaClientGenerator>
 
+        <!-- 配置表信息 -->
+        <!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
+                是否生成 example类   -->
+        <!--<table schema="jack" tableName="ALLTYPES" domainObjectName="Customer" >-->
+        <!-- <property name="useActualColumnNames" value="true"/>
+         <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+         <columnOverride column="DATE_FIELD" property="startDate" />-->
+        <!-- 忽略列，不生成bean 字段 -->
+        <!--<ignoreColumn column="FRED" />-->
+        <!-- 指定列的java数据类型 -->
+        <!-- <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />-->
+        <!-- </table>-->
+        <table tableName="t_channel_payment_config"  domainObjectName="TChannelPaymentConfig" />
+        <table tableName="t_channel_payment_quota_count"  domainObjectName="TChannelPaymentQuotaCount" />
+        <table tableName="t_channel_withhold_config"  domainObjectName="TChannelWithholdConfig" />
+        <table tableName="t_channel_withhold_count"  domainObjectName="TChannelWithholdCount" />
+        <table tableName="t_message_conf"  domainObjectName="TMessageConf" />
+        <table tableName="t_message_record"  domainObjectName="TMessageRecord" />
+        <table tableName="t_pay_borrow_ord"  domainObjectName="TPayBorrowOrd" />
+        <table tableName="t_pay_loan_jnl"  domainObjectName="TPayLoanJnl" />
+        <table tableName="t_pay_repayment_jnl"  domainObjectName="TPayRepaymentJnl" />
+        <table tableName="t_pay_repayment_ord"  domainObjectName="TPayRepaymentOrd" />
+        <table tableName="t_sys_feedback"  domainObjectName="TSysFeedback" />
+        <table tableName="t_sys_module"  domainObjectName="TSysModule" />
+        <table tableName="t_sys_notice_config"  domainObjectName="TSysNoticeConfig" />
+        <table tableName="t_sys_param"  domainObjectName="TSysParam" />
+        <table tableName="t_sys_region"  domainObjectName="TSysRegion" />
+        <table tableName="t_sys_return_code"  domainObjectName="TSysReturnCode" />
+        <table tableName="t_sys_role"  domainObjectName="TSysRole" />
+        <table tableName="t_sys_role_module"  domainObjectName="TSysRoleModule" />
+        <table tableName="t_sys_user"  domainObjectName="TSysUser" />
+        <table tableName="t_user_card"  domainObjectName="TUserCard" />
+        <table tableName="t_user_contacts"  domainObjectName="TUserContacts" />
+        <table tableName="t_user_info"  domainObjectName="TUserInfo" />
+        <table tableName="t_user_phone_list"  domainObjectName="TUserPhoneList" />
+        <table tableName="t_user_realname"  domainObjectName="TUserRealname" />
 
-        <!--<table tableName="user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="sign" domainObjectName="Sign" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="question" domainObjectName="Question" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="message" domainObjectName="Message" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="login" domainObjectName="Login" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="login_log" domainObjectName="LoginLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="grade" domainObjectName="Grade" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="grade_rule" domainObjectName="GradeRule" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="grade_exper_rule" domainObjectName="GradeExperRule" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="attention" domainObjectName="Attention" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="user_extend" domainObjectName="UserExtend" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="areazone" domainObjectName="Areazone" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="login_log" domainObjectName="LoginLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="itdragon_syspermission" domainObjectName="ItdragonSysPermission" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="itdragon_sysrole" domainObjectName="ItdragonSysRole" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="itdragon_user_shiro" domainObjectName="ItdragonUserShiro" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="sys_role_permission" domainObjectName="SysRolePermission" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="sys_user_role" domainObjectName="SysUserRole" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <!--<table tableName="coupon" domainObjectName="Coupon" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="coupon_borrow_user" domainObjectName="CouponBorrowUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="coupon_lat" domainObjectName="CouponLat" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="coupon_lat_detail" domainObjectName="CouponLatDetail" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <!--<table tableName="coupon_type" domainObjectName="CouponType" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <table tableName="order_risk_fail" domainObjectName="OrderRiskFail" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <!-- geelynote mybatis插件的搭建 -->
     </context>
 </generatorConfiguration>

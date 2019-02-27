@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" id="theme"
+	th:href="@{/v2/css/theme-default.css}" />
+<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet"
+	type="text/css" />
+</head>
+<body>
+	<form action="" id="supermarketForm">
+		<input type="hidden" id="id" name="id" th:value="${info.id}" />
+		<div class="block">
+			<div class="page-title">
+                    <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
+                    <button type="button" onclick="dosubmit()" class="btn btn-info">保存</button>
+					<button type="button" class="btn btn-default giveUp">放弃</button>
+                </div>
+
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- START TABS -->
+				<div class="panel panel-default tabs">
+					<div class="panel-body tab-content tabBox">
+						<div class="tab-pane active" id="tab-first">
+							<table>
+								<tr>
+									<td class="td-left"><font color="red">*</font>平台名称</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="name" style="width: 15%" name="name" th:value="${info.name}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>logn</td>
+									<td class="td-right">
+										<img th:src="${info.imgPath}" id="portraitImg_preview"
+											style="width: 80px; height: 80px;" />
+										<div id="portraitImgDiv"></div>
+										<input class="required text" id="imgPath"
+											name='imgPath' type="hidden"
+											th:value="${info.imgPath}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>贷款额度(元)</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="beginMoney" name="beginMoney" style="width: 10%" th:value="${info.beginMoney}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+										<input type="text" class="form-control" id="endMoney" name="endMoney" style="width: 10%" th:value="${info.endMoney}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>跳转链接</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="urlPath" name="urlPath" style="width: 60%" th:value="${info.urlPath}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>广告语</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="describes" name="describes" style="width: 10%" th:value="${info.describes}"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>排序</td>
+									<td class="td-right">
+										<input type="text" class="form-control" id="sort" name="sort" style="width: 10%" th:value="${info.sort}" onkeyup="value=value.replace(/[^\d\.]/g,'')" onblur="value=value.replace(/[^\d\.]/g,'')" />
+									</td>
+								</tr>
+								<tr>
+									<td class="td-left"><font color="red">*</font>上下架</td>
+									<td class="td-right" th:if="${info.status==null}">
+										<input type="radio" class="form-control"  name="status" style="width: 10%" value="1" checked="ture" /><label>上架</label>
+										<input type="radio" class="form-control" name="status" style="width: 10%" value="0"/><label>下架</label>
+									</td>
+									<td class="td-right" th:if="${info.status==1}">
+										<input type="radio"  name="status" style="width: 10%" value="1" checked="ture" /><label>上架</label>
+										<input type="radio" name="status" style="width: 10%" value="0"/><label>下架</label>
+									</td>
+									<td class="td-right" th:if="${info.status==0}">
+										<input type="radio" class="form-control"  name="status" style="width: 10%" value="1"  /><label>上架</label>
+										<input type="radio" class="form-control"  name="status" style="width: 10%" value="0" checked="ture"  /><label>下架</label>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- END TABS -->
+			</div>
+		</div>
+	</form>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrapValidator.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript"
+	th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script type="text/javascript"
+	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+		//var id=[[${info.id}]];
+		$('#portraitImgDiv').Huploadify({
+			auto:true,
+			fileTypeExts:'*.jpg;*.jpeg;*.gif;*.png;*.bmp',
+			multi:false,
+			fileSizeLimit:99999999,
+			showUploadedPercent:true,//是否实时显示上传的百分比，如20%
+			showUploadedSize:true,
+			removeTimeout:2000,
+			uploader: '/backUpload/uploadFiles',
+			method:'post',
+			fileObjName:'Filedata',
+			onUploadSuccess:function(file,response){
+				 var respJson = JSON.parse(response);
+
+		            $("#imgPath").val(respJson.data);
+		            $("#portraitImg_preview").attr("src", respJson.data);
+			}
+		});
+		$(".fa-arrow-circle-o-left").click(function(){
+
+			location.href="/supermarket/list";
+		})
+
+		$(".giveUp").click(function(){
+				$("#commonPopup").remove();
+				var val = $(this).html();
+				popup(val);
+			    $("#commonPopup").addClass("open");
+		});
+		$("body").delegate("#sureid","click",function(){
+			    $("#commonPopup").removeClass("open");
+			    window.history.go(-1);
+		});
+
+
+			 function dosubmit() {
+			     var values=$('#supermarketForm').serializeArray();
+			     console.log(values.length);
+			     for (var i=0;i<values.length;i++){
+					if(values[i].name !="id"&&values[i].value ==""){
+                        alertPopup("参数都不能为空请检查");
+                        return;
+					}
+				 }
+
+                     $.ajax({
+                    type   : "post",
+                    data   : $('#supermarketForm').serialize(),
+                    url    : [[@{/supermarket/save}]],
+                    success: function (resp) {
+                    	hidden();
+                    	if(resp.code=='0'){
+                    		alertPopup(resp.msg);
+                    		return;
+                    	}
+                        alertPopup(resp.msg,function(){
+                        	location.href='/supermarket/list';
+                        });
+                    }
+                });
+
+        	}
+
+
+
+
+
+    /*]]>*/
+        </script>
+</html>

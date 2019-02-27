@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8"/>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css"/>
+	<style>
+		.already_repayment{
+			position:absolute;
+			top:20px;
+			right:30px;
+		}
+		input{
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div style="width:1000px; height:160px;  margin-left:30px">
+		<h2>用户统计</h2>
+		<div style="float: left">
+			<table>
+				<tr>
+					<td style="width: 150px">总用户数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.userCount}"/></td>
+					<td style="width: 30px">人</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">总已认证用户数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.identificationUserCount}"/></td>
+					<td style="width: 30px">人</td>
+				</tr>
+			</table>
+		</div>
+		<div style="float:left;margin-left:20px">
+			<table>
+				<tr>
+					<td style="width: 150px">今日注册用户数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.dayRegisterUserCount}" /></td>
+					<td style="width: 30px">人</td>
+				</tr>
+				<tr>
+					<td style="width: 100px">今日已认证用户数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.dayIdentificationUserCount}" /></td>
+					<td style="width: 30px">人</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div style="width:1000px; height:160px;margin-left:30px;margin-top: 10px">
+		<h2>放款统计</h2>
+		<div style="float: left">
+			<table>
+				<tr>
+					<td style="width: 150px">累计放款金额</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.totalLoanMoney}" /></td>
+					<td style="width: 30px">元</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">累计放款笔数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.totalLoanCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+			</table>
+		</div>
+		<div style="float:left;margin-left:20px">
+			<table>
+				<tr>
+					<td style="width: 150px">当日放款金额</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.dayTotalLoanMoney}" /></td>
+					<td style="width: 30px">元</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">当日放款笔数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.dayTotalLoanCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div style="width:1000px; height:160px;margin-left:30px;margin-top: 10px">
+		<h2>风控统计</h2>
+		<div style="float: left">
+			<table>
+				<tr>
+					<td style="width: 150px">机审累计订单数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.forInstanceOrderCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">机审通过累计订单数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.forInstanceAdoptOrderCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">机审订单通过率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${T(com.inext.utils.DataFormat).getDataForString((homeInfo.forInstanceAdoptOrderCount)+'',(homeInfo.forInstanceOrderCount)+'')}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+			</table>
+		</div>
+		<div style="float:left;margin-left:20px">
+			<table>
+				<tr>
+					<td style="width: 150px">今日机审订单数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.dayForInstanceOrderCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">今日机审通过订单数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.dayForInstanceAdoptOrderCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">今日机审通过率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${T(com.inext.utils.DataFormat).getDataForString((homeInfo.dayForInstanceAdoptOrderCount)+'',(homeInfo.dayForInstanceOrderCount)+'')}"/></td>
+					<td style="width: 30px">%</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div style="width:2000px; height:160px;margin-left:30px;margin-top: 55px">
+		<h2>借款统计</h2>
+		<div style="float: left">
+			<table>
+				<tr>
+					<td style="width: 150px">借款申请总数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.allApplyCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">男性申请总数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.manApplyCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">男性申请率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.manApplyRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">女申请总数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.womanApplyCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">女性申请率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.womanApplyRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+			</table>
+		</div>
+		<!--<div style="float:left;margin-left:20px">
+			<table>
+				<tr>
+					<td style="width: 150px">男性申请率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.manApplyRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">女性申请率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.womanApplyRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+			</table>
+		</div>-->
+		<div style="float:left;margin-left:20px">
+			<table>
+				<tr>
+					<td style="width: 150px">男性通过总数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.manApproveCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">男性通过率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.manApproveRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">女性通过总数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.womanApproveCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">女性通过率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.womanApproveRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+			</table>
+		</div>
+		<!--<div style="float:left;margin-left:20px">
+			<table>
+				<tr>
+					<td style="width: 150px">男性通过率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.manApproveRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">女性通过率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.womanApproveRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+			</table>
+		</div>-->
+
+		<div style="float:left;margin-left:20px">
+			<table>
+				<tr>
+					<td style="width: 150px">复借总数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.allRepeatLoanCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">复借总比率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.allRepeatRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">今日复借数</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.toDayRepeatLoanCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">今日复借比率</td>
+					<td style="width: 100px"><input readonly="true" th:value="${homeInfo.toDayRepeatRatio}" /></td>
+					<td style="width: 30px">%</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="already_repayment">
+		<h2 style="color:red;text-align: center">已还款统计</h2>
+		<div style="float: left">
+			<table>
+				<tr>
+					<td style="width: 150px">已还款单数</td>
+					<td style="width: 170px"><input  readonly="true" th:value="${homeInfo.repaymentedCount}" /></td>
+					<td style="width: 30px">笔</td>
+				</tr>
+				<tr>
+					<td style="width: 150px">已还款金额</td>
+					<td style="width: 170px"><input readonly="true" th:value="${homeInfo.repaymentedMoneySum}" /></td>
+					<td style="width: 30px">元</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js"></script>
+<!-- <script type="text/javascript" th:src="@{/v2/js/jquery.dataTables.min.js}"></script> -->
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:src="@{/v2/js/dataTables.treeGrid.js}"></script>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" id="theme" th:href="@{/v2/css/theme-default.css}" />
+	<link th:href="@{/huploadify/Huploadify.css}" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" th:href="@{/v2/css/jqueryDatatable.css}"/>
+</head>
+<body>
+	<form role="form" id="formpro" class="form-horizontal">
+		<div class="block" style="margin-bottom:0;">
+	        <div class="form-group col-md-12 btn-form" style="text-align:left;">
+	        	<button type="button" class="btn btn-info" id="exportExcel"  onclick="pactivity.exportExcelFile();">导出Excel</button>
+	        </div>                               
+	        <div class="form-group  col-md-4">
+	            <label class="col-md-4 control-label">用户id</label>
+	            <div class="col-md-8">
+	                <input type="text" id="userId" name="userId" th:value="${userId}"/>
+	            </div>
+	        </div>
+	        <div class="form-group  col-md-4">
+	            <label class="col-md-4 control-label">是否黑名单</label>
+	            <div class="col-md-8">
+	                <select data-live-search="true" class="selectpicker show-tick form-control" id="isBlack" name="isBlack">
+	                	<option value="">全部</option>
+						<option th:each="item, itemStat: ${isBlackMap}" th:value="${item.key}" th:text="${item.value}" th:selected="${item.key}==${isBlack}" />
+	                </select>
+	            </div>
+	        </div>
+	        <div class="form-group  col-md-4">
+	            <label class="col-md-4 control-label">姓名</label>
+	            <div class="col-md-8">
+	                <input type="text" id="userName" name="userName" th:value="${userName}"/>
+	            </div>
+	        </div>
+	        <div class="form-group  col-md-4">
+	            <label class="col-md-4 control-label">身份证号</label>
+	            <div class="col-md-8">
+	                <input type="text" id="userCardNo" name="userCardNo" th:value="${userCardNo}"/>
+	            </div>
+	        </div>
+	        <div class="form-group  col-md-4">
+	            <label class="col-md-4 control-label">手机</label>
+	            <div class="col-md-8">
+	                <input type="text" id="userPhone" name="userPhone" th:value="${userPhone}"/>
+	            </div>
+	        </div>
+	        <div class="form-group col-md-4">
+	            <label class="col-md-4 control-label">注册日期</label>
+	            <div class="col-md-8">                                                                                            
+                    <input name="startDate" id="startDate" autocomplete="off" readonly="readonly"
+                          th:value="${startDate}" type="text"
+                          class="required" style="width:43%; float:left; padding: 6px 6px; text-align:center;"
+                          onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endDate\')||\'%y-%M-%d\'}'})" title="" size="30"/>
+                   <span class="line">-</span>
+                   <input name="endDate" id="endDate" th:value="${endDate}"  autocomplete="off" readonly="readonly"
+                          type="text"
+                          class="required" style="width:43%; float:left; padding: 6px 6px; text-align:center;"
+                          onfocus="WdatePicker({isShowClear:true,readOnly:false,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startDate\')||\'%y-%M-%d\'}'})" title="请输入注册开始日期" size="30"/>
+	            </div>
+	        </div>
+			<div class="form-group col-md-4">
+				<label class="col-md-4 control-label">渠道:</label>
+				<div class="col-md-8">
+					<select class="form-control" id="channelId" name="channelId">
+						<option th:value="-1" th:text="全部" th:selected="${channelId} == -1" selected="selected"/>
+						<!--<option th:value="0" th:text="自然流量" th:selected="${channelId} == 0" />selected="${channelId} == 0" selected="selected"/>-->
+						<option th:each="item, itemStat: ${channelList}"
+								th:selected="${item.id} == ${channelId}"	th:value="${item.id}" th:text="${item.channelName}" />
+					</select>
+				</div>
+			</div>
+	        <div class="form-group col-md-9">
+				&nbsp;
+	        </div>
+	        <div class="form-group col-md-3 btn-form" style="text-align:right;">
+				<button type="submit" class="btn btn-info">查询</button>
+	        </div>
+	   </div>
+	</form>
+	<div class="panel-body" style="width: 100%;">
+		<table class="table" id="bigDataList" style="width:100%;margin-bottom: 30px;">
+			<thead>
+		         <tr>
+		         	 <th>用户ID</th>
+		         	 <th>手机号</th>
+		         	 <th>姓名</th>
+		         	 <th>身份证号</th>
+		             <th>实名认证</th>
+		             <th>手机通讯录</th>
+		             <th>运营商认证</th>
+		             <th>绑定银行卡</th>
+		             <th>设置支付密码</th>
+		             <th>黑名单</th>
+		             <th>老用戶</th>
+					 <th>风控</th>
+		             <th>注册时间</th>
+					 <th>渠道</th>
+		             <th>操作</th>
+		         </tr>
+		     </thead>
+		     <tbody id="promotionTbodyId">
+		     	<tr th:each="result: ${pageInfo.list}">
+					<td th:text="${result.id}"></td>
+					<td th:text="${result.userPhone}"></td>
+					<td th:text="${result.userName}"></td>
+					<td th:text="${result.userCardNo}"></td>
+					<td th:text="${result.isVerified}"></td>
+					<td th:text="${result.isPhone}"></td>
+					<td th:text="${result.isOperator}"></td>
+					<td th:text="${result.isCard}"></td>
+					<td th:text="${result.transactionPassword}"></td>
+					<td th:text="${result.isBlack}"></td>
+					<td th:text="${result.isOld}"></td>
+					<td>
+						<span style="margin-bottom:5px;" target="external-frame" th:text="${result.adoptStatus == 1 ? '风控通过': (result.adoptStatus == 3 ? '审核中' : ((result.ppxStatus == 1 || result.dsStatus == 1) ? '审核拒绝' : '未风控'))}"></span>
+						<br/>
+						<span target="external-frame" th:text="${result.detail}"></span>
+					</td>
+					<td th:text="${result.createTime}"></td>
+					<td th:text="${result.channelName}"></td>
+					<td>
+						<a target="external-frame" style="cursor: pointer;" th:onclick="'pactivity.borrowUserDetail(\''+${result.id}+'\')'">详情</a>&nbsp;&nbsp;
+						<a th:if="${result.black} == 0" target="external-frame" style="cursor: pointer;" th:onclick="'pactivity.setIsBlack(1,\''+${result.id}+'\')'">拉黑</a>
+						<a th:if="${result.black} == 1" target="external-frame" style="cursor: pointer;" th:onclick="'pactivity.setIsBlack(0,\''+${result.id}+'\')'">取消拉黑</a>
+					</td>
+				</tr>
+		     
+		     </tbody>
+		</table>
+		<table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+	     <tr>
+	         <td height="33">
+	             <table width="100%" border="0" align="center" cellpadding="0"
+	                    cellspacing="0" class="right-font08">
+	                 <tr>
+			     		<td align="left" th:if="${not #lists.isEmpty(pageInfo)}" th:text="${'共' + pageInfo.total + '条信息'}"></td>
+			     		<td align="right" id="pageFooter"></td>
+			     	</tr>
+	             </table>
+	          </td>
+	       </tr>
+	 	</table>
+	</div>
+</body>
+
+<script type="text/javascript" th:src='@{/v2/js/jquery.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/jquery-ui.min.js}'></script>
+<script type="text/javascript" th:src='@{/v2/js/bootstrap.min.js}'></script>        
+<script type='text/javascript' th:src='@{/v2/js/icheck.min.js}'></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.mCustomScrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-select.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/settings.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/plugins.js}"></script>        
+<script type="text/javascript" th:src="@{/v2/js/actions.js}"></script>
+<script type="text/javascript" th:src="@{/v2/js/bootstrap-treeview.min.js}"></script> 
+<script type="text/javascript" th:src="@{/v2/js/common.js}"></script>    
+<script th:src="@{/js/My97DatePicker/WdatePicker.js}" type="text/javascript"></script>
+<script th:src="@{/js/pagination.js}" type="text/javascript"></script>
+<script th:src="@{/js/page/create-page.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var taskId = "";
+	var pactivity = {
+		exportExcelFile : function(){
+			var userId = $("#userId").val();
+			var isBlack = $("#isBlack").val();
+			var userName = $("#userName").val();
+			var userCardNo = $("#userCardNo").val();
+			var userPhone = $("#userPhone").val();
+			var startDate = $("#startDate").val();
+			var endDate = $("#endDate").val();
+			var channelId = $("#channelId").val();
+			var where = "userId="+userId+"&isBlack="+isBlack+"&userName="+userName+"&startDate="+startDate+"&endDate="+endDate+"&userCardNo="+userCardNo+"&userPhone="+userPhone+"&channelId="+channelId;
+	      	window.location.href = "/borrowUser/exportBorroUserExcelFile?"+where;
+		},
+		setIsBlack : function(isblack,userId){
+			var where = "isBlack="+isblack+"&userId="+userId;
+			var url = "/borrowUser/updateBorrowUserIsBlack?"+where;
+			$.post(url,null,function(rsp){
+				if(rsp.status == 0){
+					window.location.href = "/borrowUser/queryBorrowUser";
+				}
+				alert(rsp.msg);
+			},'json');
+		},
+		borrowUserDetail : function(userId){
+			window.location.href = "/borrowUser/borrowUserDetail?userId="+userId;
+		}
+	};
+	$(function(){
+		$("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
+	});
+	/*]]>*/
+</script>
+</html>
