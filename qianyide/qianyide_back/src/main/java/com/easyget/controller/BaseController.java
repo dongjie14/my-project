@@ -3,6 +3,7 @@ package com.easyget.controller;
 import com.easyget.constants.Constants;
 import com.easyget.entity.TSysUser;
 import com.easyget.entity.TUserInfo;
+import com.easyget.utils.IpUtil;
 import com.octo.captcha.service.image.ImageCaptchaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,17 @@ public class BaseController {
      * @return
      */
     public TSysUser loginUser(HttpServletRequest request) {
+        if (request == null) {
+            request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        }
+        TSysUser sysUser = (TSysUser) request.getSession().getAttribute(Constants.QIANYIDE_SYS_USER);
+        return sysUser;
+    }
+
+    /**
+     * 得到session中的admin user对象
+     */
+    public TSysUser loginAdminUser(HttpServletRequest request) {
         if (request == null) {
             request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         }
@@ -150,6 +162,16 @@ public class BaseController {
             return p;
         }
         return p;
+    }
+
+    /**
+     * 获取IP地址
+     *
+     * @param request
+     * @return
+     */
+    public String getIpAddr(HttpServletRequest request) {
+        return IpUtil.getRemortIP(request);
     }
 
 }

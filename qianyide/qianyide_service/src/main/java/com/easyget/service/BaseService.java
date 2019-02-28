@@ -2,7 +2,7 @@ package com.easyget.service;
 
 import java.util.List;
 
-public interface BaseSerivce<T> {
+public interface BaseService<T> {
     int insert(T record);
 
     int insertSelective(T record);

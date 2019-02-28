@@ -14,12 +14,12 @@
 </head>
 <body>
 	<form action="" id="systemRoleForm">
-		<input type="hidden" id="id" name="id" th:value="${sysRole.id}" />
+		<input type="hidden" id="id" name="id" th:value="${sysRole.roleId}" />
 		<div class="block">
 			<div class="page-title">                    
                     <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
-                    <a th:href="'/sysRoleManagement/to-save?id='+${sysRole.id}" class="btn btn-info">编辑</a>
-					<a th:if="${sysRole.id!=null}"  href="/sysRoleManagement/to-save" class="btn btn-info">新建</a>
+                    <a th:href="'/sysRole/to-save?id='+${sysRole.roleId}" class="btn btn-info">编辑</a>
+					<a th:if="${sysRole.roleId!=null}"  href="/sysRole/to-save" class="btn btn-info">新建</a>
                 </div>
 				
 		</div>
@@ -39,34 +39,23 @@
 								<tr>
 									<td class="td-left">编号</td>
 									<td class="td-right">
-										<span class="col-md-6" th:text="${sysRole.roleNo}"></span>
+										<span class="col-md-6" th:text="${sysRole.roleId}"></span>
 									</td>
 									<td class="td-left">有效</td>
 									<td class="td-right">
-										<input type="checkbox" id="enabledCheck" name="enabledCheck" th:checked="${sysRole.enabled}==1?true:false" disabled="disabled"/>
+										<input type="checkbox" id="enabledCheck" name="enabledCheck" th:checked="${sysRole.enable}==1?true:false" disabled="disabled"/>
 									</td>
 								</tr>
 								<tr>
 									<td class="td-left"><font color="red">*</font>名称</td>
 									<td class="td-right">
-										<input type="text" class="form-control" id="name" name="name" th:value="${sysRole.name}" readonly="readonly"/>
+										<input type="text" class="form-control" id="name" name="name" th:value="${sysRole.roleName}" readonly="readonly"/>
 									</td>
 									<td class="td-left">上级角色</td>
 									<td class="td-right">
 										<input type="text" id="depName" name="depName" class="form-control" value=""  readonly="readonly" />
 										<div id="treeview" class="col-md-6" style="display:none;"></div>
 										<input type="hidden" id="parentId" name="parentId"/>
-									</td>
-								</tr>
-								<tr>
-									<td class="td-left">备注</td>
-									<td class="td-right">
-										<textarea id="remark" name="remark" readonly="readonly"
-														th:text="${sysRole.remark}" rows="5" cols="" class="form-control"></textarea>
-									</td>
-									<td class="td-left"><font color="red">*</font>序号</td>
-									<td class="td-right">
-										<input type="number" class="form-control" id="rank" name="rank" th:value="${sysRole.rank}" readonly="readonly"/>
 									</td>
 								</tr>
 								<tr>
@@ -86,7 +75,7 @@
 									</td>
 									<td class="td-left">更新于</td>
 									<td class="td-right">
-										<span class="col-md-6" th:text="${sysRole.updateTime==null?'':#dates.format(sysRole.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+										<span class="col-md-6" th:text="${sysRole.tmSmp==null?'':#dates.format(sysRole.tmSmp,'yyyy-MM-dd HH:mm:ss')}"></span>
 									</td>
 								</tr>
 							</table>
@@ -104,25 +93,24 @@
 											<th>编号</th>
 											<th>用户类型</th>
 		                                    <th>用户名</th>
-		                                    <th>昵称</th>
 		                                    <th>姓名</th>
 		                                    <th>电话</th>
+											<th>邮箱</th>
 		                                    <th>最后登录时间</th>
 										</tr>
 									</thead>
 									<tbody th:if="${backUserList != null }">
 										<tr th:each="page,iterStat:${backUserList}">
-											<td th:text="${page.userNo}"></td>
+											<td th:text="${page.userId}"></td>
 		                                    <td>
-		                                    	<span th:if="${page.userType=='01'}">普通用户</span>
-		                                    	<span th:if="${page.userType=='02'}">导流渠道</span>
-		                                    	<span th:if="${page.userType=='03'}">发布渠道</span>
+		                                    	<span th:if="${page.userType==1}">管理员</span>
+		                                    	<span th:if="${page.userType==2}">普通用户</span>
 		                                    </td>
-		                                    <td th:text="${page.account}"></td>
-		                                    <td th:text="${page.nickName}"></td>
-		                                    <td th:text="${page.fullName}"></td>
-		                                    <td th:text="${page.telephone}"></td>
-		                                    <td th:text="${page.userLoginTime==null?'':#dates.format(page.userLoginTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+		                                    <td th:text="${page.userAccount}"></td>
+		                                    <td th:text="${page.userName}"></td>
+											<td th:text="${page.userPhone}"></td>
+											<td th:text="${page.userEmail}"></td>
+		                                    <td th:text="${page.loginTime==null?'':#dates.format(page.loginTime,'yyyy-MM-dd HH:mm:ss')}"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -155,16 +143,16 @@
 	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
 <script th:inline="javascript">
         /*<![CDATA[*/
-        	var id=[[${sysRole.id}]];
+        	var id=[[${sysRole.roleId}]];
         	$(function() {
         		$('#systemRoleForm').bootstrapValidator();
-        		loadModule([[${sysRole.parentId}]],true);
+        		loadModule([[${sysRole.roleId}]],true);
 		        var options = {
 		          bootstrap2: false, 
 		          showTags: true,
 				  showCheckbox:true,
 				  checkedIcon:"glyphicon glyphicon-check",
-		          data: transData([[${roleList}]], 'id', 'pid', 'nodes',[[${sysRole.parentId}]]),
+		          data: transData([[${roleList}]], 'id', 'pid', 'nodes',[[${sysRole.superRoleId}]]),
 			  	onNodeSelected:function(event, data){
 								$("#treeview").hide();
 						  },
@@ -226,14 +214,14 @@
 			    document.querySelector('#treeview').classList.remove('show');
 			}, false);
 			$(".fa-arrow-circle-o-left").click(function(){
-				location.href="/sysRoleManagement/roleList";
+				location.href="/sysRole/roleList";
 			})
 				function loadModule(roleId,isInit){
         		$.ajax({
                     type: "post",
                     data: {"roleId": roleId},
                     dataType: "json",
-                    url: "/sysRoleManagement/getModule",
+                    url: "/sysRole/getModule",
                     success: function (ret) {
                     	$("#searchModuleTree").html('<span><i class="icon-minus-sign"></i><input value="0" type="checkbox"/> 全选</span>' + ret.msg);
                     	if(isInit){//第一次加载选中数据库里面的值

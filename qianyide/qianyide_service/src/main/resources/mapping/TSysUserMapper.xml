@@ -37,6 +37,43 @@
     tm_smp
   </sql>
 
+  <update id="updateByUserId">
+    update t_sys_user
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId},
+      </if>
+      <if test="userAccount != null">
+        user_account = #{userAccount},
+      </if>
+      <if test="userPasswd != null">
+        user_passwd = #{userPasswd},
+      </if>
+      <if test="userSts != null">
+        user_sts = #{userSts},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone},
+      </if>
+      <if test="userEmail != null">
+        user_email = #{userEmail},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime},
+      </if>
+    </set>
+    where user_id = #{userId}
+  </update>
+
   <select id="findByAccount" resultMap="BaseResultMap" parameterType="java.util.Map">
     select user_id,role_id,user_account,user_passwd,user_sts,user_type,
     user_name,user_phone,user_email,remark,login_time,create_time,tm_smp
@@ -47,5 +84,9 @@
     <if test="userAccount != null and userAccount != ''">
       and user_account = #{userAccount}
     </if>
+  </select>
+
+  <select id="getListByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from t_sys_user where role_id = #{roleId} and user_sts = 1 order by login_time desc
   </select>
 </mapper>

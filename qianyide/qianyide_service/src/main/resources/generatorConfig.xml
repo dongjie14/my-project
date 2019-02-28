@@ -87,7 +87,7 @@
         <!-- 指定列的java数据类型 -->
         <!-- <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />-->
         <!-- </table>-->
-        <table tableName="t_channel_payment_config"  domainObjectName="TChannelPaymentConfig" />
+        <!--<table tableName="t_channel_payment_config"  domainObjectName="TChannelPaymentConfig" />
         <table tableName="t_channel_payment_quota_count"  domainObjectName="TChannelPaymentQuotaCount" />
         <table tableName="t_channel_withhold_config"  domainObjectName="TChannelWithholdConfig" />
         <table tableName="t_channel_withhold_count"  domainObjectName="TChannelWithholdCount" />
@@ -111,6 +111,8 @@
         <table tableName="t_user_info"  domainObjectName="TUserInfo" />
         <table tableName="t_user_phone_list"  domainObjectName="TUserPhoneList" />
         <table tableName="t_user_realname"  domainObjectName="TUserRealname" />
+        <table tableName="t_sys_user_login_record"  domainObjectName="TSysUserLoginRecord" />-->
+        <table tableName="t_sys_user_module"  domainObjectName="TSysUserModule" />
 
     </context>
 </generatorConfiguration>

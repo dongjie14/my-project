@@ -1,10 +1,22 @@
 package com.easyget.entity;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Table(name = "t_sys_module")
 public class TSysModule {
+    // 最高级
+    public static final String SUPER = "0";
+    // 是否有效 有效
+    public static final int ENABLE_STATUS_USABLE = 1;
+    // 是否有效 无效
+    public static final int ENABLE_STATUS_DISABLED = 0;
+    // 模块类型 - 菜单
+    public static final int MODULE_TYPE_MENU = 1;
+    // 模块类型 - 按钮
+    public static final int MODULE_TYPE_BUTTON = 2;
+
     /**
      * 主键ID
      */
@@ -22,6 +34,12 @@ public class TSysModule {
      */
     @Column(name = "super_module_id")
     private String superModuleId;
+
+    /**
+     * 模块名称
+     */
+    @Column(name = "module_name")
+    private String moduleName;
 
     /**
      * 模块URL
@@ -75,6 +93,9 @@ public class TSysModule {
     @Column(name = "tm_smp")
     private Date tmSmp;
 
+    @Transient
+    private List<TSysModule> children;
+
     /**
      * 获取主键ID
      *
@@ -127,6 +148,24 @@ public class TSysModule {
      */
     public void setSuperModuleId(String superModuleId) {
         this.superModuleId = superModuleId;
+    }
+
+    /**
+     * 获取模块名称
+     *
+     * @return moduleName - 模块名称
+     */
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    /**
+     * 设置模块名称
+     *
+     * @param moduleName 模块名称
+     */
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 
     /**
@@ -289,5 +328,13 @@ public class TSysModule {
      */
     public void setTmSmp(Date tmSmp) {
         this.tmSmp = tmSmp;
+    }
+
+    public List<TSysModule> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<TSysModule> children) {
+        this.children = children;
     }
 }

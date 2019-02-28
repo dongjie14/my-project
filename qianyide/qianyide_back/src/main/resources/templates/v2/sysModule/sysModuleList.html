@@ -14,7 +14,7 @@
 	
 		<div class="block" style="margin-bottom:0;">
                         <div class="form-group col-md-12 btn-form" style="text-align:left;">
-                           <a href="/sysModuleManagement/to-save" class="btn btn-info">新建</a>
+                           <a href="/sysModule/to-save" class="btn btn-info">新建</a>
                         </div>                               
                 </div>
                 </form>
@@ -49,7 +49,7 @@
           	      title: '编号',
           	      target: 0,
           	      data: function (item) {
-          	          return item.moduleNo;
+          	          return item.moduleId;
           	      }
           	  } ,
          	  {
@@ -67,14 +67,14 @@
          	      title: '名称',
          	      target: 2,
          	      data: function (item) {
-         	          return item.name;
+         	          return item.moduleName;
          	      }
          	  },
          	  {
          	      title: '有效',
          	      target: 3,
          	      data: function (item) {
-         	    	  if(item.enabled==1){
+         	    	  if(item.enable==1){
          	    		 return '是';
          	    	  }else{
          	    		 return '否';
@@ -86,16 +86,16 @@
          	      title: '操作',
          	      target: 4,
          	      data: function (item) {
-         	    	  var resultHtml='<a href="/sysModuleManagement/to-Preview?id='+item.id+'" target="external-frame">查看</a>&nbsp;'
-         	    	  +'<a href="/sysModuleManagement/to-save?id='+item.id+'"  target="external-frame">编辑</a>&nbsp;'
-         	    	  +'<a href="#" onclick="del('+item.id+')" class="del">删除</a>';
+         	    	  var resultHtml='<a href="/sysModule/to-Preview?id='+item.moduleId+'" target="external-frame">查看</a>&nbsp;'
+         	    	  +'<a href="/sysModule/to-save?id='+item.moduleId+'"  target="external-frame">编辑</a>&nbsp;'
+         	    	  +'<a href="#" onclick="del('+item.moduleId+')" class="del">删除</a>';
          	    	 return resultHtml;
          	      }
          	  }
          	  ];
            $('#bigDataList').DataTable({
      	      'columns': columns,
-     	      "ajax": [[@{/sysModuleManagement/getModuleData}]],
+     	      "ajax": [[@{/sysModule/getModuleData}]],
      	      'treeGrid': {
      	          'left': 50,
      	          'expandIcon': '<span>+</span>',
@@ -124,7 +124,7 @@
    			$.ajax({
           	        type   : "post",
           	        data   : {id: delId},
-          	        url    : [[@{/sysModuleManagement/del}]],
+          	        url    : [[@{/sysModule/del}]],
           	        success: function (resp) {
           	            alertPopup(resp.message,function(){
           	            	$("#formpro").submit();

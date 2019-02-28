@@ -40,6 +40,14 @@ spring:
     mode: LEGACYHTML5
 
 
+########################################################
+### mybatis配置
+########################################################
+mybatis :
+  mapper-locations: classpath:/mapping/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true
+    callSettersOnNulls: true
 ####################
 ### logback 配置 ###
 ####################

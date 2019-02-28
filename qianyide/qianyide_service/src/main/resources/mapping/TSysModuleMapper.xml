@@ -8,6 +8,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="module_id" jdbcType="VARCHAR" property="moduleId" />
     <result column="super_module_id" jdbcType="VARCHAR" property="superModuleId" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
     <result column="module_url" jdbcType="VARCHAR" property="moduleUrl" />
     <result column="module_type" jdbcType="INTEGER" property="moduleType" />
     <result column="module_rank" jdbcType="INTEGER" property="moduleRank" />
@@ -18,4 +19,51 @@
     <result column="update_account" jdbcType="VARCHAR" property="updateAccount" />
     <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
   </resultMap>
+  <sql id="Base_Column_List">
+    module_id,
+    super_module_id,
+    module_name,
+    module_url,
+    module_type,
+    module_rank,
+    enable,
+    remark,
+    create_account,
+    create_time,
+    update_account,
+    tm_smp
+  </sql>
+  <select id="getModuleByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select tsm.* from t_sys_module tsm left join t_sys_user_module tsum on tsm.module_id = tsum.module_id
+    where 1=1
+    <if test="userId != null and userId != ''">
+      and tsum.user_id = #{userId}
+    </if>
+    <if test="moduleType != null and moduleType != ''">
+      and tsm.module_type = #{moduleType}
+    </if>
+    <if test="enable != null and enable != ''">
+      and tsm.enable = #{enable}
+    </if>
+    <if test="superModuleId != null and superModuleId != ''">
+      and tsm.super_module_id = #{superModuleId}
+    </if>
+     order by module_rank desc
+  </select>
+  <select id="getModuleList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_module
+    where 1=1
+    <if test="moduleType != null and moduleType != ''">
+      and module_type = #{moduleType}
+    </if>
+    <if test="enable != null and enable != ''">
+      and enable = #{enable}
+    </if>
+    <if test="superModuleId != null and superModuleId != ''">
+      and super_module_id = #{superModuleId}
+    </if>
+    order by module_rank desc
+  </select>
 </mapper>

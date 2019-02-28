@@ -4,7 +4,7 @@ import com.easyget.entity.TSysReturnCode;
 
 import java.util.Map;
 
-public interface TSysReturnCodeService extends BaseSerivce<TSysReturnCode> {
+public interface TSysReturnCodeService extends BaseService<TSysReturnCode> {
 
     public Map getReturnMsg(String returnCode);
 

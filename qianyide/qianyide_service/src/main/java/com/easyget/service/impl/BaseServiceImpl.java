@@ -1,13 +1,13 @@
 package com.easyget.service.impl;
 
 import com.easyget.configuration.BaseMapper;
-import com.easyget.service.BaseSerivce;
+import com.easyget.service.BaseService;
 import com.easyget.service.TSysReturnCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class BaseServiceImpl<T> implements BaseSerivce<T> {
+public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Autowired
     private BaseMapper<T> baseMapper;

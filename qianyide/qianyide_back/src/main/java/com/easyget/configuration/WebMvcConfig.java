@@ -25,7 +25,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration backInterceptor = registry.addInterceptor(new BackInterceptor());
         backInterceptor.addPathPatterns("/*", "/**");
-        backInterceptor.excludePathPatterns("/user/login", "/captcha.svl", "/error","/druid/*");
+        backInterceptor.excludePathPatterns("/user/login", "/captcha.svl", "/user/loginSubmit", "/error","/druid/*");
         super.addInterceptors(registry);
     }
 

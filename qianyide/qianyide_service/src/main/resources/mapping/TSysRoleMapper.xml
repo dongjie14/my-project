@@ -15,4 +15,43 @@
     <result column="update_account" jdbcType="VARCHAR" property="updateAccount" />
     <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
   </resultMap>
+  <sql id="Base_Column_List">
+    role_id,
+    super_role_id,
+    role_name,
+    enable,
+    create_account,
+    create_time,
+    update_account,
+    tm_smp
+  </sql>
+  <select id="getRoleByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_role
+    where 1=1
+    <if test="roleId != null and roleId != ''">
+      and role_id = #{roleId}
+    </if>
+    <if test="superRoleId != null and superRoleId != ''">
+      and super_role_id = #{superRoleId}
+    </if>
+    <if test="roleName != null and roleName != ''">
+      and role_name = #{roleName}
+    </if>
+    <if test="enable != null and enable != ''">
+      and enable = #{enable}
+    </if>
+  </select>
+  <select id="selectByRoleId" resultMap="BaseResultMap">
+    select * from t_sys_role where role_id = #{roleId}
+  </select>
+  <select id="getRoleChildIds" parameterType="String" resultType="String">
+    select group_concat(role_id) from
+    t_sys_role where super_role_id = #{roleId}
+  </select>
+  <select id="getRoleTreeList" resultType="Map" parameterType="Map">
+    select role_id id, super_role_id pid, role_name text
+    from t_sys_role sr where enable=1 and role_id in ${roleIds}
+  </select>
 </mapper>

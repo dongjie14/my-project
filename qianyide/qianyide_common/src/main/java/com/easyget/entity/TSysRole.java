@@ -1,10 +1,14 @@
 package com.easyget.entity;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Table(name = "t_sys_role")
 public class TSysRole {
+
+    public static final String SUPER = "0";
+
     /**
      * 主键ID
      */
@@ -57,6 +61,13 @@ public class TSysRole {
      */
     @Column(name = "tm_smp")
     private Date tmSmp;
+
+    @Transient
+    private String roleNo;
+    @Transient
+    private List<TSysRole> children;
+    @Transient
+    private String roleModules;
 
     /**
      * 获取主键ID
@@ -218,5 +229,29 @@ public class TSysRole {
      */
     public void setTmSmp(Date tmSmp) {
         this.tmSmp = tmSmp;
+    }
+
+    public String getRoleNo() {
+        return roleNo;
+    }
+
+    public void setRoleNo(String roleNo) {
+        this.roleNo = roleNo;
+    }
+
+    public List<TSysRole> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<TSysRole> children) {
+        this.children = children;
+    }
+
+    public String getRoleModules() {
+        return roleModules;
+    }
+
+    public void setRoleModules(String roleModules) {
+        this.roleModules = roleModules;
     }
 }

@@ -11,4 +11,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="tm_smp" jdbcType="TIMESTAMP" property="tmSmp" />
   </resultMap>
+  <select id="getModuleIdsByRoleId" resultType="java.lang.String">
+    select group_concat(module_id) from t_sys_role_module where role_id=#{roleId}
+  </select>
 </mapper>

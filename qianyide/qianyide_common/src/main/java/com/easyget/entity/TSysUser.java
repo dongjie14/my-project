@@ -1,6 +1,7 @@
 package com.easyget.entity;
 
 import java.util.Date;
+import java.util.Map;
 import javax.persistence.*;
 
 @Table(name = "t_sys_user")
@@ -87,6 +88,12 @@ public class TSysUser {
      */
     @Column(name = "tm_smp")
     private Date tmSmp;
+
+    @Transient
+    private Map mappinfo;
+
+    @Transient
+    private String oldPassword;
 
     /**
      * 获取主键ID
@@ -338,5 +345,21 @@ public class TSysUser {
      */
     public void setTmSmp(Date tmSmp) {
         this.tmSmp = tmSmp;
+    }
+
+    public Map getMappinfo() {
+        return mappinfo;
+    }
+
+    public void setMappinfo(Map mappinfo) {
+        this.mappinfo = mappinfo;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 }
