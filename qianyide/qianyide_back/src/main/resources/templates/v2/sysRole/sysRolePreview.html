@@ -14,11 +14,11 @@
 </head>
 <body>
 	<form action="" id="systemRoleForm">
-		<input type="hidden" id="id" name="id" th:value="${sysRole.roleId}" />
+		<input type="hidden" id="roleId" name="roleId" th:value="${sysRole.roleId}" />
 		<div class="block">
 			<div class="page-title">                    
                     <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
-                    <a th:href="'/sysRole/to-save?id='+${sysRole.roleId}" class="btn btn-info">编辑</a>
+                    <a th:href="'/sysRole/to-save?roleId='+${sysRole.roleId}" class="btn btn-info">编辑</a>
 					<a th:if="${sysRole.roleId!=null}"  href="/sysRole/to-save" class="btn btn-info">新建</a>
                 </div>
 				
@@ -143,7 +143,6 @@
 	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
 <script th:inline="javascript">
         /*<![CDATA[*/
-        	var id=[[${sysRole.roleId}]];
         	$(function() {
         		$('#systemRoleForm').bootstrapValidator();
         		loadModule([[${sysRole.roleId}]],true);

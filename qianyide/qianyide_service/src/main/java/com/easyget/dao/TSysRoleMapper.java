@@ -15,4 +15,6 @@ public interface TSysRoleMapper extends BaseMapper<TSysRole> {
     String getRoleChildIds(String roleId);
 
     List<Map<String, Object>> getRoleTreeList(Map params);
+
+    int updateByRoleId(TSysRole sysRole);
 }

@@ -1,25 +1,34 @@
 package com.easyget.service.impl;
 
-import com.easyget.dao.TSysModuleMapper;
-import com.easyget.dao.TSysRoleMapper;
+import com.easyget.dao.*;
 import com.easyget.entity.TSysModule;
 import com.easyget.entity.TSysRole;
+import com.easyget.entity.TSysUser;
+import com.easyget.service.TSysRoleModuleService;
 import com.easyget.service.TSysRoleService;
+import com.easyget.utils.RandomUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TSysRoleServiceImpl extends BaseServiceImpl<TSysRole> implements TSysRoleService {
 
     @Resource
+    private TSysUserMapper sysUserMapper;
+    @Resource
     private TSysRoleMapper sysRoleMapper;
     @Resource
     private TSysModuleMapper sysModuleMapper;
+    @Resource
+    private TSysRoleModuleMapper sysRoleModuleMapper;
+    @Resource
+    private TSysUserModuleMapper sysUserModuleMapper;
+    @Resource
+    private TSysRoleModuleService sysRoleModuleService;
+
 
     @Override
     public List<TSysRole> getRoleList() {
@@ -75,15 +84,34 @@ public class TSysRoleServiceImpl extends BaseServiceImpl<TSysRole> implements TS
     }
 
     @Override
-    public int doSave(TSysRole sysRole){
-        if(sysRole.getRoleId() == null){
+    public void doSave(TSysRole sysRole){
+        if(sysRole.getRoleId() == null || "".equals(sysRole.getRoleId())){
+            sysRole.setRoleId(RandomUtil.getUuid());
             sysRole.setCreateAccount(sysRole.getUpdateAccount());
             sysRole.setCreateTime(new Date());
-            sysRole.setEnable(1);
+            sysRoleMapper.insertSelective(sysRole);
         }else{
-
+            sysRoleMapper.updateByRoleId(sysRole);
+            //获取该角色被删掉的权限
+            String delModuleIds = sysRoleModuleMapper.getDelModuleIdsByRoleId(sysRole);
+            if (StringUtils.isNotBlank(delModuleIds)) {
+                String delUserIds = sysUserMapper.getUserIdsByRoleId(sysRole.getRoleId());
+                if (StringUtils.isNotBlank(delUserIds)) {
+                    sysUserModuleMapper.deleteByModuleIdsAndUserIds(delUserIds, delModuleIds);
+                }
+                //同步到下级角色删除该权限
+                String roleChildIds = sysRoleMapper.getRoleChildIds(sysRole.getRoleId());
+                if (StringUtils.isNotBlank(roleChildIds)) {
+                    if (roleChildIds.indexOf(",") == 0) {
+                        roleChildIds = roleChildIds.substring(1);
+                    }
+                    sysRoleModuleMapper.removeRoleModuleIdsAndRoleId(roleChildIds, delModuleIds);
+                }
+            }
         }
-        return 0;
+        if (StringUtils.isNotBlank(sysRole.getRoleModules())) {
+            sysRoleModuleService.saveRoleModule(sysRole.getRoleModules().split(","), sysRole.getRoleId());
+        }
     }
 
     private StringBuffer appendCheckboxModuleTree(List<TSysModule> sysModuleList, Map params){
@@ -105,6 +133,10 @@ public class TSysRoleServiceImpl extends BaseServiceImpl<TSysRole> implements TS
         }
         html.append("</ul>");
         return html;
+    }
+
+    public int updateByRoleId(TSysRole sysRole){
+        return sysRoleMapper.updateByRoleId(sysRole);
     }
 
 }

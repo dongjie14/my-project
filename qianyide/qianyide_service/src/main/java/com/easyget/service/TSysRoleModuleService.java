@@ -4,4 +4,6 @@ import com.easyget.entity.TSysRoleModule;
 
 public interface TSysRoleModuleService extends BaseService<TSysRoleModule> {
     String getModuleIdsByRoleId(String roleId);
+
+    void saveRoleModule(String[] moduleIdArray, String roleId);
 }

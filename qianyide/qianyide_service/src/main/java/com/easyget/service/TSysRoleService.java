@@ -15,5 +15,7 @@ public interface TSysRoleService extends BaseService<TSysRole> {
 
     String getCheckboxModuleTree(Map params);
 
-    int doSave(TSysRole sysRole);
+    void doSave(TSysRole sysRole);
+
+    int updateByRoleId(TSysRole sysRole);
 }

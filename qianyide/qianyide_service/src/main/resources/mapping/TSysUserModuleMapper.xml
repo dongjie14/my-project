@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.easyget.dao.TSysUserModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.easyget.entity.TSysUserModule" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="module_id" property="moduleId" jdbcType="INTEGER" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="tm_smp" property="tmSmp" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="getModuleByUserId" resultMap="BaseResultMap">
+    select tsum.user_id,tsum.module_id,tsum.remarks,tsm.module_url url
+    from t_sys_user_module tsum left join t_sys_module tsm on tsum.module_id = tsm.module_id
+    where tsum.user_id = #{userId} and tsm.enable = 1 and tsm.module_type = 1 and tsm.super_module_id = '0'
+    order by tsm.module_rank desc
+  </select>
+  <delete id="deleteByModuleIdsAndUserIds" parameterType="String">
+        delete from t_sys_user_module where user_id in (${delUserIds}) and module_id in (${delModuleIds})
+  </delete>
+</mapper>

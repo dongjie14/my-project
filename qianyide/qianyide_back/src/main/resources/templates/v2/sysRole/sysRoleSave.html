@@ -14,8 +14,8 @@
 </head>
 <body>
 	<form action="" id="systemRoleForm">
-		<input type="hidden" id="id" name="id" th:value="${sysRole.roleId}" />
-		<input type="hidden" id="enabled" name="enabled"/>
+		<input type="hidden" id="roleId" name="roleId" th:value="${sysRole.roleId}" />
+		<input type="hidden" id="enable" name="enable"/>
 		<input type="hidden" id="roleModules" name="roleModules"/>
 		<div class="block">
 			<div class="page-title">                    
@@ -301,7 +301,7 @@
         			alertPopup("序号不能为空!");
         			return;
         		}
-        		$('#enabled').val($('#enabledCheck').is(':checked')?1:0);
+        		$('#enable').val($('#enabledCheck').is(':checked')?1:0);
         		var arrs=new Array();
 	       		 $(".tab-box").find("input[type=checkbox]").each(function(){ 
 	                    if($(this).is(':checked')){

@@ -54,4 +54,28 @@
     select role_id id, super_role_id pid, role_name text
     from t_sys_role sr where enable=1 and role_id in ${roleIds}
   </select>
+  <update id="updateByRoleId" parameterType="com.easyget.entity.TSysRole" >
+    update t_sys_role 
+    <set>
+      <if test="superRoleId != null">
+        super_role_id = #{superRoleId},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName},
+      </if>
+      <if test="enable != null">
+        enable = #{enable},
+      </if>
+      <if test="createAccount != null">
+        create_account = #{createAccount},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateAccount != null">
+        update_account = #{updateAccount},
+      </if>
+    </set>
+    where role_id = #{roleId}
+  </update>
 </mapper>

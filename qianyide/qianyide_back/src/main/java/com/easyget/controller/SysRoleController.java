@@ -2,6 +2,7 @@ package com.easyget.controller;
 
 import com.easyget.entity.TSysRole;
 import com.easyget.entity.TSysUser;
+import com.easyget.enums.Status;
 import com.easyget.service.TSysRoleModuleService;
 import com.easyget.service.TSysRoleService;
 import com.easyget.service.TSysUserService;
@@ -11,13 +12,13 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,12 +104,40 @@ public class SysRoleController extends BaseController {
     public void saveRole(HttpServletRequest request, HttpServletResponse response, TSysRole sysRole) {
         TSysUser user = loginAdminUser(request);
         sysRole.setUpdateAccount(user.getUserAccount());
-        this.sysRoleService.doSave(sysRole);
+        if(sysRole.getSuperRoleId() == null || "".equals(sysRole.getSuperRoleId())){
+            sysRole.setSuperRoleId(TSysRole.SUPER);
+        }
+        sysRoleService.doSave(sysRole);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 200);
         jsonObject.put("msg", "保存成功");
-        jsonObject.put("id", sysRole.getId());
+        jsonObject.put("roleId", sysRole.getRoleId());
         JsonUtils.toObjectJson(response, jsonObject);
     }
 
+    /**
+     * 删除
+     *
+     * @return
+     */
+    @PostMapping("del")
+    @ResponseBody
+    public Map del(HttpServletRequest request, String roleId) {
+        Map<String, String> rspMap = new HashMap<>();
+        rspMap.put("code", Status.FAIL.getName());
+        rspMap.put("message", Status.FAIL.getValue());
+        TSysUser sysUser = loginAdminUser(request);
+        TSysRole sysRole = new TSysRole();
+        sysRole.setRoleId(roleId);
+        sysRole.setEnable(0);
+        sysRole.setUpdateAccount(sysUser.getUserAccount());
+        int result = sysRoleService.updateByRoleId(sysRole);
+        rspMap.put("code", Status.SUCCESS.getName());
+        if (result > 0) {
+            rspMap.put("message", "删除成功!");
+        } else {
+            rspMap.put("message", "删除失败!");
+        }
+        return rspMap;
+    }
 }

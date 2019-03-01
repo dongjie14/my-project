@@ -14,4 +14,16 @@
   <select id="getModuleIdsByRoleId" resultType="java.lang.String">
     select group_concat(module_id) from t_sys_role_module where role_id=#{roleId}
   </select>
+  <select id="getDelModuleIdsByRoleId" resultType="String" parameterType="com.easyget.entity.TSysRole" >
+    select group_concat(module_id) from t_sys_role_module  where role_id=#{roleId}
+    <if test="roleModules != null and roleModules !=''">
+      and module_id not in (${roleModules})
+    </if>
+  </select>
+  <delete id="removeRoleModuleIdsAndRoleId" parameterType="String" >
+        delete from t_sys_role_module where role_id in (${roleIds}) and module_id in (${moduleIds})
+  </delete>
+  <delete id="removeRoleModuleByRoleId" parameterType="String" >
+    delete from t_sys_role_module where role_id = #{roleId}
+  </delete>
 </mapper>

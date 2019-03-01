@@ -81,7 +81,7 @@
          	      title: '有效',
          	      target: 3,
          	      data: function (item) {
-         	    	 if(item.enabled==1){
+         	    	 if(item.enable==1){
          	    		 return '是';
          	    	  }else{
          	    		 return '否';
@@ -94,7 +94,7 @@
          	      data: function (item) {
          	    	  var resultHtml='<a href="/sysRole/to-Preview?roleId='+item.roleId+'" target="external-frame">查看</a>&nbsp;'
          	    	  +'<a href="/sysRole/to-save?roleId='+item.roleId+'"  target="external-frame">编辑</a>&nbsp;'
-         	    	  +'<a href="#" onclick="del('+item.roleId+')" class="del">删除</a>';
+         	    	  +'<a href="#" onclick="del(\''+item.roleId+'\')" class="del">删除</a>';
          	    	 return resultHtml;
          	      }
          	  }
@@ -130,7 +130,7 @@
       			$("#commonPopup").removeClass("open");
       			$.ajax({
              	        type   : "post",
-             	        data   : {id: delId},
+             	        data   : {roleId: delId},
              	        url    : [[@{/sysRole/del}]],
              	        success: function (resp) {
              	            alertPopup(resp.message,function(){

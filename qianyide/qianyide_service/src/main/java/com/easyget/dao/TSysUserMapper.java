@@ -13,4 +13,6 @@ public interface TSysUserMapper extends BaseMapper<TSysUser> {
     int updateByUserId(TSysUser sysUser);
 
     List<TSysUser> getListByRoleId(String roleId);
+
+    String getUserIdsByRoleId(String roleId);
 }

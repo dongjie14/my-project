@@ -89,4 +89,8 @@
   <select id="getListByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
     select * from t_sys_user where role_id = #{roleId} and user_sts = 1 order by login_time desc
   </select>
+
+  <select id="getUserIdsByRoleId" resultType="String">
+        select group_concat(user_id) from t_sys_user where role_id = #{roleId}
+    </select>
 </mapper>
