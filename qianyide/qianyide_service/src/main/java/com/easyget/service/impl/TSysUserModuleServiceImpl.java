@@ -4,7 +4,6 @@ import com.easyget.dao.TSysModuleMapper;
 import com.easyget.dao.TSysUserModuleMapper;
 import com.easyget.entity.TSysModule;
 import com.easyget.entity.TSysUserModule;
-import com.easyget.service.TSysModuleService;
 import com.easyget.service.TSysUserModuleService;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +32,7 @@ public class TSysUserModuleServiceImpl extends BaseServiceImpl<TSysUserModule> i
         params.put("moduleType", TSysModule.MODULE_TYPE_MENU);
         params.put("enable", TSysModule.ENABLE_STATUS_USABLE);
         params.put("superModuleId", TSysModule.SUPER);
-        List<TSysModule> sysModuleList = sysModuleMapper.getModuleByParams(params);
+        List<TSysModule> sysModuleList = sysModuleMapper.getUserModuleByParams(params);
         String html = appendChildren(sysModuleList, params).toString();
         return html;
     }
@@ -42,7 +41,7 @@ public class TSysUserModuleServiceImpl extends BaseServiceImpl<TSysUserModule> i
         StringBuffer html = new StringBuffer();
         for (TSysModule sysModule : sysModuleList) {
             params.put("superModuleId", sysModule.getModuleId());
-            List<TSysModule> children = sysModuleMapper.getModuleByParams(params);
+            List<TSysModule> children = sysModuleMapper.getModulesByParams(params);
             if (children != null && children.size() != 0) {
                 html.append("<li class=\"xn-openable\">");
                 html.append(" <a href=\"#\"><span class=\"fa " + "" + "\"></span> <span class=\"xn-text\">" + sysModule.getModuleName() + "</span></a>");

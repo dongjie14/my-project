@@ -14,14 +14,14 @@
 </head>
 <body>
 	<form action="" id="systemModuleForm">
-		<input type="hidden" id="id" name="id" th:value="${sysModule.id}" />
-		<input type="hidden" id="enabled" name="enabled"/>
+		<input type="hidden" id="moduleId" name="moduleId" th:value="${sysModule.moduleId}" />
+		<input type="hidden" id="enable" name="enable"/>
 		<div class="block">
 			<div class="page-title">                    
                     <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
                     <button type="button" onclick="dosubmit()" class="btn btn-info">保存</button>
 					<button type="button" class="btn btn-default giveUp">放弃</button> 
-					<!-- <a th:if="${sysModule.id!=null}" href="/sysModuleManagement/to-save" class="btn btn-info">新建</a> -->
+					<!-- <a th:if="${sysModule.id!=null}" href="/sysModule/to-save" class="btn btn-info">新建</a> -->
                 </div>
 				
 		</div>
@@ -31,22 +31,22 @@
 					<tr>
 						<td class="td-left">编号</td>
 						<td class="td-right">
-							<span class="col-md-6" th:text="${sysModule.moduleNo}"></span>
+							<span class="col-md-6" th:text="${sysModule.moduleId}"></span>
 						</td>
 						<td class="td-left">有效</td>
 						<td class="td-right">
-							<input type="checkbox" id="enabledCheck" name="enabledCheck" th:checked="${sysModule.enabled}==1?true:false" />
+							<input type="checkbox" id="enabledCheck" name="enabledCheck" th:checked="${sysModule.enable}==1?true:false" />
 						</td>
 					</tr>
 					<tr>
 						<td class="td-left"><font color="red">*</font>名称</td>
 						<td class="td-right">
-							<input type="text" class="form-control" id="name" name="name" th:value="${sysModule.name}"/>
+							<input type="text" class="form-control" id="moduleName" name="moduleName" th:value="${sysModule.moduleName}"/>
 						</td>
 						<td class="td-left">上级模块</td>
 						<td class="td-right">
 							<input type="text" id="depName" name="depName" class="form-control" value=""  readonly="readonly" />
-							<input type="hidden" id="parentId" name="parentId" th:value="${sysModule.parentId}"/>
+							<input type="hidden" id="superModuleId" name="superModuleId" th:value="${sysModule.superModuleId}"/>
 							<div id="treebox" style="display:none; padding:0;">
 								<input type="text" class="form-control" id="input-search" placeholder="" value=""/>
 								<div class="form-control" id="matching">没有找到匹配项</div>
@@ -57,27 +57,18 @@
 					<tr>
 						<td class="td-left">类型</td>
 						<td class="td-right">
-							<input type="radio" name="menus" value="1" th:checked="${sysModule.menus}==1?true:false" />菜单
-							<input type="radio" name="menus" value="0" th:checked="${sysModule.menus}==0?true:false" />按钮
+							<input type="radio" name="moduleType" value="1" th:checked="${sysModule.moduleType}==1?true:false" />菜单
+							<input type="radio" name="moduleType" value="2" th:checked="${sysModule.moduleType}==2?true:false" />按钮
 						</td>
 						<td class="td-left"><font color="red">*</font>序号</td>
 						<td class="td-right">
-							<input type="number" class="form-control" id="rank" name="rank" th:value="${sysModule.rank}"/>
+							<input type="number" class="form-control" id="moduleRank" name="moduleRank" th:value="${sysModule.moduleRank}"/>
 						</td>
 					</tr>
 					<tr>
 						<td class="td-left">URL地址</td>
 						<td class="td-right">
-							<input type="text" class="form-control"  id="url" name="url" th:value="${sysModule.url}"/>
-						</td>
-					</tr>
-					<tr>
-						<td class="td-left">图标css样式</td>
-						<td class="td-right">
-							<input type="text" class="form-control" id="iconClass" name="iconClass" th:value="${sysModule.iconClass}"/>
-						</td>
-						<td class="td-left"></td>
-						<td class="td-right">
+							<input type="text" class="form-control"  id="moduleUrl" name="moduleUrl" th:value="${sysModule.moduleUrl}"/>
 						</td>
 					</tr>
 					<tr>
@@ -104,7 +95,7 @@
 						</td>
 						<td class="td-left">更新于</td>
 						<td class="td-right">
-							<span class="col-md-6" th:text="${sysModule.updateTime==null?'':#dates.format(sysModule.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+							<span class="col-md-6" th:text="${sysModule.tmSmp==null?'':#dates.format(sysModule.tmSmp,'yyyy-MM-dd HH:mm:ss')}"></span>
 						</td>
 					</tr>
 				</table>
@@ -132,20 +123,20 @@
 	th:src="@{/huploadify/jquery.Huploadify.js}"></script>
 <script th:inline="javascript">
         /*<![CDATA[*/
-        	var id=[[${sysModule.id}]];
+        	var moduleId=[[${sysModule.moduleId}]];
         	$(function() {
         		$('#systemModuleForm').bootstrapValidator();
-        		if(id==null){
+        		if(moduleId==null){
 					$("#enabledCheck").attr("checked","checked");
 				}
 		        var options = {
 		          bootstrap2: false, 
 		          showTags: true,
 				  checkedIcon:"glyphicon glyphicon-check",
-		          data: transData([[${sysModuleList}]], 'id', 'pid', 'nodes',[[${sysModule.parentId}]]),
+		          data: transData([[${sysModuleList}]], 'id', 'pid', 'nodes',[[${sysModule.superModuleId}]]),
 			  	  onNodeSelected:function(event, data){
 							$("#depName").val(data.text);
-							$("#parentId").val(data.id);
+							$("#superModuleId").val(data.id);
 							$("#treebox").removeClass("show");
 				  }
 		        };
@@ -206,7 +197,7 @@
         	    return r;    
         	}    
 				$(".fa-arrow-circle-o-left").click(function(){
-					location.href="/sysModuleManagement/moduleList";
+					location.href="/sysModule/moduleList";
 				})
 				$(".giveUp").click(function(){
 					  var val = $(this).html();
@@ -215,10 +206,10 @@
 		    		});
 				$("body").delegate("#sureid","click",function(){
 		    			$("#commonPopup").removeClass("open");
-		    			if([[${sysModule.id}]]==null){
+		    			if([[${sysModule.moduleId}]]==null){
 		    				window.history.go(-1);
 		    			}else{
-		    				location.href='/sysModuleManagement/to-Preview?id='+[[${sysModule.id}]];
+		    				location.href='/sysModule/to-Preview?moduleId='+[[${sysModule.moduleId}]];
 		    			}
 		    	});
 				function dosubmit() {
@@ -231,17 +222,17 @@
 	        			alertPopup("序号不能为空!");
 	        			return;
 	        		}
-	        		$('#enabled').val($('#enabledCheck').is(':checked')?1:0);
+	        		$('#enable').val($('#enabledCheck').is(':checked')?1:0);
 					if($("#systemModuleForm").data("bootstrapValidator").isValid()){
 						loading();
 		        		 $.ajax({
 		                    type   : "post",
 		                    data   : $('#systemModuleForm').serialize(),
-		                    url    : [[@{/sysModuleManagement/save}]],
+		                    url    : [[@{/sysModule/save}]],
 		                    success: function (resp) {
 		                    	hidden();
 		                        alertPopup(resp.msg,function(){
-		                        	location.href='/sysModuleManagement/to-Preview?id='+resp.id;
+		                        	location.href='/sysModule/to-Preview?moduleId='+resp.moduleId;
 		                        });
 		                    }
 		                }); 

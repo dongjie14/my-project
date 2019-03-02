@@ -33,7 +33,7 @@
     update_account,
     tm_smp
   </sql>
-  <select id="getModuleByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+  <select id="getUserModuleByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
     select tsm.* from t_sys_module tsm left join t_sys_user_module tsum on tsm.module_id = tsum.module_id
     where 1=1
     <if test="userId != null and userId != ''">
@@ -50,11 +50,14 @@
     </if>
      order by module_rank desc
   </select>
-  <select id="getModuleList" resultMap="BaseResultMap" parameterType="java.util.Map">
+  <select id="getModulesByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
     select
     <include refid="Base_Column_List" />
     from t_sys_module
     where 1=1
+    <if test="moduleId != null and moduleId != ''">
+      and module_id = #{moduleId}
+    </if>
     <if test="moduleType != null and moduleType != ''">
       and module_type = #{moduleType}
     </if>
@@ -66,4 +69,56 @@
     </if>
     order by module_rank desc
   </select>
+  <select id="getModuleByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_module
+    where module_id = #{moduleId}
+    <if test="moduleType != null and moduleType != ''">
+      and module_type = #{moduleType}
+    </if>
+    <if test="enable != null and enable != ''">
+      and enable = #{enable}
+    </if>
+    <if test="superModuleId != null and superModuleId != ''">
+      and super_module_id = #{superModuleId}
+    </if>
+  </select>
+  <select id="getModuleTreeList" resultType="Map">
+    select module_id id, super_module_id pid, module_name text
+    from t_sys_module where enable = 1 order by module_rank
+  </select>
+  <update id="updateByModuleId" parameterType="com.easyget.entity.TSysModule">
+    update t_sys_module
+    <set>
+      <if test="superModuleId != null">
+        super_module_id = #{superModuleId},
+      </if>
+      <if test="moduleName != null">
+        module_name = #{moduleName},
+      </if>
+      <if test="moduleUrl != null">
+        module_url = #{moduleUrl},
+      </if>
+      <if test="moduleType != null">
+        module_type = #{moduleType},
+      </if>
+      <if test="moduleRank != null">
+        module_rank = #{moduleRank},
+      </if>
+      <if test="enable != null">
+        enable = #{enable},
+      </if>
+      <if test="createAccount != null">
+        create_account = #{createAccount},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateAccount != null">
+        update_account = #{updateAccount},
+      </if>
+    </set>
+    where module_id = #{moduleId}
+  </update>
 </mapper>

@@ -86,9 +86,9 @@
          	      title: '操作',
          	      target: 4,
          	      data: function (item) {
-         	    	  var resultHtml='<a href="/sysModule/to-Preview?id='+item.moduleId+'" target="external-frame">查看</a>&nbsp;'
-         	    	  +'<a href="/sysModule/to-save?id='+item.moduleId+'"  target="external-frame">编辑</a>&nbsp;'
-         	    	  +'<a href="#" onclick="del('+item.moduleId+')" class="del">删除</a>';
+         	    	  var resultHtml='<a href="/sysModule/to-Preview?moduleId='+item.moduleId+'" target="external-frame">查看</a>&nbsp;'
+         	    	  +'<a href="/sysModule/to-save?moduleId='+item.moduleId+'"  target="external-frame">编辑</a>&nbsp;'
+         	    	  +'<a href="#" onclick="del(\''+item.moduleId+'\')" class="del">删除</a>';
          	    	 return resultHtml;
          	      }
          	  }
@@ -123,7 +123,7 @@
    			$("#commonPopup").removeClass("open");
    			$.ajax({
           	        type   : "post",
-          	        data   : {id: delId},
+          	        data   : {moduleId: delId},
           	        url    : [[@{/sysModule/del}]],
           	        success: function (resp) {
           	            alertPopup(resp.message,function(){

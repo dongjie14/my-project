@@ -3,7 +3,6 @@ package com.easyget.service.impl;
 import com.easyget.dao.*;
 import com.easyget.entity.TSysModule;
 import com.easyget.entity.TSysRole;
-import com.easyget.entity.TSysUser;
 import com.easyget.service.TSysRoleModuleService;
 import com.easyget.service.TSysRoleService;
 import com.easyget.utils.RandomUtil;
@@ -78,7 +77,7 @@ public class TSysRoleServiceImpl extends BaseServiceImpl<TSysRole> implements TS
         }
         params.put("enable", TSysModule.ENABLE_STATUS_USABLE );
         params.put("superModuleId", TSysModule.SUPER);
-        List<TSysModule> sysModuleList = sysModuleMapper.getModuleByParams(params);
+        List<TSysModule> sysModuleList = sysModuleMapper.getModulesByParams(params);
         String html = appendCheckboxModuleTree(sysModuleList, params).toString();
         return html;
     }
@@ -124,7 +123,7 @@ public class TSysRoleServiceImpl extends BaseServiceImpl<TSysRole> implements TS
                     " chn_" + sysModule.getSuperModuleId() + "\" style=\"margin-top:-1px\" value='" +
                     sysModule.getModuleId() + "'/> <c>" + sysModule.getModuleName() + "</c></span> ");
             params.put("superModuleId", sysModule.getModuleId());
-            List<TSysModule> children = this.sysModuleMapper.getModuleByParams(params);
+            List<TSysModule> children = this.sysModuleMapper.getModulesByParams(params);
             if (children != null && children.size() != 0) {
                 html.append(appendCheckboxModuleTree(children, params));
             } else {
