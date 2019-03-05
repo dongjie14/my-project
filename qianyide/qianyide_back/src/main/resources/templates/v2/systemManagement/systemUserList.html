@@ -14,16 +14,15 @@
 	
 		<div class="block" style="margin-bottom:0;">
                         <div class="form-group col-md-12 btn-form" style="text-align:left;">
-                           <a href="/sysUserManagement/to-save" class="btn btn-info">新建</a>
+                           <a href="/user/to-save" class="btn btn-info">新建</a>
                         </div>                               
                         <div class="form-group col-md-4">
                             <label class="col-md-4 control-label">用户类型</label>
                             <div class="col-md-8">                                                                                
                                 <select class="form-control" id="userType" name="userType">
                                     <option value="">全部</option>
-								    <option value="01">普通用户</option>
-								    <option value="02">导流渠道</option>
-								    <option value="03">发布渠道</option>
+								    <option value="1">管理员</option>
+								    <option value="2">普通用户</option>
                                 </select>
                             </div>
                         </div>
@@ -42,35 +41,27 @@
                         <div class="form-group col-md-4">
                             <label class="col-md-4 control-label">有效</label>
                             <div class="col-md-8">                                                                                            
-                                <select class="form-control" id="status" name="status">
+                                <select class="form-control" id="userSts" name="userSts"  th:value="${backUser.userSts}">
                                     <option value="">全部</option>
 								    <option value="1">是</option>
 								    <option value="0">否</option>
                                 </select>
                             </div>
                         </div>
-                        </div>
+                      </div>
                       <div class="block" style="margin-bottom:0;">
                         <div class="form-group col-md-4">
                             <label class="col-md-4 control-label">用户名</label>
                             <div class="col-md-8">                                        
-                                <input type="text" id="account" name="account" th:value="${backUser.account}"/>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="col-md-4 control-label">昵称</label>
-                            <div class="col-md-8">                                        
-                                <input type="text"  id="nickName" name="nickName" th:value="${backUser.nickName}"/>
+                                <input type="text" id="userAccount" name="userAccount" th:value="${backUser.userAccount}"/>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="col-md-4 control-label">姓名</label>
                             <div class="col-md-8">                                        
-                                <input type="text" id="fullName" name="fullName" th:value="${backUser.fullName}"/>
+                                <input type="text" id="userName" name="userName" th:value="${backUser.userName}"/>
                             </div>
                         </div>
-                        
-                      
                     <div class="form-group col-md-12 btn-form" style="text-align:right;">
 		        			<button type="submit" class="btn btn-info">查询</button>
                      </div>
@@ -84,37 +75,34 @@
                                     <th>用户类型</th>
                                     <th>用户角色</th>
                                     <th>用户名</th>
-                                    <th>昵称</th>
                                     <th>姓名</th>
                                     <th>电话</th>
                                     <th>最后登录时间</th>
+                                    <th>创建时间</th>
                                     <th>更新于</th>
-                                    <th>更新人</th>
                                     <th>有效</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="page,iterStat:${pageInfo.list}">
-                                    <td th:text="${page.userNo}"></td>
+                                    <td th:text="${page.userId}"></td>
                                     <td>
-                                    	<span th:if="${page.userType=='01'}">普通用户</span>
-                                    	<span th:if="${page.userType=='02'}">导流渠道</span>
-                                    	<span th:if="${page.userType=='03'}">发布渠道</span>
+                                    	<span th:if="${page.userType==1}">管理员</span>
+                                    	<span th:if="${page.userType==2}">普通用户</span>
                                     </td>
                                     <td th:text="${page.userRoleNames}"></td>
-                                    <td th:text="${page.account}"></td>
-                                    <td th:text="${page.nickName}"></td>
-                                    <td th:text="${page.fullName}"></td>
-                                    <td th:text="${page.telephone}"></td>
-                                    <td th:text="${page.userLoginTime==null?'':#dates.format(page.userLoginTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-                                    <td th:text="${page.updateTime==null?'':#dates.format(page.updateTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-                                    <td th:text="${page.updateAccount}"></td>
-                                    <td th:text="${page.status=='1'?'是':'否'}"></td>
+                                    <td th:text="${page.userAccount}"></td>
+                                    <td th:text="${page.userName}"></td>
+                                    <td th:text="${page.userPhone}"></td>
+                                    <td th:text="${page.loginTime==null?'':#dates.format(page.loginTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${page.createTime==null?'':#dates.format(page.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${page.tmSmp==null?'':#dates.format(page.tmSmp,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${page.userSts==1?'是':'否'}"></td>
                                     <td class="details">
-                                    <a th:onclick="'details('+${page.id}+')'" href="#">查看</a>&nbsp;
-                                    <a th:onclick="'change('+${page.id}+')'" href="#">编辑</a>&nbsp;
-                                    <a href="#" th:onclick="'del('+${page.id}+')'" class="del">删除</a></td>
+                                    <a th:onclick="'details('+${page.userId}+')'" href="#">查看</a>&nbsp;
+                                    <a th:onclick="'change('+${page.userId}+')'" href="#">编辑</a>&nbsp;
+                                    <a href="#" th:onclick="'del('+${page.userId}+')'" class="del">删除</a></td>
                                 </tr> 
                             </tbody>
                         </table>
@@ -177,7 +165,7 @@
 			}
         	$(function(){
         		$("#userType").val([[${backUser.userType}]]);
-        		$("#status").val([[${backUser.status}]]);
+        		$("#userSts").val([[${backUser.userSts}]]);
         		$("#pageFooter").html(createPager([[${pageInfo}]], "formpro"));
         		 var options = {
        		          bootstrap2: false, 
@@ -301,8 +289,8 @@
     			$("#commonPopup").removeClass("open");
     			$.ajax({
            	        type   : "post",
-           	        data   : {id: delId},
-           	        url    : [[@{/sysUserManagement/del}]],
+           	        data   : {userId: delId},
+           	        url    : [[@{/user/del}]],
            	        success: function (resp) {
            	            alertPopup(resp.message,function(){
            	            	$("#formpro").append("<input type='hidden' name='tmp' value='" + Math.round(Math.random()*100000) + "'/>");
@@ -314,23 +302,23 @@
     		});
     		
     		
-           function del(id){
-        	   delId=id;
+           function del(userId){
+        	   delId=userId;
         	   var delhtml = $(".del").html();
         	   popup(delhtml);
            }
            function mycleanAll(formId){
         	   $("#userRoles").val("");
         	   cleanAll(formId);
-        	   $("#status").val("1");
+        	   $("#userSts").val("1");
         	}
-           function details(id){
-		    	var url = "/sysUserManagement/to-Preview?id=" + id;
+           function details(userId){
+		    	var url = "/user/to-Preview?userId=" + userId;
 		    	base.baseDetail("formpro",url);
 		    }
 		 	
-		 	function change(id){
-		    	var url = "/sysUserManagement/to-save?id=" + id;
+		 	function change(userId){
+		    	var url = "/user/to-save?userId=" + userId;
 		    	base.baseDetail("formpro",url);
 		    }
         	 /*]]>*/

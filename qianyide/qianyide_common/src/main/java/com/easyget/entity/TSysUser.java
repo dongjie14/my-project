@@ -95,6 +95,15 @@ public class TSysUser {
     @Transient
     private String oldPassword;
 
+    @Transient
+    private String userRoleNames;//用户角色名称
+
+    @Transient
+    private String userRoles;//用户角色id
+
+    @Transient
+    private String userModules;//用户菜单
+
     /**
      * 获取主键ID
      *
@@ -361,5 +370,29 @@ public class TSysUser {
 
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
+    }
+
+    public String getUserRoleNames() {
+        return userRoleNames;
+    }
+
+    public void setUserRoleNames(String userRoleNames) {
+        this.userRoleNames = userRoleNames;
+    }
+
+    public String getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(String userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public String getUserModules() {
+        return userModules;
+    }
+
+    public void setUserModules(String userModules) {
+        this.userModules = userModules;
     }
 }

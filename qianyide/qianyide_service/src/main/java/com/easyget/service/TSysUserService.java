@@ -1,6 +1,7 @@
 package com.easyget.service;
 
 import com.easyget.entity.TSysUser;
+import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,4 +16,12 @@ public interface TSysUserService extends BaseService<TSysUser> {
     Map<String, Object> updateUserInfo(TSysUser sysUser);
 
     List<TSysUser> getListByRoleId(String roleId);
+
+    TSysUser selectByUserId(String userId);
+
+    PageInfo<TSysUser> getPageList(Map<String, Object> params);
+
+    String getRoleIdsByUserId(String userId);
+
+    String getRoleNamesByUserId(String userId);
 }

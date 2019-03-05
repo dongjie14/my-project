@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2019-03-02 18:09:11
+Date: 2019-03-05 16:29:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -368,16 +368,16 @@ CREATE TABLE `t_sys_module` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `t_sys_module_UI1` (`module_id`),
   KEY `t_sys_module_I2` (`super_module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='系统模块表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='系统模块表';
 
 -- ----------------------------
 -- Records of t_sys_module
 -- ----------------------------
-INSERT INTO `t_sys_module` VALUES ('1', '100000', '0', '系统管理', 'javascipr:void(0);', '1', '99', '1', null, 'admin', '2019-02-28 10:19:16', 'admin', '2019-03-02 17:43:17');
-INSERT INTO `t_sys_module` VALUES ('2', '100001', '100000', '系统角色', '/sysRole/roleList', '1', '99', '1', null, 'admin', '2019-02-28 10:19:16', null, '2019-03-02 17:41:36');
-INSERT INTO `t_sys_module` VALUES ('3', '100002', '100000', '系统模块', '/sysModule/moduleList', '1', '99', '1', null, 'admin', '2019-02-28 10:19:16', null, '2019-02-28 12:05:39');
-INSERT INTO `t_sys_module` VALUES ('5', '2d4af4115c944edc9686aa4eac6aeb5f', '100000', '系统用户', '/sysUser/userList', '1', '99', '1', '', 'admin', '2019-03-02 17:38:32', 'admin', '2019-03-02 17:49:41');
-INSERT INTO `t_sys_module` VALUES ('6', '0c5459526e444a2aa73d261fbc2e9cc5', '100000', '系统用户2', '/sysUser/userList2', '1', '99', '0', '', 'admin', '2019-03-02 17:50:10', 'admin', '2019-03-02 18:06:56');
+INSERT INTO `t_sys_module` VALUES ('1', '2d4af4321c9e21b56386aa4fac6aeb5f', '0', '系统管理', 'javascipr:void(0);', '1', '99', '1', null, 'admin', '2019-02-28 10:19:16', 'admin', '2019-03-05 14:46:56');
+INSERT INTO `t_sys_module` VALUES ('2', '2d4af4321c9e4ed56386aa4fac6aeb5f', '2d4af4321c9e21b56386aa4fac6aeb5f', '系统角色', '/sysRole/roleList', '1', '99', '1', null, 'admin', '2019-02-28 10:19:16', null, '2019-03-05 14:47:00');
+INSERT INTO `t_sys_module` VALUES ('3', '2d4af4321c9e4edc9686aa4fac6aeb5f', '2d4af4321c9e21b56386aa4fac6aeb5f', '系统模块', '/sysModule/moduleList', '1', '99', '1', null, 'admin', '2019-02-28 10:19:16', null, '2019-03-05 14:47:01');
+INSERT INTO `t_sys_module` VALUES ('5', '2d4af4115c944edc9686aa4eac6aeb5f', '2d4af4321c9e21b56386aa4fac6aeb5f', '系统用户', '/user/userList?userSts=1', '1', '99', '1', '', 'admin', '2019-03-02 17:38:32', 'admin', '2019-03-05 14:47:02');
+INSERT INTO `t_sys_module` VALUES ('7', 'faeb00d075644d10a94c1f2339f8304c', '0', '系统用户2122', '/sysUser/userList', '1', '11', '0', '', 'admin', '2019-03-05 15:44:03', 'admin', '2019-03-05 15:46:42');
 
 -- ----------------------------
 -- Table structure for `t_sys_notice_config`
@@ -485,15 +485,12 @@ CREATE TABLE `t_sys_role` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `t_sys_role_UI1` (`role_id`),
   KEY `t_sys_role_I2` (`super_role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='系统角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='系统角色表';
 
 -- ----------------------------
 -- Records of t_sys_role
 -- ----------------------------
-INSERT INTO `t_sys_role` VALUES ('1', '1', '0', '超级管理员', '1', 'admin', '2019-02-28 14:10:02', 'admin', '2019-03-01 17:07:15');
-INSERT INTO `t_sys_role` VALUES ('4', '35ae36af359c486a860637489e89eb62', '1', '测试2', '0', 'admin', '2019-03-01 15:58:09', 'admin', '2019-03-02 17:58:54');
-INSERT INTO `t_sys_role` VALUES ('5', 'cb553623963b422e931deaa5ded20f4b', '1', '测试', '1', 'admin', '2019-03-01 16:02:10', 'admin', '2019-03-01 16:02:10');
-INSERT INTO `t_sys_role` VALUES ('6', 'e2cf142ed9f8479ebf0ab7ea06d94d10', '1', '测试3', '0', 'admin', '2019-03-01 17:07:34', 'admin', '2019-03-01 17:07:45');
+INSERT INTO `t_sys_role` VALUES ('1', 'r4rwgtw45y6uy57u467u64uik5636r4w', '0', '超级管理员', '1', 'admin', '2019-02-28 14:10:02', 'admin', '2019-03-05 15:35:30');
 
 -- ----------------------------
 -- Table structure for `t_sys_role_module`
@@ -507,25 +504,16 @@ CREATE TABLE `t_sys_role_module` (
   `tm_smp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '时间戳',
   PRIMARY KEY (`id`),
   KEY `t_sys_role_module_UI1` (`role_id`,`module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='系统角色模块对应表';
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8 COMMENT='系统角色模块对应表';
 
 -- ----------------------------
 -- Records of t_sys_role_module
 -- ----------------------------
-INSERT INTO `t_sys_role_module` VALUES ('32', '0', 'cb553623963b422e931deaa5ded20f4b', '2019-03-01 16:02:10', '2019-03-01 16:02:10');
-INSERT INTO `t_sys_role_module` VALUES ('33', '100000', 'cb553623963b422e931deaa5ded20f4b', '2019-03-01 16:02:10', '2019-03-01 16:02:10');
-INSERT INTO `t_sys_role_module` VALUES ('34', '100001', 'cb553623963b422e931deaa5ded20f4b', '2019-03-01 16:02:10', '2019-03-01 16:02:10');
-INSERT INTO `t_sys_role_module` VALUES ('35', '100002', 'cb553623963b422e931deaa5ded20f4b', '2019-03-01 16:02:10', '2019-03-01 16:02:10');
-INSERT INTO `t_sys_role_module` VALUES ('39', '100000', '1', '2019-03-01 17:07:15', '2019-03-01 17:07:15');
-INSERT INTO `t_sys_role_module` VALUES ('40', '100001', '1', '2019-03-01 17:07:15', '2019-03-01 17:07:15');
-INSERT INTO `t_sys_role_module` VALUES ('41', '100002', '1', '2019-03-01 17:07:15', '2019-03-01 17:07:15');
-INSERT INTO `t_sys_role_module` VALUES ('42', '0', 'e2cf142ed9f8479ebf0ab7ea06d94d10', '2019-03-01 17:07:34', '2019-03-01 17:07:34');
-INSERT INTO `t_sys_role_module` VALUES ('43', '100000', 'e2cf142ed9f8479ebf0ab7ea06d94d10', '2019-03-01 17:07:34', '2019-03-01 17:07:34');
-INSERT INTO `t_sys_role_module` VALUES ('44', '100001', 'e2cf142ed9f8479ebf0ab7ea06d94d10', '2019-03-01 17:07:34', '2019-03-01 17:07:34');
-INSERT INTO `t_sys_role_module` VALUES ('45', '100002', 'e2cf142ed9f8479ebf0ab7ea06d94d10', '2019-03-01 17:07:34', '2019-03-01 17:07:34');
-INSERT INTO `t_sys_role_module` VALUES ('49', '100000', '35ae36af359c486a860637489e89eb62', '2019-03-02 17:58:54', '2019-03-02 17:58:54');
-INSERT INTO `t_sys_role_module` VALUES ('50', '100001', '35ae36af359c486a860637489e89eb62', '2019-03-02 17:58:54', '2019-03-02 17:58:54');
-INSERT INTO `t_sys_role_module` VALUES ('51', '100002', '35ae36af359c486a860637489e89eb62', '2019-03-02 17:58:54', '2019-03-02 17:58:54');
+INSERT INTO `t_sys_role_module` VALUES ('61', '0', 'r4rwgtw45y6uy57u467u64uik5636r4w', '2019-03-05 15:35:45', '2019-03-05 15:35:45');
+INSERT INTO `t_sys_role_module` VALUES ('62', '2d4af4321c9e21b56386aa4fac6aeb5f', 'r4rwgtw45y6uy57u467u64uik5636r4w', '2019-03-05 15:35:45', '2019-03-05 15:35:45');
+INSERT INTO `t_sys_role_module` VALUES ('63', '2d4af4321c9e4ed56386aa4fac6aeb5f', 'r4rwgtw45y6uy57u467u64uik5636r4w', '2019-03-05 15:35:45', '2019-03-05 15:35:45');
+INSERT INTO `t_sys_role_module` VALUES ('64', '2d4af4321c9e4edc9686aa4fac6aeb5f', 'r4rwgtw45y6uy57u467u64uik5636r4w', '2019-03-05 15:35:45', '2019-03-05 15:35:45');
+INSERT INTO `t_sys_role_module` VALUES ('65', '2d4af4115c944edc9686aa4eac6aeb5f', 'r4rwgtw45y6uy57u467u64uik5636r4w', '2019-03-05 15:35:45', '2019-03-05 15:35:45');
 
 -- ----------------------------
 -- Table structure for `t_sys_user`
@@ -555,7 +543,7 @@ CREATE TABLE `t_sys_user` (
 -- ----------------------------
 -- Records of t_sys_user
 -- ----------------------------
-INSERT INTO `t_sys_user` VALUES ('1', '1102001001', '1', 'admin', '962012D09B8170D912F0669F6D7D9D07', '1', '1', '超级管理员', '18676361434', '18676361434@163.com', null, '2019-03-02 18:05:56', '2019-02-27 15:52:36', '2019-03-02 18:05:56');
+INSERT INTO `t_sys_user` VALUES ('1', '102001001', 'r4rwgtw45y6uy57u467u64uik5636r4w', 'admin', '962012D09B8170D912F0669F6D7D9D07', '1', '1', '超级管理员', '18676361434', '18676361434@163.com', null, '2019-03-05 16:11:18', '2019-02-27 15:52:36', '2019-03-05 16:11:18');
 
 -- ----------------------------
 -- Table structure for `t_sys_user_login_record`
@@ -567,7 +555,7 @@ CREATE TABLE `t_sys_user_login_record` (
   `login_ip` varchar(25) NOT NULL DEFAULT '' COMMENT '登录IP',
   `tm_smp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '时间戳',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8 COMMENT='系统用户登录记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='系统用户登录记录表';
 
 -- ----------------------------
 -- Records of t_sys_user_login_record
@@ -645,6 +633,32 @@ INSERT INTO `t_sys_user_login_record` VALUES ('70', '1102001001', '0:0:0:0:0:0:0
 INSERT INTO `t_sys_user_login_record` VALUES ('71', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-02 17:36:12');
 INSERT INTO `t_sys_user_login_record` VALUES ('72', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-02 17:56:25');
 INSERT INTO `t_sys_user_login_record` VALUES ('73', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-02 18:05:56');
+INSERT INTO `t_sys_user_login_record` VALUES ('74', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-04 14:58:05');
+INSERT INTO `t_sys_user_login_record` VALUES ('75', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:29:55');
+INSERT INTO `t_sys_user_login_record` VALUES ('76', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:31:35');
+INSERT INTO `t_sys_user_login_record` VALUES ('77', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:33:10');
+INSERT INTO `t_sys_user_login_record` VALUES ('78', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:38:28');
+INSERT INTO `t_sys_user_login_record` VALUES ('79', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:40:43');
+INSERT INTO `t_sys_user_login_record` VALUES ('80', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:44:59');
+INSERT INTO `t_sys_user_login_record` VALUES ('81', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:47:20');
+INSERT INTO `t_sys_user_login_record` VALUES ('82', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:50:35');
+INSERT INTO `t_sys_user_login_record` VALUES ('83', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 10:51:56');
+INSERT INTO `t_sys_user_login_record` VALUES ('84', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 11:10:53');
+INSERT INTO `t_sys_user_login_record` VALUES ('85', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 11:14:19');
+INSERT INTO `t_sys_user_login_record` VALUES ('86', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 11:17:25');
+INSERT INTO `t_sys_user_login_record` VALUES ('87', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 12:34:08');
+INSERT INTO `t_sys_user_login_record` VALUES ('88', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 12:36:57');
+INSERT INTO `t_sys_user_login_record` VALUES ('89', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 14:18:16');
+INSERT INTO `t_sys_user_login_record` VALUES ('90', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 14:26:55');
+INSERT INTO `t_sys_user_login_record` VALUES ('91', '1102001001', '0:0:0:0:0:0:0:1', '2019-03-05 14:39:26');
+INSERT INTO `t_sys_user_login_record` VALUES ('92', 'T102001001', '0:0:0:0:0:0:0:1', '2019-03-05 14:48:30');
+INSERT INTO `t_sys_user_login_record` VALUES ('93', 'T102001001', '0:0:0:0:0:0:0:1', '2019-03-05 15:04:46');
+INSERT INTO `t_sys_user_login_record` VALUES ('94', 'T102001001', '0:0:0:0:0:0:0:1', '2019-03-05 15:07:03');
+INSERT INTO `t_sys_user_login_record` VALUES ('95', 'T102001001', '0:0:0:0:0:0:0:1', '2019-03-05 15:16:12');
+INSERT INTO `t_sys_user_login_record` VALUES ('96', 'T102001001', '0:0:0:0:0:0:0:1', '2019-03-05 15:24:10');
+INSERT INTO `t_sys_user_login_record` VALUES ('97', 'T102001001', '0:0:0:0:0:0:0:1', '2019-03-05 15:46:35');
+INSERT INTO `t_sys_user_login_record` VALUES ('98', '102001001', '0:0:0:0:0:0:0:1', '2019-03-05 16:07:14');
+INSERT INTO `t_sys_user_login_record` VALUES ('99', '102001001', '0:0:0:0:0:0:0:1', '2019-03-05 16:11:18');
 
 -- ----------------------------
 -- Table structure for `t_sys_user_module`
@@ -664,9 +678,9 @@ CREATE TABLE `t_sys_user_module` (
 -- ----------------------------
 -- Records of t_sys_user_module
 -- ----------------------------
-INSERT INTO `t_sys_user_module` VALUES ('1', '1102001001', '100000', '', '2019-02-28 10:28:05');
-INSERT INTO `t_sys_user_module` VALUES ('2', '1102001001', '100001', '', '2019-02-28 10:35:10');
-INSERT INTO `t_sys_user_module` VALUES ('3', '1102001001', '100002', '', '2019-02-28 12:05:53');
+INSERT INTO `t_sys_user_module` VALUES ('1', '102001001', '2d4af4321c9e21b56386aa4fac6aeb5f', '', '2019-03-05 15:47:18');
+INSERT INTO `t_sys_user_module` VALUES ('2', '102001001', '2d4af4321c9e4ed56386aa4fac6aeb5f', '', '2019-03-05 15:47:20');
+INSERT INTO `t_sys_user_module` VALUES ('3', '102001001', '2d4af4321c9e4edc9686aa4fac6aeb5f', '', '2019-03-05 15:47:24');
 
 -- ----------------------------
 -- Table structure for `t_user_card`

@@ -14,10 +14,10 @@
 </head>
 <body>
 	<form action="" id="systemUserForm">
-		<input type="hidden" id="id" name="id" th:value="${backUser.id}" />
-		<input type="hidden" id="oldPassword" name="oldPassword" th:value="${backUser.password}" />
+		<input type="hidden" id="userId" name="userId" th:value="${backUser.userId}" />
+		<input type="hidden" id="oldPassword" name="oldPassword" th:value="${backUser.userPasswd}" />
 		<input type="hidden" id="userModules" name="userModules" />
-		<input type="hidden" id="status" name="status" />
+		<input type="hidden" id="userSts" name="userSts" />
 		<div class="block">
 			<div class="page-title">                    
                     <h2><span class="fa fa-arrow-circle-o-left"></span></h2>
@@ -42,186 +42,88 @@
 							<div class="nav col-md-6 nav-ul">
 								<div class="col-md-12">
 									<span class="col-md-2">编号</span><span class="col-md-6"
-										th:text="${backUser.userNo}"></span>
+										th:text="${backUser.userId}"></span>
 								</div>
-
 								<div class="col-md-12">
 									<span class="col-md-2"><font color="red">*</font>用户类型</span>
 									<div class="col-md-6">
 										<select class="form-control" id="userType" name="userType">
 										    <option value="">没有选中任何项</option>
-											<option value="01">普通用户</option>
-											<option value="02">导流渠道</option>
-											<option value="03">发布渠道</option>
+											<option value="1">管理员</option>
+											<option value="2">普通用户</option>
 										</select>
 									</div>
 								</div>
-
-
-								<div class="col-md-12">
-									<span class="col-md-2">导流渠道</span>
-									<div class="col-md-6">
-										<select id="diversionChannel" name="diversionChannel"
-											class="selectpicker show-tick form-control"
-											data-live-search="true">
-											<option th:each="item, itemStat: ${channelList}"
-												th:value="${item.id}" th:text="${item.channelName}" />
-										</select>
-									</div>
-								</div>
-
-
-								<div class="col-md-12">
-									<span class="col-md-2">发布渠道</span>
-									<div class="col-md-6">
-										<select id="publishingChannel" name="publishingChannel"
-											class="selectpicker show-tick form-control"
-											data-live-search="true" multiple="multiple">
-											<option th:each="item, itemStat: ${pushChannelList}"
-												th:value="${item.id}" th:text="${item.channelName}" />
-										</select>
-									</div>
-								</div>
-
-
 								<div class="col-md-12">
 									<span class="col-md-2"><font color="red">*</font>用户角色</span>
 									<div class="col-md-6">
 										<input type="text" id="depName" name="depName" class="form-control" value="" readonly="readonly"  />
-									 	<input type="hidden" id="userRoles" name="userRoles" th:value="${backUser.userRoles}"/>
-									 	
-									<div class="col-md-12" id="treebox" style="display:none;">
-										<input type="text" class="form-control" id="input-search" placeholder="" value=""/>
-										<div class="form-control" id="matching">没有找到匹配项</div>
-										<div class="col-md-12" id="treeview">
-									</div>
-									</div>
-									</div>
-									
-								</div>
-								
+										<input type="hidden" id="userRoles" name="userRoles" th:value="${backUser.userRoles}"/>
 
+										<div class="col-md-12" id="treebox" style="display:none;">
+											<input type="text" class="form-control" id="input-search" placeholder="" value=""/>
+											<div class="form-control" id="matching">没有找到匹配项</div>
+											<div class="col-md-12" id="treeview">
+											</div>
+										</div>
+									</div>
+								</div>
 								<div class="col-md-12">
 									<span class="col-md-2"><font color="red">*</font>用户名</span> <span
-										class="col-md-6"> <input type="text" id="account" class="validate[required,maxSize[8]] form-control"
-										name="account" th:value="${backUser.account}" pattern="^[^\u4e00-\u9fa5]{0,}$" data-bv-regexp-message="用户名格式不正确"
+										class="col-md-6"> <input type="text" id="userAccount" class="validate[required,maxSize[8]] form-control"
+										name="userAccount" th:value="${backUser.userAccount}" pattern="^[^\u4e00-\u9fa5]{0,}$" data-bv-regexp-message="用户名格式不正确"
 										autocomplete="new-password" />
 									</span>
 								</div>
-
-
 								<div class="col-md-12">
 									<span class="col-md-2"><font color="red">*</font>密码</span> <span
-										class="col-md-6"> <input type="password" id="password"
-										name="password" th:value="${backUser.password}"
+										class="col-md-6"> <input type="password" id="userPasswd"
+										name="userPasswd" th:value="${backUser.userPasswd}"
 										autocomplete="new-password" />
 									</span>
 								</div>
-
-
 								<div class="col-md-12">
-									<span class="col-md-2">昵称</span> <span class="col-md-6">
-										<input type="text" id="nickName" name="nickName"
-										th:value="${backUser.nickName}" />
+									<span class="col-md-2"><font color="red">*</font>姓名</span> <span
+										class="col-md-6"> <input type="text" id="userName" name="userName"
+										th:value="${backUser.userName}" />
 									</span>
 								</div>
-
-
+								<div class="col-md-12">
+									<span class="col-md-2" >有效</span><span class="col-md-6"><input
+										type="checkbox" id="statusCheck" name="statusCheck"
+										th:checked="${backUser.userSts}==1?true:false" /></span>
+								</div>
+								<div class="col-md-12">
+									<span class="col-md-2">电话</span> <span class="col-md-6">
+										<input type="tel" id="userPhone" name="userPhone" pattern="^1[345678][0-9]{9}$" data-bv-regexp-message="手机号码格式不正确"
+											   th:value="${backUser.userPhone}" />
+									</span>
+								</div>
+								<div class="col-md-12">
+									<span class="col-md-2">邮箱</span> <span class="col-md-6">
+										<input id="userEmail" name="userEmail" type="email" data-bv-emailaddress-message="邮箱格式不正确"
+											   th:value="${backUser.userEmail}" />
+									</span>
+								</div>
 								<div class="col-md-12">
 									<span class="col-md-2">备注</span> <span class="col-md-6">
-										<textarea id="remarks" name="remarks" maxlength="200" 
-											th:text="${backUser.remarks}" rows="" cols="" class="remark"></textarea>
+										<textarea id="remark" name="remark" maxlength="200"
+											th:text="${backUser.remark}" rows="" cols="" class="remark"></textarea>
 									</span>
-								</div>
-
-								<div class="col-md-12">
-									<span class="col-md-2">创建人</span><span class="col-md-6"
-										th:text="${backUser.createAccount}"></span>
 								</div>
 								<div class="col-md-12">
 									<span class="col-md-2">创建于</span><span class="col-md-6"
 										th:text="${backUser.createTime==null?'':#dates.format(backUser.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
 								</div>
 								<div class="col-md-12">
-									<span class="col-md-2">更新人</span><span class="col-md-6"
-										th:text="${backUser.updateAccount}"></span>
-								</div>
-								<div class="col-md-12">
 									<span class="col-md-2">更新于</span><span class="col-md-6"
-										th:text="${backUser.updateTime==null?'':#dates.format(backUser.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
-								</div>
-							</div>
-							<div class="nav col-md-6 nav-ul">
-								<div class="col-md-12">
-									<span class="col-md-2" >有效</span><span class="col-md-6"><input
-										type="checkbox" id="statusCheck" name="statusCheck"
-										th:checked="${backUser.status}==1?true:false" /></span>
-								</div>
-
-								<div class="col-md-12">
-									<span class="col-md-2">公司</span> <span class="col-md-6">
-										<input type="text" id="company" name="company"
-										th:value="${backUser.company}" />
-									</span>
-								</div>
-
-
-								<div class="col-md-12">
-									<span class="col-md-2">部门</span> <span class="col-md-6">
-										<input type="text" id="department" name="department"
-										th:value="${backUser.department}" />
-									</span>
-								</div>
-
-
-								<div class="col-md-12">
-									<span class="col-md-2">岗位</span> <span class="col-md-6">
-										<input type="text" id="post" name="post"
-										th:value="${backUser.post}" />
-									</span>
-								</div>
-
-
-								<div class="col-md-12">
-									<span class="col-md-2">姓名</span> <span class="col-md-6">
-										<input type="text" id="fullName" name="fullName"
-										th:value="${backUser.fullName}" />
-									</span>
-								</div>
-
-
-								<div class="col-md-12">
-									<span class="col-md-2">电话</span> <span class="col-md-6">
-										<input type="tel" id="telephone" name="telephone" pattern="^1[345678][0-9]{9}$" data-bv-regexp-message="手机号码格式不正确"
-										th:value="${backUser.telephone}" />
-									</span>
-								</div>
-
-
-								<div class="col-md-12">
-									<span class="col-md-2">邮箱</span> <span class="col-md-6">
-										<input id="email" name="email" type="email" data-bv-emailaddress-message="邮箱格式不正确"
-										th:value="${backUser.email}" />
-									</span>
-								</div>
-
-								<div class="col-md-12">
-									<span class="col-md-2">头像(200*200)</span>
-									<div class="col-md-6">
-										<img th:src="${backUser.portraitImg}" id="portraitImg_preview"
-											style="width: 200px; height: 200px;" />
-										<div id="portraitImgDiv"></div>
-										<input class="required text" id="portraitImg"
-											name='portraitImg' type="hidden"
-											th:value="${backUser.portraitImg}" />
-									</div>
+										th:text="${backUser.tmSmp==null?'':#dates.format(backUser.tmSmp,'yyyy-MM-dd HH:mm:ss')}"></span>
 								</div>
 							</div>
 						</div>
 						<div class="tab-pane" id="tab-second">
 							<div class="tab-box">
 									<div id="searchModuleTree"></div>
-
 							</div>
 						</div>
 						<div class="tab-pane" id="tab-third">
@@ -238,7 +140,7 @@
 										<tr th:each="page,iterStat:${userLoginRecordList}">
 											<td th:text="${page.id}"></td>
 											<td
-												th:text="${page.createTime==null?'':#dates.format(page.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+												th:text="${page.tmSmp==null?'':#dates.format(page.tmSmp,'yyyy-MM-dd HH:mm:ss')}"></td>
 											<td th:text="${page.loginIp}"></td>
 										</tr>
 									</tbody>
@@ -273,7 +175,7 @@
 <script type="text/javascript" th:src="@{/js/base.js}"></script>
 <script th:inline="javascript">
         /*<![CDATA[*/
-        	var id=[[${backUser.id}]];
+        	var id=[[${backUser.userId}]];
         	var oldParentId=[[${backUser.userRoles}]];
         	var nodeIds = new Array();
 	  		var nodesTexts = new Array();
@@ -311,22 +213,9 @@
 					if(id==null){
 						$("#statusCheck").attr("checked","checked");
 						$("#userType").val("01");
-                        $('#diversionChannel').selectpicker('val', '');
 					}else{
-						$("#account").attr("readonly","readonly");
+						$("#userAccount").attr("readonly","readonly");
 						$("#userType").val([[${backUser.userType}]]);
-						var diversionChannel=[[${backUser.diversionChannel}]];
-						if(diversionChannel!=null && diversionChannel != ""){
-							$('#diversionChannel').selectpicker('val', diversionChannel.split(","));
-                            $('#diversionChannel').selectpicker('refresh');
-						} else {
-                            $('#diversionChannel').selectpicker('val', '');
-						}
-                        var publishingChannel=[[${backUser.publishingChannel}]];
-						if(publishingChannel!=null){
-							$('#publishingChannel').selectpicker('val', publishingChannel.split(","));
-							$('#publishingChannel').selectpicker('refresh');
-						}
 					}
 					$(".giveUp").click(function(){
 					$("#commonPopup").remove();
@@ -339,7 +228,7 @@
 		    			if(id==null){
 		    				window.history.go(-1);
 		    			}else{
-		    				location.href='/sysUserManagement/to-Preview?id='+id;
+		    				location.href='/user/to-Preview?userId='+id;
 		    			}
 		    		});
         	})
@@ -391,12 +280,12 @@
 	        		 $.ajax({
 	                    type   : "post",
 	                    data   : $('#systemUserForm').serialize(),
-	                    url    : [[@{/sysUserManagement/save}]],
+	                    url    : [[@{/user/save}]],
 	                    success: function (resp) {
 	                    	hidden();
-	                    	if(resp.id!=null){
+	                    	if(resp.userId!=null){
 	                    		alertPopup(resp.errorMsg,function(){
-		                    		location.href='/sysUserManagement/to-Preview?id='+resp.id;
+		                    		location.href='/user/to-Preview?userId='+resp.userId;
 		                    	});
 	                    	}else{
 	                    		alertPopup(resp.errorMsg);
@@ -412,7 +301,7 @@
                     type: "post",
                     data: {"roleId": roleId},
                     dataType: "json",
-                    url: "/sysRoleManagement/getModule",
+                    url: "/sysRole/getModule",
                     success: function (ret) {
                     	$("#searchModuleTree").html('<span><i class="icon-minus-sign"></i><input value="0" type="checkbox"/> 全选</span>' + ret.msg);
                     	var userModules=[[${backUser.userModules}]];
@@ -576,7 +465,7 @@
 		  			}
 		  		}
 				$(".fa-arrow-circle-o-left").click(function(){
-					base.quitParent("/sysUserManagement/searchBackUser");
+					base.quitParent("/user/userList");
 				})	 
 				
 				

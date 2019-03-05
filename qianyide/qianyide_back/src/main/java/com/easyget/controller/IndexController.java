@@ -22,10 +22,4 @@ public class IndexController extends BaseController {
         return "v2/index";
     }
 
-    @RequestMapping(value = "/left")
-    public String left(HttpServletRequest request,
-                       HttpServletResponse response, Model model) {
-        logger.info("IndexController left");
-        return "left";
-    }
 }

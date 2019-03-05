@@ -68,6 +68,9 @@ public class TSysModuleServiceImpl extends BaseServiceImpl<TSysModule> implement
             sysModule.setModuleId(RandomUtil.getUuid());
             sysModule.setCreateTime(new Date());
             sysModule.setCreateAccount(sysModule.getUpdateAccount());
+            if(null == sysModule.getSuperModuleId() || "".equals(sysModule.getSuperModuleId())){
+                sysModule.setSuperModuleId(TSysModule.SUPER);
+            }
             sysModuleMapper.insertSelective(sysModule);
         } else {
             sysModuleMapper.updateByModuleId(sysModule);

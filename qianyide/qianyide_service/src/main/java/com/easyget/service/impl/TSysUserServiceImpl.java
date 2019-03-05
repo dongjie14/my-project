@@ -5,6 +5,8 @@ import com.easyget.dao.TSysUserMapper;
 import com.easyget.entity.TSysUser;
 import com.easyget.service.TSysUserService;
 import com.easyget.utils.MD5coding;
+import com.easyget.utils.PageUtil;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,4 +76,35 @@ public class TSysUserServiceImpl extends BaseServiceImpl<TSysUser> implements TS
         return sysUserMapper.getListByRoleId(roleId);
     }
 
+    @Override
+    public TSysUser selectByUserId(String userId) {
+        return sysUserMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public PageInfo<TSysUser> getPageList(Map<String, Object> params) {
+        PageUtil.startPage(params);
+        if(null != params.get("userRoles") && !"".equals(params.get("userRoles"))){
+            String[] userRoles = params.get("userRoles").toString().split(",");
+            String newUserRoles = "";
+            for (String userRole : userRoles){
+                newUserRoles += ("'"+userRole+"',");
+            }
+            newUserRoles = newUserRoles.substring(0, newUserRoles.length()-1);
+            params.put("userRoles", newUserRoles);
+        }
+        List<TSysUser> list = sysUserMapper.getPageList(params);
+        PageInfo<TSysUser> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+    }
+
+    @Override
+    public String getRoleIdsByUserId(String userId) {
+        return sysUserMapper.getRoleIdsByUserId(userId);
+    }
+
+    @Override
+    public String getRoleNamesByUserId(String userId) {
+        return sysUserMapper.getRoleNamesByUserId(userId);
+    }
 }

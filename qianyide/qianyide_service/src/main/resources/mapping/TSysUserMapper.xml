@@ -75,8 +75,7 @@
   </update>
 
   <select id="findByAccount" resultMap="BaseResultMap" parameterType="java.util.Map">
-    select user_id,role_id,user_account,user_passwd,user_sts,user_type,
-    user_name,user_phone,user_email,remark,login_time,create_time,tm_smp
+    select  <include refid="Base_Column_List" />
     from t_sys_user where 1=1
     <if test="userId != null and userId != ''">
       and user_id = #{userId}
@@ -91,6 +90,39 @@
   </select>
 
   <select id="getUserIdsByRoleId" resultType="String">
-        select group_concat(user_id) from t_sys_user where role_id = #{roleId}
-    </select>
+    select group_concat(user_id) from t_sys_user where role_id = #{roleId}
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from t_sys_user where user_id = #{userId}
+  </select>
+
+  <select id="getPageList" parameterType="Map" resultMap="BaseResultMap">
+    select tsr.role_name userRoleNames,tsu.* from t_sys_user tsu left join t_sys_role tsr on tsu.role_id = tsr.role_id
+    where 1=1
+    <if test="userType !=null and userType !='' and userType != 'null'">
+      and tsu.user_type=#{userType}
+    </if>
+    <if test="userAccount !=null and userAccount !='' and userAccount != 'null'">
+      and tsu.user_account like CONCAT('%',#{userAccount},'%')
+    </if>
+    <if test="userName !=null and userName !='' and userName != 'null'">
+      and tsu.user_name like CONCAT('%',#{userName},'%')
+    </if>
+    <if test="userSts !=null and userSts !='' and userSts != 'null'">
+      and tsu.user_sts=#{userSts}
+    </if>
+    <if test="userRoles !=null and userRoles !='' and userRoles != 'null'">
+      and tsr.role_id in (${userRoles})
+    </if>
+    ORDER BY tsu.id
+  </select>
+
+  <select id="getRoleIdsByUserId" resultType="String" parameterType="String">
+    select group_concat(role_id) from t_sys_user  where user_id=#{userId}
+  </select>
+
+  <select id="getRoleNamesByUserId" resultType="String" parameterType="String">
+    select group_concat(tsr.role_name) from t_sys_role tsr,t_sys_user tsu where tsr.role_id=tsu.role_id and tsu.user_id=#{userId}
+  </select>
 </mapper>

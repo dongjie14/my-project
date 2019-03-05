@@ -18,6 +18,9 @@
     order by tsm.module_rank desc
   </select>
   <delete id="deleteByModuleIdsAndUserIds" parameterType="String">
-        delete from t_sys_user_module where user_id in (${delUserIds}) and module_id in (${delModuleIds})
+    delete from t_sys_user_module where user_id in (${delUserIds}) and module_id in (${delModuleIds})
   </delete>
+  <select id="getModuleIdsByUserId" resultType="String" parameterType="String">
+    select group_concat(module_id) from t_sys_user_module  where user_id=#{userId}
+  </select>
 </mapper>

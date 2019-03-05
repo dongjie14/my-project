@@ -24,4 +24,30 @@ public class Constants {
      */
     public final static String RETURN_TYPE = "returnType";
 
+    /**
+     * /**
+     * 当前页数
+     */
+    public final static String CURRENT_PAGE = "pageNum";
+
+
+    /**
+     * 每页显示多少条
+     */
+    public static final String PAGE_SIZE = "numPerPage";
+
+    /**
+     * 总页数
+     */
+    public static final String PAGED_TOTAL_PAGE = "totalPage";
+
+    /**
+     * 初始页数
+     */
+    public static final Integer INITIAL_CURRENT_PAGE = 1;
+
+    /**
+     * 初始数据记录条数
+     */
+    public static final Integer INITIAL_PAGE_SIZE = 10;
 }

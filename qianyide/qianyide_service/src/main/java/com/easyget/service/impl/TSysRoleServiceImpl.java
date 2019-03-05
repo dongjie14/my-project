@@ -56,15 +56,13 @@ public class TSysRoleServiceImpl extends BaseServiceImpl<TSysRole> implements TS
     }
 
     @Override
-    public List<Map<String, Object>> getRoleTreeList(String roleIds) {
+    public List<Map<String, Object>> getRoleTreeList(String roleId) {
         String newRoleIds = "";
-        String[] roleIdList = roleIds.split(",");
-        for (String roleId : roleIdList) {
-            newRoleIds += sysRoleMapper.getRoleChildIds(roleId);
+        String[] roleIds = sysRoleMapper.getRoleChildIds(roleId).split(",");
+        for (String subRoleId : roleIds){
+            newRoleIds += "'"+subRoleId+"',";
         }
-        if (newRoleIds.indexOf(",") == 0) {
-            newRoleIds = newRoleIds.substring(1);
-        }
+        newRoleIds = newRoleIds.substring(0,newRoleIds.length()-1);
         Map<String, Object> params = new HashMap<>();
         params.put("roleIds", "(" + newRoleIds + ")");
         return sysRoleMapper.getRoleTreeList(params);
@@ -92,6 +90,15 @@ public class TSysRoleServiceImpl extends BaseServiceImpl<TSysRole> implements TS
         }else{
             sysRoleMapper.updateByRoleId(sysRole);
             //获取该角色被删掉的权限
+            if(sysRole.getRoleModules() != null && !"".equals(sysRole.getRoleModules())){
+                String[] roleModules = sysRole.getRoleModules().split(",");
+                String newRoleModules = "";
+                for(String module : roleModules){
+                    newRoleModules += "'"+module+"',";
+                }
+                newRoleModules = newRoleModules.substring(0, newRoleModules.length()-1);
+                sysRole.setRoleModules(newRoleModules);
+            }
             String delModuleIds = sysRoleModuleMapper.getDelModuleIdsByRoleId(sysRole);
             if (StringUtils.isNotBlank(delModuleIds)) {
                 String delUserIds = sysUserMapper.getUserIdsByRoleId(sysRole.getRoleId());
@@ -109,7 +116,7 @@ public class TSysRoleServiceImpl extends BaseServiceImpl<TSysRole> implements TS
             }
         }
         if (StringUtils.isNotBlank(sysRole.getRoleModules())) {
-            sysRoleModuleService.saveRoleModule(sysRole.getRoleModules().split(","), sysRole.getRoleId());
+            sysRoleModuleService.saveRoleModule(sysRole.getRoleModules().replace("'","").split(","), sysRole.getRoleId());
         }
     }
 

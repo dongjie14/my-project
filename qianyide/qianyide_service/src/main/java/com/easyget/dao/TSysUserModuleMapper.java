@@ -11,4 +11,6 @@ public interface TSysUserModuleMapper extends BaseMapper<TSysUserModule> {
     List<TSysUserModule> getModuleByUserId(String userId);
 
     int deleteByModuleIdsAndUserIds(String delUserIds,String delModuleIds);
+
+    String getModuleIdsByUserId(String userId);
 }

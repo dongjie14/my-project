@@ -58,4 +58,8 @@ public class TSysUserModuleServiceImpl extends BaseServiceImpl<TSysUserModule> i
         return html;
     }
 
+    @Override
+    public String getModuleIdsByUserId(String userId) {
+        return sysUserModuleMapper.getModuleIdsByUserId(userId);
+    }
 }

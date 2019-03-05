@@ -1,13 +1,12 @@
 package com.easyget.controller;
 
 import com.easyget.constants.Constants;
+import com.easyget.entity.TSysRole;
 import com.easyget.entity.TSysUser;
 import com.easyget.entity.TSysUserLoginRecord;
-import com.easyget.entity.TSysUserModule;
-import com.easyget.service.TSysUserLoginRecordService;
-import com.easyget.service.TSysUserModuleService;
-import com.easyget.service.TSysUserService;
+import com.easyget.service.*;
 import com.easyget.utils.JsonUtils;
+import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,11 @@ public class SysUserController extends BaseController {
     @Resource
     private TSysUserService sysUserService;
     @Resource
+    private TSysRoleService sysRoleService;
+    @Resource
     private TSysUserModuleService sysUserModuleService;
+    @Resource
+    private TSysRoleModuleService sysRoleModuleService;
 
     /**
      * 进入登录页面
@@ -205,4 +208,95 @@ public class SysUserController extends BaseController {
             return null;
         }
     }
+
+    @RequestMapping(value = "/userList")
+    public String userList(HttpServletRequest request, HttpServletResponse response, Model model, TSysUser sysUser){
+        try {
+            Map<String, Object> params = getParametersO(request);
+            TSysUser user = loginAdminUser(request);
+            PageInfo<TSysUser> sysUserList = sysUserService.getPageList(params);
+            List<Map<String, Object>> roleList = null;
+            //获取所有的roleId 并进行join
+            roleList = sysRoleService.getRoleTreeList(1==user.getUserType() ? TSysRole.SUPER : user.getRoleId());// 操作人员拥有角色
+            model.addAttribute("roleList", roleList);
+            model.addAttribute("backUser", sysUser);
+            model.addAttribute("pageInfo", sysUserList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "v2/systemManagement/systemUserList";
+    }
+
+    /**
+     * 去添加系统用户页面
+     *
+     * @return
+     */
+    @GetMapping("to-save")
+    public String toSave(HttpServletRequest request, HttpServletResponse response, Model model) {
+        String userId = request.getParameter("userId");
+        TSysUser user = loginAdminUser(request);
+        TSysUser sysUser = sysUserService.selectByUserId(userId);
+        if (sysUser == null) {
+            sysUser = new TSysUser();
+        } else {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("userId", sysUser.getUserId());
+            model.addAttribute("userLoginRecordList", sysUserLoginRecordService.getPageList(params).getList());
+            String userRoleId = sysUserService.getRoleIdsByUserId(sysUser.getUserId());
+            sysUser.setUserRoles(userRoleId);// 设置该用户的角色
+            String userModuleId = sysUserModuleService.getModuleIdsByUserId(sysUser.getUserId());
+            sysUser.setUserModules(userModuleId);// 设置该用户的权限
+        }
+        List<Map<String, Object>> roleList = null;
+        String userRoles = "";
+        if(1 == user.getUserType()){
+            userRoles = TSysRole.SUPER;
+        }else {
+            userRoles =sysUserService.getRoleIdsByUserId(user.getUserId());
+        }
+        roleList = sysRoleService.getRoleTreeList(userRoles);// 操作人员拥有角色
+        model.addAttribute("roleList", roleList);
+        model.addAttribute("backUser", sysUser);
+
+        return "v2/systemManagement/systemUserSave";
+    }
+
+    /**
+     * 去预览系统用户页面
+     *
+     * @return
+     */
+    @GetMapping("to-Preview")
+    public String toPreview(HttpServletRequest request, HttpServletResponse response, Model model) {
+        String userId = request.getParameter("userId");
+        TSysUser sysUser = sysUserService.selectByUserId(userId);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userId", sysUser.getUserId());
+        PageInfo<TSysUserLoginRecord> pageInfo = sysUserLoginRecordService.getPageList(params);
+        model.addAttribute("userLoginRecordList", pageInfo.getList());
+        String userRoleNames = sysUserService.getRoleNamesByUserId(sysUser.getUserId());
+        sysUser.setUserRoleNames(userRoleNames);
+        String userRoleId = sysUserService.getRoleIdsByUserId(sysUser.getUserId());
+        sysUser.setUserRoles(userRoleId);// 设置该用户的角色
+        String userModuleId = sysUserModuleService.getModuleIdsByUserId(sysUser.getUserId());
+        sysUser.setUserModules(userModuleId);// 设置该用户的权限
+        model.addAttribute("backUser", sysUser);
+        return "v2/systemManagement/systemUserPreview";
+    }
+
+    /**
+     * 保存系统用户
+     *
+     * @param request
+     * @param sysUser
+     * @return
+     */
+    @RequestMapping("save")
+    @ResponseBody
+    public Map<String, Object> doSave(HttpServletRequest request, TSysUser sysUser) {
+        Map<String, Object> resultMap = sysUserService.saveBackUser(sysUser);
+        return resultMap;
+    }
+
 }

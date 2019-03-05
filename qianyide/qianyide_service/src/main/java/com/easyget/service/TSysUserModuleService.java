@@ -8,4 +8,6 @@ public interface TSysUserModuleService extends BaseService<TSysUserModule> {
     List<TSysUserModule> getModuleByUserId(String userId);
 
     String getUserModule(String userId);
+
+    String getModuleIdsByUserId(String userId);
 }
